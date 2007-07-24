@@ -1,5 +1,5 @@
 /**
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.2 Pl-Prüfung logisch LVE
+ * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007 BitCtrl Systems GmbH 
  * 
  * This program is free software; you can redistribute it and/or modify it under
@@ -34,6 +34,7 @@ import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.application.StandardApplicationRunner;
+import de.bsvrz.dua.mwelve.mwelve.MessWertErsetzungLVE;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
 import de.bsvrz.dua.plformal.vew.PPFStandardAspekteVersorger;
 import de.bsvrz.dua.plloglve.plloglve.PlPruefungLogischLVE;
@@ -45,36 +46,56 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
- * Implementierung des Moduls Verwaltung der SWE Pl-Prüfung logisch LVE.
- * Dieses Modul erfragt die zu überprüfenden Daten aus der Parametrierung
- * und initialisiert damit die Module Pl-Prüfung formal und Pl-Prüfung logisch LVE,
- * die dann die eigentliche Prüfung durchführen.
+ * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE.
+ * Seine Aufgabe besteht in der Auswertung der Aufrufparameter, der Anmeldung
+ * beim Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung formal
+ * (1 u. 2), PL-Prüfung logisch LVE (1 u. 2), Messwertersetzung LVE sowie Publikation.
+ * Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden Daten zuständig.
+ * Die Verwaltung gibt ein Objekt des Moduls PL-Prüfung formal als Beobachterobjekt an,
+ * an das die zu überprüfenden Daten durch den Aktualisierungsmechanismus weitergeleitet
+ * werden. Weiterhin stellt die Verwaltung die Verkettung der Module PL-Prüfung formal
+ * (1), PL-Prüfung logisch LVE (1), Messwertersetzung LVE, PL-Prüfung formal (2),
+ * PL-Prüfung logisch LVE (2) sowie Publikation in dieser Reihenfolge her.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class VerwaltungPlPruefungLogischLVE
+public class VerwaltungMessWertErsetzungLVE
 extends AbstraktVerwaltungsAdapterMitGuete{
 
 	/**
-	 * Instanz des Moduls PL-Prüfung formal
+	 * Instanz des Moduls PL-Prüfung formal (1)
 	 */
-	private PlPruefungFormal plPruefungFormal = null;
+	private PlPruefungFormal plForm1  = null;
+	
+	/**
+	 * Instanz des Moduls PL-Prüfung formal (2)
+	 */
+	private PlPruefungFormal plForm2  = null;
 
 	/**
-	 * Instanz des Moduls PL-Prüfung logisch LVE
+	 * Instanz des Moduls PL-Prüfung logisch LVE (1)
 	 */
-	private PlPruefungLogischLVE plPruefungLogischLVE = null;
+	private PlPruefungLogischLVE plLog2 = null;
 	
+	/**
+	 * Instanz des Moduls PL-Prüfung logisch LVE (2)
+	 */
+	private PlPruefungLogischLVE plLog1 = null;
 	
+	/**
+	 * Instanz des Moduls Messwertersetzung LVE
+	 */
+	private MessWertErsetzungLVE mwe = null;	
 	
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	public SWETyp getSWETyp() {
-		return SWETyp.PL_PRUEFUNG_LOGISCH_LVE;
+		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 	}
+	
 
 	/**
 	 * {@inheritDoc}
@@ -93,6 +114,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
 		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		
 		
 		this.plPruefungFormal = new PlPruefungFormal(
 				new PPFStandardAspekteVersorger(this).getStandardPubInfos());
@@ -121,12 +143,14 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 	}
 	
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		this.plPruefungFormal.aktualisiereDaten(resultate);
+		this.plForm1.aktualisiereDaten(resultate);
 	}
+	
 	
 	/**
 	 * Startet diese Applikation
@@ -145,7 +169,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
             }
         });
 		StandardApplicationRunner.run(
-					new VerwaltungPlPruefungLogischLVE(), argumente);
+					new VerwaltungMessWertErsetzungLVE(), argumente);
 	}
 
 	
@@ -153,9 +177,9 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 	 * {@inheritDoc}.<br>
 	 * 
 	 * Standard-Gütefaktor für Ersetzungen (90%)<br>
-	 * Wenn das Modul Pl-Prüfung logisch LVE einen Messwert ersetzt (eigentlich
-	 * nur bei Wertebereichsprüfung) so vermindert sich die Güte des Ausgangswertes
-	 * um diesen Faktor (wenn kein anderer Wert über die Kommandozeile übergeben wurde)
+	 * Wenn das Modul Messwertersetzung LVE einen Messwert ersetzt, so
+	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn
+	 * kein anderer Wert über die Kommandozeile übergeben wurde)
 	 */
 	@Override
 	public double getStandardGueteFaktor() {
