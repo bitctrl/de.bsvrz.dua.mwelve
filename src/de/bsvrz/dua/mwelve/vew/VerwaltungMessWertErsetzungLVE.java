@@ -27,6 +27,7 @@
 package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import stauma.dav.clientside.DataDescription;
 import stauma.dav.clientside.ReceiveOptions;
@@ -35,6 +36,8 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.dua.mwelve.mwelve.MessWertErsetzungLVE;
+import de.bsvrz.dua.mwelve.plformal.PlFormMweLveStandardAspekteVersorger;
+import de.bsvrz.dua.mwelve.pllovlve.PlLogMweLveStandardAspekteVersorger;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
 import de.bsvrz.dua.plformal.vew.PPFStandardAspekteVersorger;
 import de.bsvrz.dua.plloglve.plloglve.PlPruefungLogischLVE;
@@ -43,6 +46,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGuete;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
+import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
+import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -104,43 +109,66 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 	protected void initialisiere()
 	throws DUAInitialisierungsException {
 		
-		String infoStr = Konstante.LEERSTRING;
-		Collection<SystemObject> plLogLveObjekte = DUAUtensilien.getBasisInstanzen(
+		DuaVerkehrsNetz.initialisiere(this.verbindung);
+				
+		Collection<SystemObject> alleFsObjImKB = DUAUtensilien.getBasisInstanzen(
 				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_FAHRSTREIFEN),
 				this.verbindung, this.getKonfigurationsBereiche());
-		this.objekte = plLogLveObjekte.toArray(new SystemObject[0]);
 		
+		/**
+		 * Filtere die Fahrstreifen heraus, die keinen Nachbarfahrstreifen haben.
+		 * Diese sind entweder keinem Messquerschnitt zugeordnet oder der Messquerschnitt
+		 * an sich ist einspurig
+		 */
+		Collection<SystemObject> alleFsObjImKBmitNachbar = new HashSet<SystemObject>();
+		for(SystemObject fsObjImKB:alleFsObjImKB){
+			FahrStreifen fs = FahrStreifen.getInstanz(fsObjImKB);
+			if(fs != null){
+				if(fs.getNachbarFahrStreifen() != null){
+					alleFsObjImKBmitNachbar.add(fsObjImKB);
+				}
+			}else{
+				LOGGER.warning("Fahrstreifen " + fsObjImKB + " konnte nicht identifiziert werden" ); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}				
+		this.objekte = alleFsObjImKBmitNachbar.toArray(new SystemObject[0]);
+
+		String infoStr = Konstante.LEERSTRING;
 		for(SystemObject obj:this.objekte){
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
 		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		
-		this.plPruefungFormal = new PlPruefungFormal(
-				new PPFStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plPruefungFormal.setPublikation(true);
-		this.plPruefungFormal.initialisiere(this);
-
-		this.plPruefungLogischLVE = new PlPruefungLogischLVE(
-				new MweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plPruefungLogischLVE.setPublikation(true);
-		this.plPruefungLogischLVE.initialisiere(this);
+		this.plForm1 = new PlPruefungFormal(
+				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.plForm1.setPublikation(true);
+		this.plForm1.initialisiere(this);
 		
-		this.plPruefungFormal.setNaechstenBearbeitungsKnoten(this.plPruefungLogischLVE);		
+		this.plLog1 = new PlPruefungLogischLVE(null);
+				//new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.plLog1.setPublikation(true);
+		this.plLog1.initialisiere(this);
+		
+		this.mwe = new MessWertErsetzungLVE();
+		this.mwe.initialisiere(this);
+
+		this.plForm2 = new PlPruefungFormal(
+				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.plForm2.initialisiere(this);
+		
+		this.plLog2 = new PlPruefungLogischLVE(
+				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.plLog2.initialisiere(this);
+				
 		
 		DataDescription anmeldungsBeschreibungKZD = new DataDescription(
 				this.verbindung.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
 				this.verbindung.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG),
-				(short)0);
-		DataDescription anmeldungsBeschreibungLZD = new DataDescription(
-				this.verbindung.getDataModel().getAttributeGroup(DUAKonstanten.ATG_LZD),
-				this.verbindung.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG),
-				(short)0);
-			
+				(short)0);			
+		
 		this.verbindung.subscribeReceiver(this, this.objekte, anmeldungsBeschreibungKZD,
 					ReceiveOptions.normal(), ReceiverRole.receiver());
-		this.verbindung.subscribeReceiver(this, this.objekte, anmeldungsBeschreibungLZD,
-					ReceiveOptions.delayed(), ReceiverRole.receiver());
 	}
 	
 	
