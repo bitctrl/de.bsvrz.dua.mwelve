@@ -27,7 +27,6 @@
 package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import stauma.dav.clientside.DataDescription;
 import stauma.dav.clientside.ReceiveOptions;
@@ -39,15 +38,15 @@ import de.bsvrz.dua.mwelve.mwelve.MessWertErsetzungLVE;
 import de.bsvrz.dua.mwelve.plformal.PlFormMweLveStandardAspekteVersorger;
 import de.bsvrz.dua.mwelve.pllovlve.PlLogMweLveStandardAspekteVersorger;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
-import de.bsvrz.dua.plformal.vew.PPFStandardAspekteVersorger;
 import de.bsvrz.dua.plloglve.plloglve.PlPruefungLogischLVE;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
+import de.bsvrz.sys.funclib.bitctrl.dua.PublikationsModul;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGuete;
+import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
-import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -91,7 +90,14 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 	/**
 	 * Instanz des Moduls Messwertersetzung LVE
 	 */
-	private MessWertErsetzungLVE mwe = null;	
+	private MessWertErsetzungLVE mwe = null;
+	
+	/**
+	 * Modul, das nur publiziert (die Publikation kann nicht im Modul MWE selbst
+	 * erfolgen, da die Daten nach diesem Modul noch einmal formal und logisch
+	 * plausibilisiert werden müssen)
+	 */
+	private PublikationsModul pub = null;
 	
 	
 	/**
@@ -114,24 +120,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		Collection<SystemObject> alleFsObjImKB = DUAUtensilien.getBasisInstanzen(
 				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_FAHRSTREIFEN),
 				this.verbindung, this.getKonfigurationsBereiche());
-		
-		/**
-		 * Filtere die Fahrstreifen heraus, die keinen Nachbarfahrstreifen haben.
-		 * Diese sind entweder keinem Messquerschnitt zugeordnet oder der Messquerschnitt
-		 * an sich ist einspurig
-		 */
-		Collection<SystemObject> alleFsObjImKBmitNachbar = new HashSet<SystemObject>();
-		for(SystemObject fsObjImKB:alleFsObjImKB){
-			FahrStreifen fs = FahrStreifen.getInstanz(fsObjImKB);
-			if(fs != null){
-				if(fs.getNachbarFahrStreifen() != null){
-					alleFsObjImKBmitNachbar.add(fsObjImKB);
-				}
-			}else{
-				LOGGER.warning("Fahrstreifen " + fsObjImKB + " konnte nicht identifiziert werden" ); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}				
-		this.objekte = alleFsObjImKBmitNachbar.toArray(new SystemObject[0]);
+		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
 		String infoStr = Konstante.LEERSTRING;
 		for(SystemObject obj:this.objekte){
@@ -145,8 +134,8 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.plForm1.setPublikation(true);
 		this.plForm1.initialisiere(this);
 		
-		this.plLog1 = new PlPruefungLogischLVE(null);
-				//new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.plLog1 = new PlPruefungLogischLVE(
+				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
 		this.plLog1.setPublikation(true);
 		this.plLog1.initialisiere(this);
 		
@@ -160,7 +149,21 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.plLog2 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
 		this.plLog2.initialisiere(this);
-				
+		
+		this.pub = new PublikationsModul(
+				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
+				ModulTyp.MESSWERTERSETZUNG_LVE);
+		this.pub.initialisiere(this);
+		
+		/**
+		 * Verkettung der einzelnen Module
+		 */
+		this.plForm1.setNaechstenBearbeitungsKnoten(this.plLog1);
+		this.plLog1.setNaechstenBearbeitungsKnoten(this.mwe);
+		this.mwe.setNaechstenBearbeitungsKnoten(this.plForm2);
+		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
+		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
+		
 		
 		DataDescription anmeldungsBeschreibungKZD = new DataDescription(
 				this.verbindung.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
