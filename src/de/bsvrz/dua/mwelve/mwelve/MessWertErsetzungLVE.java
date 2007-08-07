@@ -27,7 +27,6 @@ package de.bsvrz.dua.mwelve.mwelve;
 
 import stauma.dav.clientside.ResultData;
 import de.bsvrz.dua.mwelve.mwelve.pruefung.LVEPruefungUndMWE;
-import de.bsvrz.dua.mwelve.mwelve.testausfall.LVEAusfallUeberwachung;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
@@ -53,11 +52,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 * Die Guete dieses Moduls innerhalb dieser SWE
 	 */
 	public static double GUETE = 0.9;
-	
-	/**
-	 * Submodul Ausfallüberwachung
-	 */
-	private LVEAusfallUeberwachung ausfall = null;
 
 	/**
 	 * Dieses Submodul führt die eigentliche Prüfung durch
@@ -79,10 +73,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			throw new RuntimeException("Dieses Modul benötigt Informationen" + //$NON-NLS-1$
 					" zum Guetefaktor der angeschlossenen SWE"); //$NON-NLS-1$
 		}
-
-		this.ausfall = new LVEAusfallUeberwachung();
-		this.ausfall.initialisiere(dieVerwaltung);
-		this.ausfall.setNaechstenBearbeitungsKnoten(this.pruefung);
 		
 		this.pruefung = new LVEPruefungUndMWE();
 		this.pruefung.initialisiere(dieVerwaltung);
@@ -94,7 +84,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 * {@inheritDoc}
 	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
-		this.ausfall.aktualisiereDaten(resultate);
+		this.pruefung.aktualisiereDaten(resultate);
 	}
 
 	

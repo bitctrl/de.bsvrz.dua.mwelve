@@ -26,7 +26,6 @@
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
-import stauma.dav.clientside.ResultData;
 
 /**
  * TODO<br>
@@ -39,17 +38,27 @@ import stauma.dav.clientside.ResultData;
  *
  */
 public class FSDatenPuffer {
-
+	
+	/**
+	 * die Groesse des Ringpuffers
+	 */
+	private static final int PUFFER_KAPAZITAET = 3;
+	
 	/**
 	 * der Fahrstreifen, dessen Daten hier gepuffert werden
 	 */
 	private FahrStreifen fs = null;
 	
 	/**
-	 * zeigt an, ob dieser Fahrstreifen gerade als defekt eingeschätzt wird.
-	 * Am Anfang ist jeder Fahstreifen defekt.
+	 * die letzten drei emfangenen Datensätze im Ringpuffer
 	 */
-	private boolean aktuellDefekt = true;
+	private KZDatum[] ringPuffer = new KZDatum[PUFFER_KAPAZITAET];
+	
+	/**
+	 * aktueller Index auf den Ringpuffer
+	 */
+	private int ringPufferIndex = 0;
+	
 	
 	/**
 	 * Standardkonstruktor
@@ -65,6 +74,30 @@ public class FSDatenPuffer {
 	
 	
 	/**
+	 * Erfragt den unmittelbar vor dem übergebenen Datum in diesen
+	 * Puffer eingespeisten Datensatz
+	 * 
+	 * @param kzDatum ein Datensatz 
+	 * @return das Vorgängerdatum oder <code>null</code>, wenn dieses
+	 * nicht existiert
+	 */
+	public final KZDatum getVorgaengerVon(KZDatum kzDatum){
+		KZDatum ergebnis = null;
+		
+		for(int i = 0; i<PUFFER_KAPAZITAET; i++){
+			if(this.ringPuffer[i] != null){
+				if(this.ringPuffer[i].getDatum().getDataTime() == kzDatum.getDatum().getDataTime()){
+					ergebnis = this.ringPuffer[(i + PUFFER_KAPAZITAET - 1) % PUFFER_KAPAZITAET];
+					break;
+				}
+			}
+		}
+		
+		return ergebnis; 
+	}
+	
+	
+	/**
 	 * Erfragt den Fahrstreifen, dessen Daten hier gepuffert werden
 	 * 
 	 * @return der Fahrstreifen, dessen Daten hier gepuffert werden
@@ -75,18 +108,156 @@ public class FSDatenPuffer {
 	
 	
 	/**
-	 * Erfragt, ob dieser Fahstreifen anhand der Daten, die er zuletzt geliefert hat
-	 * im Moment als defekt eingestuft wird
+	 * Erfragt, ob in diesem Puffer Daten für mehr als ein Intervall gespeichert sind,
+	 * die noch nicht wieder freigegeben wurden. Dieser Zustand indiziert, dass ein Intervall
+	 * abgelaufen ist
 	 * 
-	 * @return  ob dieser Fahstreifen als defekt eingestuft wird
+	 * @return ob in diesem Puffer Daten für mehr als ein Intervall gespeichert sind,
+	 * die noch nicht wieder freigegeben wurden
+	 */
+	public final boolean isIntervallAbgelaufen(){
+		int nichtWiederFreiGegebenZaehler = 0;
+		
+		for(KZDatum kzDatum:this.ringPuffer){
+			if(kzDatum != null){
+				if(!kzDatum.isBereitsWiederFreigegeben())nichtWiederFreiGegebenZaehler++;
+				if(nichtWiederFreiGegebenZaehler > 1)break;
+			}
+		}
+		
+		return nichtWiederFreiGegebenZaehler > 1;
+	}
+	
+	
+	/**
+	 * Erfragt, ob in diesem Puffer wenigstens ein Datum gespeichert ist, dass noch nicht
+	 * wieder an ein anderes Modul weitergegeben wurde
+	 * 
+	 * @return  ob in diesem Puffer wenigstens ein Datum gespeichert ist, dass noch nicht
+	 * wieder an ein anderes Modul weitergegeben wurde
+	 */
+	public final boolean habeNochNichtFreigegebenesDatum(){
+		for(KZDatum kzDatum:this.ringPuffer){
+			if(kzDatum != null){
+				if(!kzDatum.isBereitsWiederFreigegeben())return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * Befreit das in diesem Puffer stehende Datum, das zu einem bereits abgelaufenen Intervall
+	 * gehören muss
+	 * 
+	 * @return das in diesem Puffer stehende Datum, das zu einem bereits abgelaufenen Intervall
+	 * gehören muss
+	 */
+	public final KZDatum befreieAbgelaufenesDatum(){
+		KZDatum abgelaufenesDatum = null;
+		
+		for(KZDatum kzDatum:this.ringPuffer){
+			if(!kzDatum.isBereitsWiederFreigegeben()){
+				if(abgelaufenesDatum != null){
+					abgelaufenesDatum = kzDatum;
+				}else{
+					if(abgelaufenesDatum.getDatum().getDataTime() > kzDatum.getDatum().getDataTime()){
+						abgelaufenesDatum = kzDatum;
+						abgelaufenesDatum.setBereitsWiederFreigegeben(true);
+						break;
+					}
+				}
+			}
+		}
+
+		return abgelaufenesDatum;
+	}
+	
+	
+	/**
+	 * Erfragt, ob dieser Fahrstreifen aktuell als <code>defekt</code> eingeschätzt
+	 * wird. Er ist <code>defekt</code>, wenn das letzte Datum keine Nutzdaten enthielt,
+	 * oder noch nie ein Datum angekommen ist.
+	 * 
+	 * @return  ob dieser Fahrstreifen aktuell als <code>defekt</code> eingeschätzt
+	 * wird
 	 */
 	public final boolean isAktuellDefekt(){
-		return this.aktuellDefekt;
+		boolean defekt = true;
+		
+		KZDatum aktuellesDatum = this.getDatumAktuell();
+		if(aktuellesDatum != null){
+			defekt = aktuellesDatum.isDefekt();
+		}
+		
+		return defekt;
 	}
 	
 	
-	public final void aktuelisiereDaten(ResultData datum){
-		
+	/**
+	 * Aktualisiert dieses Objekt mit einem aktuellen Datensatz für
+	 * den assoziierten Fahrstreifen
+	 * 
+	 * @param datum ein KZD des assoziierten Fahrstreifens (muss 
+	 * <code>!= null</code> sein)
+	 */
+	public final void aktualisiereDaten(KZDatum kzDatum){
+		this.ringPuffer[ringPufferIndex] = kzDatum;
+		ringPufferIndex = (ringPufferIndex + 1) % PUFFER_KAPAZITAET;
+	}
+	
+	
+	/**
+	 * Erfragt das letzte in diesen Puffer eingespeiste Datum
+	 * 
+	 * @return das letzte in diesen Puffer eingespeiste Datum oder
+	 * <code>null</code>, wenn noch nie ein Datum eingespeist wurde
+	 */
+	public final KZDatum getDatumAktuell(){
+		return this.ringPuffer[(ringPufferIndex + PUFFER_KAPAZITAET - 1) % PUFFER_KAPAZITAET];
 	}
 
+	
+	/**
+	 * Erfragt das Datum innerhalb dieses Puffers, das den übergebenen Zeitstempel
+	 * besitzt
+	 * 
+	 * @return das Datum innerhalb dieses Puffers, das den übergebenen Zeitstempel
+	 * besitzt oder <code>null</code>, wenn kein Datum diesen Zeitstempel besitzt
+	 */
+	public final KZDatum getDatumMitZeitStempel(final long zeitStempel){
+		KZDatum ergebnis = null;
+		
+		for(int i = 0; i<PUFFER_KAPAZITAET; i++){
+			KZDatum dummy = this.ringPuffer[i];
+			if(dummy != null){
+				if(dummy.getDatum().getDataTime() == zeitStempel){
+					ergebnis = dummy;
+					break;
+				}
+			}
+		}
+		
+		return ergebnis;
+	}
+	
+	
+	/**
+	 * Ersetzt ein in diesem Puffer gespeichertes Datum durch ein
+	 * messwertersetztes Datum
+	 *  
+	 * @param mweDatum das neue Datum
+	 */
+	public final void ersetzeDatum(KZDatum mweDatum){
+		for(int i = 0; i<PUFFER_KAPAZITAET; i++){
+			KZDatum dummy = this.ringPuffer[i];
+			if(dummy != null){
+				if(dummy.getDatum().getDataTime() == mweDatum.getDatum().getDataTime()){
+					this.ringPuffer[i] = mweDatum;
+					break;
+				}
+			}
+		}
+	}
 }
