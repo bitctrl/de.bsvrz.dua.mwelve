@@ -99,6 +99,12 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = 
 										new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 	
+//	/**
+//	 * Speichert, wie lange ein Attribut eines Datums bereits fortgeschrieben 
+//	 * wird
+//	 */
+//	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = 
+//										new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 	
 	
 	/**
@@ -567,6 +573,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			if(plausibilisiertesDatum.getAttributWert(attribut).isImplausibel() &&
 			  !plausibilisiertesDatum.getAttributWert(attribut).isInterpoliert()){
 				
+//				plausibilisiertesDatum
 				/**
 				 * Versuche Attributwert fortzuschreiben
 				 */

@@ -108,7 +108,7 @@ implements Comparable<MweAttributWert>{
 	/**
 	 * Erfragt, zum wievielten mal dieser Wert schon fortgeschrieben wird
 	 * 
-	 * @return 
+	 * @return zum wievielten mal dieser Wert schon fortgeschrieben wird
 	 */
 	public final long getFortgeschriebenSeit(){
 		return this.fortgeschriebenZumXtenMal;
