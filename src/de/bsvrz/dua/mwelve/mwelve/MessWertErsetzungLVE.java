@@ -27,6 +27,7 @@ package de.bsvrz.dua.mwelve.mwelve;
 
 import stauma.dav.clientside.ResultData;
 import de.bsvrz.dua.mwelve.mwelve.pruefung.LVEPruefungUndMWE;
+import de.bsvrz.dua.mwelve.mwelve.pruefung.MweParameter;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
@@ -73,6 +74,11 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			throw new RuntimeException("Dieses Modul benötigt Informationen" + //$NON-NLS-1$
 					" zum Guetefaktor der angeschlossenen SWE"); //$NON-NLS-1$
 		}
+		
+		/**
+		 * Auf Parameter aller betrachteten Fahrstreifen anmelden
+		 */
+		MweParameter.initialisiere(dieVerwaltung.getVerbindung(), dieVerwaltung.getSystemObjekte());
 		
 		this.pruefung = new LVEPruefungUndMWE();
 		this.pruefung.initialisiere(dieVerwaltung);

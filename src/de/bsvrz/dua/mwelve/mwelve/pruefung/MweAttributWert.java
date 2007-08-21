@@ -27,7 +27,6 @@ package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
 import stauma.dav.clientside.Data;
 import de.bsvrz.dua.guete.GWert;
-import de.bsvrz.dua.guete.GueteException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
@@ -84,10 +83,8 @@ implements Comparable<MweAttributWert>{
 	 * Standardkonstruktor
 	 * 
 	 * @param attr das Attribut
-	 * @throws GueteException wird weitergereicht
 	 */
-	public MweAttributWert(final MweAttribut attr, final Data datenSatz)
-	throws GueteException{
+	public MweAttributWert(final MweAttribut attr, final Data datenSatz){
 		if(attr == null){
 			throw new NullPointerException("Attribut ist <<null>>"); //$NON-NLS-1$
 		}

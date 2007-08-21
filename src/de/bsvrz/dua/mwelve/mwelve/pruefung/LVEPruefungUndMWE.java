@@ -67,10 +67,10 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 * <code>vPkw</code> 
 	 */
 	private static final MweAttribut[] Q_V_PKW_KFZ = new MweAttribut[]
-	                                         {MweAttribut.Q_KFZ,
-										      MweAttribut.Q_PKW,
-										      MweAttribut.V_KFZ,
-										      MweAttribut.V_PKW}; 
+						                                         {MweAttribut.Q_KFZ,
+															      MweAttribut.Q_PKW,
+															      MweAttribut.V_KFZ,
+															      MweAttribut.V_PKW}; 
 
 	/**
 	 * Debug-Logger
@@ -99,13 +99,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = 
 										new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 	
-//	/**
-//	 * Speichert, wie lange ein Attribut eines Datums bereits fortgeschrieben 
-//	 * wird
-//	 */
-//	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = 
-//										new HashMap<FahrStreifen, Collection<FahrStreifen>>();
-	
 	
 	/**
 	 * {@inheritDoc}
@@ -126,11 +119,11 @@ extends AbstraktBearbeitungsKnotenAdapter{
 					this.pruefungsFahrstreifen.add(fs);
 					this.fsAufDatenPuffer.put(fs, new FSDatenPuffer(fs));
 					this.fsAufDatenPuffer.put(fs.getNachbarFahrStreifen(), new FSDatenPuffer(fs.getNachbarFahrStreifen()));
-					this.fsAufDatenPuffer.put(fs.getNachbarFahrStreifen(), new FSDatenPuffer(fs.getNachbarFahrStreifen()));
+					this.fsAufDatenPuffer.put(fs.getErsatzFahrStreifen(), new FSDatenPuffer(fs.getErsatzFahrStreifen()));
 				}
 			}else{
-				throw new DUAInitialisierungsException("Fahrstreifen " + fsObjekt +  //$NON-NLS-1$
-						" konnte nicht identifiziert werden"); //$NON-NLS-1$
+				throw new DUAInitialisierungsException("Fahrstreifenkonfiguration von " + fsObjekt +  //$NON-NLS-1$
+						" konnte nicht ausgelesen werden"); //$NON-NLS-1$
 			}
 		}
 		
@@ -191,7 +184,12 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
 		if(resultate != null){
+			/**
+			 * die weiterzuleitenden Resultate müssen die selbe Datenidentifikation haben wie
+			 * die eingetroffenen Resultate
+			 */
 			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			
 			for(ResultData resultat:resultate){
 				if(resultat != null){
 					FahrStreifen fs = FahrStreifen.getInstanz(resultat.getObject());
@@ -202,41 +200,43 @@ extends AbstraktBearbeitungsKnotenAdapter{
 						 */
 						FSDatenPuffer pufferFS = this.fsAufDatenPuffer.get(fs);
 						if(pufferFS != null){
-							try {
-								KZDatum kzDatum = new KZDatum(resultat);
-								pufferFS.aktualisiereDaten(kzDatum);
-								
-								if(!this.pruefungsFahrstreifen.contains(fs) || 
+							KZDatum kzDatum = new KZDatum(resultat);
+							pufferFS.aktualisiereDaten(kzDatum);
+
+							if(!this.pruefungsFahrstreifen.contains(fs) || 
 									kzDatum.isDefekt() ||
 									kzDatum.isVollstaendigPlausibel()){
-									/**
-									 * Wenn das Datum zu einem Fahrstreifen gehört, der hier nur
-									 * gespeichert wird, weil er Ersatz- oder Nachbarfahrstreifen
-									 * eines hier plausibilisierten Fahrstreifens ist (er hier aber 
-									 * nicht plausibilisiert wird), oder der Datensatz keine Nutzdaten
-									 * enhält, kann er einfach so wieder freigegeben werden
-									 */
-									weiterzuleitendeResultate.add(resultat);
-									kzDatum.setBereitsWiederFreigegeben(true);
-								}
-							} catch (GueteException e) {
-								e.printStackTrace();
-								LOGGER.error(pufferFS.getFahrStreifen() + 
-										" konnte nicht aktualisiert werden", e); //$NON-NLS-1$
-							}							
+								/**
+								 * Wenn das Datum zu einem Fahrstreifen gehört, der hier nur
+								 * gespeichert wird, weil er Ersatz- oder Nachbarfahrstreifen
+								 * eines hier plausibilisierten Fahrstreifens ist (er hier aber 
+								 * nicht plausibilisiert wird), oder der Datensatz keine Nutzdaten
+								 * enhält, kann er einfach so wieder freigegeben werden
+								 */
+								weiterzuleitendeResultate.add(resultat);
+								kzDatum.setBereitsWiederFreigegeben(true);
+							}
+
+							/**
+							 * Versuche eine Berechnung an allen mit dem Fahrstreifen 
+							 * assoziierten Fahrstreifen
+							 */
+							for(FahrStreifen triggerFS:this.triggerListe.get(fs)){
+								pufferFS = this.fsAufDatenPuffer.get(triggerFS);
+								ResultData plausibilisiertesDatum = plausibilisiere(pufferFS);
+								if(plausibilisiertesDatum != null){
+									ResultData weiterzuleitendesResultat = new ResultData(resultat.getObject(), 
+											resultat.getDataDescription(), resultat.getDataTime(), plausibilisiertesDatum.getData());
+									weiterzuleitendeResultate.add(weiterzuleitendesResultat);
+								}					
+							}
+						}else{
+							/**
+							 * Fahrstreifen wird hier nicht betrachtet
+							 */
+							weiterzuleitendeResultate.add(resultat);
 						}
-						
-						/**
-						 * Versuche eine Berechnung an allen mit dem Fahrstreifen 
-						 * assoziierten Fahrstreifen
-						 */
-						for(FahrStreifen triggerFS:this.triggerListe.get(fs)){
-							pufferFS = this.fsAufDatenPuffer.get(triggerFS);
-							ResultData plausibilisiertesDatum = plausibilisiere(pufferFS);
-							if(plausibilisiertesDatum != null){
-								weiterzuleitendeResultate.add(plausibilisiertesDatum);
-							}					
-						}
+
 					}else{
 						LOGGER.warning("Fahrstreifen-Datum zu " + resultat.getObject() + //$NON-NLS-1$
 						" konnte nicht extrahiert werden"); //$NON-NLS-1$
@@ -256,13 +256,12 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	
 
 	/**
-	 * Diese Methode muss gewährleisten, dass die eintreffenden Daten entweder sofort
-	 * oder innerhalb des nächsten Intervalls wieder freigegeben werden.
+	 * Hier findet die MWE für einen Fahrstreifen in Bezug auf die aktuell im Datenpuffer
+	 * enthaltenen Daten statt. Diese Methode muss gewährleisten, dass die eintreffenden
+	 * Daten entweder sofort oder innerhalb des nächsten Intervalls wieder freigegeben werden.
 	 * 
-	 * @param fs
-	 * @param fsNachbar
-	 * @param fsErsatz
-	 * @return
+	 * @param fahrStreifenPuffer ein Fahrstreifenpuffer
+	 * @return ein messwertersetztes Datum
 	 */
 	private final ResultData plausibilisiere(FSDatenPuffer fahrStreifenPuffer){
 		KZDatum zielDatum = null;
@@ -296,7 +295,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			 * eine der beiden Plausibilisierungsvorschriften hat zugeschlagen 
 			 */
 			if(zielDatum != null){
-				zielDatum = schreibeDatenFortWennNotwenig(zielDatum, fahrStreifenPuffer);
+				fahrStreifenPuffer.schreibeDatenFortWennNotwendig(zielDatum);
 				zielDatum.setBereitsWiederFreigegeben(true);
 				fahrStreifenPuffer.ersetzeDatum(zielDatum);
 			}
@@ -408,8 +407,8 @@ extends AbstraktBearbeitungsKnotenAdapter{
 						}					
 						
 					} catch (GueteException e) {
-						e.printStackTrace();
 						LOGGER.error(Konstante.LEERSTRING, e);
+						e.printStackTrace();
 					}
 					
 				}
@@ -454,7 +453,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			
 			double alterWertErsetzung = 1.0; 
 			KZDatum altesDatumErsetzung = ersetzungsPuffer.getVorgaengerVon(ersetzungsDatum);
-			GWert alteGueteErsetzung = new GWert(1.0, GueteVerfahren.STANDARD);
+			GWert alteGueteErsetzung = GWert.getNichtErmittelbareGuete(GueteVerfahren.STANDARD);
 			if(altesDatumErsetzung != null &&
 			  !altesDatumErsetzung.getAttributWert(attribut).isImplausibel() &&
 			   altesDatumErsetzung.getAttributWert(attribut).getWert() >= 0){
@@ -464,7 +463,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 
 			double alterWert = 1.0; 
 			KZDatum altesDatum = fahrStreifenPuffer.getVorgaengerVon(ergebnisDatum);
-			GWert alteGuete = new GWert(1.0, GueteVerfahren.STANDARD);
+			GWert alteGuete = GWert.getNichtErmittelbareGuete(GueteVerfahren.STANDARD);
 			if(altesDatum != null &&
 			  !altesDatum.getAttributWert(attribut).isImplausibel() &&
 			   altesDatum.getAttributWert(attribut).getWert() >= 0){
@@ -532,57 +531,24 @@ extends AbstraktBearbeitungsKnotenAdapter{
 				if(zielDatum.getDatum().getData().getTimeValue("T").getMillis() ==  //$NON-NLS-1$
    				   ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
 
-					try {
-						ergebnisDatum = new KZDatum(zielDatum.getDatum());
+					ergebnisDatum = new KZDatum(zielDatum.getDatum());
 
-						for(MweAttribut attribut:MweAttribut.getInstanzen()){
-							if(ergebnisDatum.getAttributWert(attribut).isImplausibel() &&
-							  !ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
-							   ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
-								ergebnisDatum.getAttributWert(attribut).setWert(
-										ersatzZielDatum.getAttributWert(attribut).getWert());
-								ergebnisDatum.getAttributWert(attribut).setGuete(
-										ersatzZielDatum.getAttributWert(attribut).getGuete());
-								ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);								
-							}
-						}									
-					} catch (GueteException e) {
-						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
-					}
+					for(MweAttribut attribut:MweAttribut.getInstanzen()){
+						if(ergebnisDatum.getAttributWert(attribut).isImplausibel() &&
+								!ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
+								ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
+							ergebnisDatum.getAttributWert(attribut).setWert(
+									ersatzZielDatum.getAttributWert(attribut).getWert());
+							ergebnisDatum.getAttributWert(attribut).setGuete(
+									ersatzZielDatum.getAttributWert(attribut).getGuete());
+							ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);								
+						}
+					}									
 				}
 			}
 		}
 		
 		return ergebnisDatum;
-	}
-	
-	
-	/**
-	 * Hier geht jedes Datum durch, welches die Messwertersetzung wieder verlässt.<br>
-	 * Es wird hier überprüft, ob alle als implausibel markierten Daten auch als interpoliert
-	 * markiert sind. Ist dies nicht der Fall, wird versucht das Datum fortzuschreiben.
-	 * 
-	 * @param plausibilisiertesDatum das Datum, das im Begriff ist, die Messwertersetzung
-	 * wieder zu verlassen
-	 * @param datenPuffer der Datenpuffer des Fahrstreifens, des übergebenen Datums  
-	 * @return 
-	 */
-	private final KZDatum schreibeDatenFortWennNotwenig(KZDatum plausibilisiertesDatum, FSDatenPuffer datenPuffer){		
-		for(MweAttribut attribut:MweAttribut.getInstanzen()){
-			if(plausibilisiertesDatum.getAttributWert(attribut).isImplausibel() &&
-			  !plausibilisiertesDatum.getAttributWert(attribut).isInterpoliert()){
-				
-//				plausibilisiertesDatum
-				/**
-				 * Versuche Attributwert fortzuschreiben
-				 */
-				datenPuffer.getFahrStreifen().getMaxErsetzungsDauer();
-				
-			}
-		}
-		
-		return plausibilisiertesDatum;
 	}
 
 	

@@ -30,7 +30,6 @@ import java.util.Map;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
-import de.bsvrz.dua.guete.GueteException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
@@ -62,10 +61,8 @@ public class KZDatum {
 	 * Standardkonstruktor
 	 * 
 	 * @param resultat ein KZD-<code>ResultData</code>-Objekt (<code>!= null</code>)
-	 * @throws GueteException wird weitergereicht
 	 */
-	public KZDatum(final ResultData resultat)
-	throws GueteException{
+	public KZDatum(final ResultData resultat){
 		if(resultat == null){
 			throw new NullPointerException("Uebergebenes KZ-Datum ist <<null>>"); //$NON-NLS-1$
 		}
@@ -76,6 +73,16 @@ public class KZDatum {
 				this.attributWerte.put(attribut, new MweAttributWert(attribut, resultat.getData()));
 			}
 		}
+	}
+	
+	
+	/**
+	 * Erfragt den Datenzeitstempel des Originaldatums, mit dem dieses Datum assoziiert ist
+	 * 
+	 * @return der Datenzeitstempel des Originaldatums, mit dem dieses Datum assoziiert ist
+	 */
+	public final long getDatenZeit(){
+		return this.originalDatum.getDataTime();
 	}
 	
 	
@@ -199,7 +206,7 @@ public class KZDatum {
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("Interpoliert").set(attr.isInterpoliert()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
-				getScaledValue("Index").set(attr.getGuete().getIndex()); //$NON-NLS-1$
+				getUnscaledValue("Index").set(attr.getGuete().getIndexUnskaliert()); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
 				getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
 		}

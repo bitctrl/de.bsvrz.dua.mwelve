@@ -131,38 +131,37 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		
 		this.plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plForm1.setPublikation(true);
-		this.plForm1.initialisiere(this);
-		
 		this.plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plLog1.setPublikation(true);
-		this.plLog1.initialisiere(this);
-		
 		this.mwe = new MessWertErsetzungLVE();
-		this.mwe.initialisiere(this);
-
 		this.plForm2 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plForm2.initialisiere(this);
-		
 		this.plLog2 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plLog2.initialisiere(this);
-		
 		this.pub = new PublikationsModul(
 				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
 				ModulTyp.MESSWERTERSETZUNG_LVE);
+
+
+		this.plForm1.setNaechstenBearbeitungsKnoten(this.plLog1);
+		this.plForm1.setPublikation(true);
+		this.plForm1.initialisiere(this);
+
+		this.plLog1.setNaechstenBearbeitungsKnoten(this.mwe);
+		this.plLog1.setPublikation(true);
+		this.plLog1.initialisiere(this);
+
+		this.mwe.setNaechstenBearbeitungsKnoten(this.plForm2);
+		this.mwe.initialisiere(this);
+
+		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
+		this.plForm2.initialisiere(this);
+
+		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
+		this.plLog2.initialisiere(this);
+		
 		this.pub.initialisiere(this);
 		
-		/**
-		 * Verkettung der einzelnen Module
-		 */
-		this.plForm1.setNaechstenBearbeitungsKnoten(this.plLog1);
-		this.plLog1.setNaechstenBearbeitungsKnoten(this.mwe);
-		this.mwe.setNaechstenBearbeitungsKnoten(this.plForm2);
-		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
-		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
 		
 		
 		DataDescription anmeldungsBeschreibungKZD = new DataDescription(

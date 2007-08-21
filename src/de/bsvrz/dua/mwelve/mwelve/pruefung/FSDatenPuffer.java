@@ -25,14 +25,16 @@
  */
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
 
 /**
- * TODO<br>
- * Analogon zu <code>ErsetzungsTabelle</code> aus der Feinspezifikation 
- * 
- * IDee: Fahrstreifen initial auf Kaputt setzen, damit hier keine NO_DATA und kein Quelle
- * mehr hineingesopeist werden muss
+ * Analogon zu <code>ErsetzungsTabelle</code> aus der Feinspezifikation. Eine Instanz dieser
+ * Klasse ist jeweils mit einem Fahrstreifen assoziiert. Für diesen werden jeweils drei
+ * historische Werte in einem Ringpuffer bereitgehalten. Außerdem wird für jedes in der
+ * MWE betrachtete Attribut die Historie seiner Fortschreibung gespeichert
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
@@ -55,6 +57,13 @@ public class FSDatenPuffer {
 	private KZDatum[] ringPuffer = new KZDatum[PUFFER_KAPAZITAET];
 	
 	/**
+	 * Mappt alle innerhalb der MWE betrachteten Attribute auf ihre
+	 * Eigenschaften bezüglich der Fortschreibung von Messwerten 
+	 */
+	private Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung =
+									new HashMap<MweAttribut, MweFortschreibungsAttribut>(); 
+	
+	/**
 	 * aktueller Index auf den Ringpuffer
 	 */
 	private int ringPufferIndex = 0;
@@ -70,6 +79,24 @@ public class FSDatenPuffer {
 			throw new NullPointerException("Als Fahrstreifen wurde <<null>> uebergeben"); //$NON-NLS-1$
 		}
 		this.fs = fs;
+		for(MweAttribut attribut:MweAttribut.getInstanzen()){
+			this.messWertFortschreibung.put(attribut, new MweFortschreibungsAttribut(fs.getSystemObject(), attribut));
+		}
+	}
+	
+	
+	/**
+	 * Dieser Methode sollte alle Datensätze übergeben werden, die so veröffentlicht
+	 * werden sollen. Sie überprüft in allen (innerhalb der MWE) betrachteten Attributen,
+	 * ob diese ersetzt wurden und versucht sie ggf. fortzuschreiben.
+	 *  
+	 * @param kzDatum das zur Veröffentlichung stehende KZ-Datum
+	 */
+	public final void schreibeDatenFortWennNotwendig(KZDatum kzDatum){
+		for(MweAttribut attribut:MweAttribut.getInstanzen()){
+			MweFortschreibungsAttribut fortschreibung = messWertFortschreibung.get(attribut);
+			fortschreibung.schreibeGgfFort(kzDatum);
+		}				
 	}
 	
 	
@@ -158,8 +185,8 @@ public class FSDatenPuffer {
 		KZDatum abgelaufenesDatum = null;
 		
 		for(KZDatum kzDatum:this.ringPuffer){
-			if(!kzDatum.isBereitsWiederFreigegeben()){
-				if(abgelaufenesDatum != null){
+			if(kzDatum != null && !kzDatum.isBereitsWiederFreigegeben()){
+				if(abgelaufenesDatum == null){
 					abgelaufenesDatum = kzDatum;
 				}else{
 					if(abgelaufenesDatum.getDatum().getDataTime() > kzDatum.getDatum().getDataTime()){
@@ -196,13 +223,19 @@ public class FSDatenPuffer {
 	
 	
 	/**
-	 * Aktualisiert dieses Objekt mit einem aktuellen Datensatz für
+	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz für
 	 * den assoziierten Fahrstreifen
 	 * 
 	 * @param datum ein KZD des assoziierten Fahrstreifens (muss 
 	 * <code>!= null</code> sein)
 	 */
 	public final void aktualisiereDaten(KZDatum kzDatum){
+		for(MweAttribut attribut:MweAttribut.getInstanzen()){
+			MweFortschreibungsAttribut fortschreibung = this.messWertFortschreibung.get(attribut);
+			if(fortschreibung != null){
+				fortschreibung.aktualisiere(kzDatum);
+			}
+		}
 		this.ringPuffer[ringPufferIndex] = kzDatum;
 		ringPufferIndex = (ringPufferIndex + 1) % PUFFER_KAPAZITAET;
 	}
