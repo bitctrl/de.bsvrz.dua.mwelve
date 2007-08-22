@@ -34,6 +34,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Korrespondiert mit einer Instanz eines KZD-<code>ResultData</code>-Objektes
+ * und hält alle innerhalb der MWE betrachteten Attribute (veränderbar) bereit
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
@@ -136,7 +137,9 @@ public class KZDatum {
 	
 	
 	/**
-	 * Erfragt, ob dieses Datum in allen für die MWE relevanten Werten plausibel ist
+	 * Erfragt, ob dieses Datum in allen für die MWE relevanten Werten plausibel ist<br>
+	 * <b>Achtung:</b> Die Methode gibt auch dann <code>true</code> zurück, wenn das mit
+	 * diesem Objekt assoziierte Datum keine Nutzdaten enthält
 	 * 
 	 * @return ob dieses Datum in allen für die MWE relevanten Werten plausibel ist
 	 */
@@ -211,4 +214,21 @@ public class KZDatum {
 				getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
 		}
 	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		String s = "Original: " + this.originalDatum; //$NON-NLS-1$
+
+		for(MweAttribut attribut:MweAttribut.getInstanzen()){
+			s += "\n" + attribut.toString() + ": " + attributWerte.get(attribut); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		s += "\n" + (this.bereitsWiederFreigegeben?"freigegeben":"nicht freigegeben"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		
+		return s;
+	}
+	
 }

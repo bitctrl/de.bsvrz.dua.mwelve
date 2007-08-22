@@ -137,7 +137,9 @@ public class FSDatenPuffer {
 	/**
 	 * Erfragt, ob in diesem Puffer Daten für mehr als ein Intervall gespeichert sind,
 	 * die noch nicht wieder freigegeben wurden. Dieser Zustand indiziert, dass ein Intervall
-	 * abgelaufen ist
+	 * abgelaufen ist<br>
+	 * Es wird angenommen, dass ein Intervall dann abgelaufen ist, wenn innerhalb dieses Puffers
+	 * nicht freigegebene Daten von mehr als einem Intervall stehen 
 	 * 
 	 * @return ob in diesem Puffer Daten für mehr als ein Intervall gespeichert sind,
 	 * die noch nicht wieder freigegeben wurden
@@ -157,10 +159,10 @@ public class FSDatenPuffer {
 	
 	
 	/**
-	 * Erfragt, ob in diesem Puffer wenigstens ein Datum gespeichert ist, dass noch nicht
+	 * Erfragt, ob in diesem Puffer wenigstens ein Datum gespeichert ist, das noch nicht
 	 * wieder an ein anderes Modul weitergegeben wurde
 	 * 
-	 * @return  ob in diesem Puffer wenigstens ein Datum gespeichert ist, dass noch nicht
+	 * @return ob in diesem Puffer wenigstens ein Datum gespeichert ist, das noch nicht
 	 * wieder an ein anderes Modul weitergegeben wurde
 	 */
 	public final boolean habeNochNichtFreigegebenesDatum(){
@@ -176,12 +178,12 @@ public class FSDatenPuffer {
 	
 	/**
 	 * Befreit das in diesem Puffer stehende Datum, das zu einem bereits abgelaufenen Intervall
-	 * gehören muss
+	 * gehören muss. Dies ist das älteste Datum, das noch nicht wieder freigegeben wurde
 	 * 
 	 * @return das in diesem Puffer stehende Datum, das zu einem bereits abgelaufenen Intervall
 	 * gehören muss
 	 */
-	public final KZDatum befreieAbgelaufenesDatum(){
+	public final KZDatum befreieAeltestesAbgelaufenesDatum(){
 		KZDatum abgelaufenesDatum = null;
 		
 		for(KZDatum kzDatum:this.ringPuffer){
@@ -191,13 +193,12 @@ public class FSDatenPuffer {
 				}else{
 					if(abgelaufenesDatum.getDatum().getDataTime() > kzDatum.getDatum().getDataTime()){
 						abgelaufenesDatum = kzDatum;
-						abgelaufenesDatum.setBereitsWiederFreigegeben(true);
-						break;
 					}
 				}
 			}
 		}
 
+		abgelaufenesDatum.setBereitsWiederFreigegeben(true);
 		return abgelaufenesDatum;
 	}
 	
@@ -224,7 +225,7 @@ public class FSDatenPuffer {
 	
 	/**
 	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz für
-	 * den assoziierten Fahrstreifen
+	 * den assoziierten Fahrstreifen<br>
 	 * 
 	 * @param datum ein KZD des assoziierten Fahrstreifens (muss 
 	 * <code>!= null</code> sein)
@@ -293,4 +294,27 @@ public class FSDatenPuffer {
 			}
 		}
 	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		String s = this.fs.toString();
+		
+		int t = 0;
+		for(int i = (this.ringPufferIndex + PUFFER_KAPAZITAET - 1)%PUFFER_KAPAZITAET; 
+				i != this.ringPufferIndex; i = (i + 1) % PUFFER_KAPAZITAET){
+			t++;
+			s += "\nPuffer[T-" + t + "]:\n" + (this.ringPuffer[i]==null?"<<null>>":this.ringPuffer[i]);   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		}
+		s += "\nAttributfortschreibung:";   //$NON-NLS-1$
+		for(MweAttribut attribut:MweAttribut.getInstanzen()){
+			s += "\n" + attribut.toString() + ": " + this.messWertFortschreibung.get(attribut);   //$NON-NLS-1$//$NON-NLS-2$
+		}
+		
+		return s;
+	}
+	
 }

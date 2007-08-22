@@ -25,7 +25,9 @@
  */
 package de.bsvrz.dua.mwelve.vew;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import junit.framework.Assert;
@@ -34,13 +36,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import stauma.dav.clientside.ClientDavInterface;
+import stauma.dav.clientside.ClientSenderInterface;
+import stauma.dav.clientside.Data;
+import stauma.dav.clientside.DataDescription;
+import stauma.dav.clientside.ResultData;
+import stauma.dav.clientside.SenderRole;
+import stauma.dav.configuration.interfaces.Aspect;
+import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.sys.funclib.bitctrl.app.Pause;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.MessQuerschnitt;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.MessQuerschnittAllgemein;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.MessQuerschnittVirtuell;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Test des Verwaltungsmoduls
@@ -48,8 +60,20 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class VerwaltungMessWertErsetzungLVETest {
+public class VerwaltungMessWertErsetzungLVETest 
+implements ClientSenderInterface{
 
+	/**
+	 * Intervalll‰nge in s
+	 */
+	private static final long T = 2;
+	
+	/**
+	 * Wurzelverzeichnis mit den Testdaten
+	 */
+	private static final String ROOT = "C:\\Dokumente und Einstellungen\\Thierfelder\\" + //$NON-NLS-1$
+			"workspace3.3\\de.bsvrz.dua.mwelve\\extra\\testDatenBitCtrl\\"; //$NON-NLS-1$
+	
 	/**
 	 * Verbindungsdaten
 	 */
@@ -75,8 +99,7 @@ public class VerwaltungMessWertErsetzungLVETest {
 	@Before
 	public void setUp()
 	throws Exception{
-		dav = DAVTest.getDav(CON_DATA);
-		DuaVerkehrsNetz.initialisiere(dav);		
+		dav = DAVTest.getDav(CON_DATA);		
 	}
 	
 	
@@ -86,7 +109,10 @@ public class VerwaltungMessWertErsetzungLVETest {
 	 * werden.
 	 */
 	@Test
-	public void testVerkehrsNetzLaden(){
+	public void testVerkehrsNetzLaden()
+	throws Exception{
+		
+		DuaVerkehrsNetz.initialisiere(dav);
 		
 		/**
 		 * Hole alle Objekte von virtuellen Fahrstreifen
@@ -225,4 +251,64 @@ public class VerwaltungMessWertErsetzungLVETest {
 		Assert.assertEquals(FahrStreifen.getInstanz(fs7_1).getNachbarFahrStreifen(), null);
 		Assert.assertEquals(FahrStreifen.getInstanz(fs8_1).getNachbarFahrStreifen(), null);
 	}
+	
+	
+	/**
+	 * Testet, ob die Daten ordnungsgem‰ﬂ durch die SWE MWE wieder publiziert werden
+	 */
+	@Test
+	public void testMWEDatenfluss()
+	throws Exception{
+		
+		SystemObject fs1 = dav.getDataModel().getObject("AAA.Test.fs.kzd.1"); //$NON-NLS-1$
+		AttributeGroup atg = dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD);
+		Aspect asp = dav.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
+		DataDescription dd = new DataDescription(atg, asp, (short)0);
+		
+		dav.subscribeSender(this, fs1, dd, SenderRole.source());
+		Pause.warte(Konstante.SEKUNDE_IN_MS);
+		
+		TestFahrstreifenImporter importer = new TestFahrstreifenImporter(dav, ROOT + "Fahrstreifen1.csv"); //$NON-NLS-1$
+		TestFahrstreifenImporter.setT(Konstante.SEKUNDE_IN_MS * T);
+		
+		GregorianCalendar start = new GregorianCalendar();
+		start.setTimeInMillis(System.currentTimeMillis());
+		start.set(Calendar.MILLISECOND, 0);
+		long sekundenJetzt = start.get(Calendar.SECOND);
+		sekundenJetzt = ((long)sekundenJetzt / T) * T;
+		start.set(Calendar.SECOND, (int)sekundenJetzt);
+		start.add(Calendar.SECOND, (int)T);
+		
+		long startDaten = start.getTimeInMillis();
+		long startSenden = start.getTimeInMillis() + Konstante.SEKUNDE_IN_MS * T + Konstante.SEKUNDE_IN_MS/2 * T;
+		
+		while(true){
+			Data data = importer.getNaechstenDatensatz(atg);
+			DAVTest.warteBis(startSenden);
+			
+			ResultData resultat = new ResultData(fs1, dd, startDaten, data);
+			dav.sendData(resultat);
+			startDaten += Konstante.SEKUNDE_IN_MS * T;
+			startSenden += Konstante.SEKUNDE_IN_MS * T;
+		}
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void dataRequest(SystemObject object,
+			DataDescription dataDescription, byte state) {
+		// TODO Auto-generated method stub
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRequestSupported(SystemObject object,
+			DataDescription dataDescription) {
+		return false;
+	}
+
 }

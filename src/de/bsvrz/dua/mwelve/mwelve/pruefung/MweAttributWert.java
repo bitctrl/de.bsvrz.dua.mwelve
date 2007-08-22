@@ -73,16 +73,12 @@ implements Comparable<MweAttributWert>{
 	 */
 	private GWert guete = null;
 	
-	/**
-	 * Gibt an, zum wievielten Mal dieser Wert bereits fortgeschrieben wird
-	 */
-	private long fortgeschriebenZumXtenMal = 0;	
-	
 	
 	/**
 	 * Standardkonstruktor
 	 * 
 	 * @param attr das Attribut
+	 * @param datenSatz der Datensatz in dem der Attributwert steht
 	 */
 	public MweAttributWert(final MweAttribut attr, final Data datenSatz){
 		if(attr == null){
@@ -92,6 +88,7 @@ implements Comparable<MweAttributWert>{
 			throw new NullPointerException("Datensatz ist <<null>>"); //$NON-NLS-1$
 		}
 		this.attr = attr;
+		this.wert = datenSatz.getItem(attr.getName()).getUnscaledValue("Wert").longValue();  //$NON-NLS-1$
 		this.nichtErfasst = datenSatz.getItem(attr.getName()).getItem("Status").getItem("Erfassung").  //$NON-NLS-1$//$NON-NLS-2$
 										getUnscaledValue("NichtErfasst").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 		this.implausibel = datenSatz.getItem(attr.getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
@@ -99,16 +96,6 @@ implements Comparable<MweAttributWert>{
 		this.interpoliert = datenSatz.getItem(attr.getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
 										getUnscaledValue("Interpoliert").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 		this.guete = new GWert(datenSatz.getItem(attr.getName()).getItem("Güte")); //$NON-NLS-1$
-	}
-	
-	
-	/**
-	 * Erfragt, zum wievielten mal dieser Wert schon fortgeschrieben wird
-	 * 
-	 * @return zum wievielten mal dieser Wert schon fortgeschrieben wird
-	 */
-	public final long getFortgeschriebenSeit(){
-		return this.fortgeschriebenZumXtenMal;
 	}
 	
 	
@@ -128,6 +115,7 @@ implements Comparable<MweAttributWert>{
 	 * @param wert der Wert dieses Attributs
 	 */
 	public final void setWert(final long wert){
+		this.veraendert = true;
 		this.wert = wert;
 	}
 
@@ -257,7 +245,7 @@ implements Comparable<MweAttributWert>{
 					   this.getWert() == that.getWert() &&
 					   this.isNichtErfasst() == that.isNichtErfasst() &&
 					   this.isImplausibel() == that.isImplausibel() &&
-					   this.getGuete() == that.getGuete() &&
+					   this.getGuete().equals(that.getGuete()) &&
 					   this.isInterpoliert() == that.isInterpoliert();
 		}
 		

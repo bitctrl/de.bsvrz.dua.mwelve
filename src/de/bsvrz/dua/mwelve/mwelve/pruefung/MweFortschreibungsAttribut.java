@@ -25,10 +25,14 @@
  */
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
+import java.util.Date;
+
 import stauma.dav.configuration.interfaces.SystemObject;
+import sys.funclib.operatingMessage.MessageCauser;
 import sys.funclib.operatingMessage.MessageGrade;
 import sys.funclib.operatingMessage.MessageSender;
 import sys.funclib.operatingMessage.MessageType;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Diese Klasse beinhaltet alle Informationen, die mit der Fortschreibung
@@ -135,13 +139,29 @@ public class MweFortschreibungsAttribut {
 			if(parameter.getMaxWiederholungAnzahl() < this.fortschreibungMale || 
 			   parameter.getMaxWiederholungsZeit() < ersetztesDatum.getDatenZeit() - this.fortschreibungSeit){
 				MessageSender.getInstance().sendMessage(
-						MessageType.APPLICATION_DOMAIN, "MWE", MessageGrade.WARNING, //$NON-NLS-1$
-						this.objekt, null, "keine Messwertersetzung möglich"); //$NON-NLS-1$
+						MessageType.APPLICATION_DOMAIN, "Applikation Messwertersetzung LVE", MessageGrade.WARNING, //$NON-NLS-1$
+						this.objekt, new MessageCauser(this.objekt, "keine Messwertersetzung möglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+						"keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		}else{
 			this.fortschreibungSeit = -1;
 			this.fortschreibungMale = 0;
 		}
 	}
-	
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		String s = "Fortschreibung fuer (" + this.objekt + "): " + this.attribut; //$NON-NLS-1$ //$NON-NLS-2$
+		
+		s += "\nletzter plausibler Wert: " + this.letzterPlausiblerWert; //$NON-NLS-1$
+		s += "\nfortgeschrieben seit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.fortschreibungSeit)); //$NON-NLS-1$
+		s += "\nfortgeschrieben zum " + fortschreibungMale + ". mal"; //$NON-NLS-1$ //$NON-NLS-2$
+		
+		return s;
+	}
+
 }

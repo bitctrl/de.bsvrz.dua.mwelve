@@ -161,9 +161,10 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.plLog2.initialisiere(this);
 		
 		this.pub.initialisiere(this);
-		
-		
-		
+
+		/**
+		 * Auf Daten anmelden und Start
+		 */
 		DataDescription anmeldungsBeschreibungKZD = new DataDescription(
 				this.verbindung.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
 				this.verbindung.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG),

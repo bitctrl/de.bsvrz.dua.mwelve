@@ -81,8 +81,8 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		MweParameter.initialisiere(dieVerwaltung.getVerbindung(), dieVerwaltung.getSystemObjekte());
 		
 		this.pruefung = new LVEPruefungUndMWE();
-		this.pruefung.initialisiere(dieVerwaltung);
 		this.pruefung.setNaechstenBearbeitungsKnoten(this.knoten);
+		this.pruefung.initialisiere(dieVerwaltung);
 	}
 
 	

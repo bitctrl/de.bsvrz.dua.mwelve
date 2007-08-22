@@ -44,6 +44,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 public class MweLveStandardAspekteVersorger 
 extends StandardAspekteVersorger{
 
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -51,6 +52,7 @@ extends StandardAspekteVersorger{
 	throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
+	
 
 	/**
 	 * {@inheritDoc}
