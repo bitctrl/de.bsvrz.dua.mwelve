@@ -140,7 +140,9 @@ public class MweFortschreibungsAttribut {
 			   parameter.getMaxWiederholungsZeit() < ersetztesDatum.getDatenZeit() - this.fortschreibungSeit){
 				MessageSender.getInstance().sendMessage(
 						MessageType.APPLICATION_DOMAIN, "Applikation Messwertersetzung LVE", MessageGrade.WARNING, //$NON-NLS-1$
-						this.objekt, new MessageCauser(this.objekt, "keine Messwertersetzung möglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+						this.objekt,
+						new MessageCauser(LVEPruefungUndMWE.DAV.getLocalUser(),
+						"keine Messwertersetzung möglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
 						"keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		}else{

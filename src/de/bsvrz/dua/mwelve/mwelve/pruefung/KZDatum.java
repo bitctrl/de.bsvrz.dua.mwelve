@@ -137,6 +137,17 @@ public class KZDatum {
 	
 	
 	/**
+	 * Erfragt den Wert eines bestimmten Attributs
+	 * 
+	 * @param attribut das Attribut
+	 * @return den Wert eines bestimmten Attributs
+	 */
+	public final void setAttributWert(MweAttributWert attributWert){
+		this.attributWerte.put(attributWert.getAttribut(), attributWert);
+	}
+	
+	
+	/**
 	 * Erfragt, ob dieses Datum in allen für die MWE relevanten Werten plausibel ist<br>
 	 * <b>Achtung:</b> Die Methode gibt auch dann <code>true</code> zurück, wenn das mit
 	 * diesem Objekt assoziierte Datum keine Nutzdaten enthält
@@ -177,14 +188,14 @@ public class KZDatum {
 			}
 			
 			if(veraendert){
-				Data copy = this.originalDatum.getData().createModifiableCopy();
+				Data kopie = this.originalDatum.getData().createModifiableCopy();
 				
 				for(MweAttribut attribut:MweAttribut.getInstanzen()){
-					this.modifiziereGgfDatenSatz(this.attributWerte.get(attribut), copy);
+					this.modifiziereGgfDatenSatz(this.attributWerte.get(attribut), kopie);
 				}
 								
 				ergebnis = new ResultData(this.originalDatum.getObject(), this.originalDatum.getDataDescription(), 
-						this.originalDatum.getDataTime(), copy);
+										  this.originalDatum.getDataTime(), kopie);
 			}
 		}
 		
@@ -202,6 +213,14 @@ public class KZDatum {
 	 */
 	private final void modifiziereGgfDatenSatz(final MweAttributWert attr, Data datenSatz){
 		if(attr.isVeraendert()){
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+				getUnscaledValue("WertMax").set(attr.isFormalMax()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+				getUnscaledValue("WertMin").set(attr.isFormalMin()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlLogisch"). //$NON-NLS-1$ //$NON-NLS-2$
+				getUnscaledValue("WertMaxLogisch").set(attr.isLogischMax()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlLogisch"). //$NON-NLS-1$ //$NON-NLS-2$
+				getUnscaledValue("WertMinLogisch").set(attr.isLogischMin()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("Erfassung").  //$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$

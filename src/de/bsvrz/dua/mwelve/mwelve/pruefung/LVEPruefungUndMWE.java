@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import stauma.dav.clientside.ClientDavInterface;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
@@ -57,6 +58,11 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  */
 public class LVEPruefungUndMWE
 extends AbstraktBearbeitungsKnotenAdapter{
+	
+	/**
+	 * statische Verbindung zum Datenverteiler
+	 */
+	public static ClientDavInterface DAV = null;
 
 	/**
 	 * Alle Attribute, die in Vorschrift 1.1 verarbeitet werden<br>
@@ -105,6 +111,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 	throws DUAInitialisierungsException {
+		DAV = dieVerwaltung.getVerbindung();
 		
 		/**
 		 * Puffere alle Fahrstreifen, die sowohl einen Nachbar-
@@ -227,9 +234,9 @@ extends AbstraktBearbeitungsKnotenAdapter{
 									/**
 									 * baue Datum mit alter Datenidentifikation zusammen
 									 */
-									ResultData weiterzuleitendesResultat = new ResultData(resultat.getObject(),
+									ResultData weiterzuleitendesResultat = new ResultData(triggerFS.getSystemObject(),
 																						  resultat.getDataDescription(),
-																						  resultat.getDataTime(),
+																						  plausibilisiertesDatum.getDataTime(),
 																						  plausibilisiertesDatum.getData());
 									weiterzuleitendeResultate.add(weiterzuleitendesResultat);
 								}					
@@ -292,8 +299,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 				if(!ersatzPuffer.isAktuellDefekt()){
 					if(!nachbarPuffer.isAktuellDefekt()){
 						zielDatum = this.plausibilisiereNachVorschrift1(fahrStreifenPuffer, nachbarPuffer, ersatzPuffer);
-					}
-					if(nachbarPuffer.isAktuellDefekt()){
+					}else{
 						zielDatum = this.plausibilisiereNachVorschrift2(fahrStreifenPuffer, ersatzPuffer);
 					}					
 				}else{
@@ -545,7 +551,13 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		KZDatum ergebnisDatum = null;
 		KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
 		
-		if(zielDatum != null){	
+		if(zielDatum != null &&
+		  !zielDatum.isBereitsWiederFreigegeben()){
+			/**
+			 * Das heißt, das Zieldatum ist nicht vollständig plausibel und
+			 * noch nicht interpoliert
+			 */
+			
 			KZDatum ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());	
 			if(ersatzZielDatum != null){
 				if(zielDatum.getDatum().getData().getTimeValue("T").getMillis() ==  //$NON-NLS-1$
@@ -555,12 +567,9 @@ extends AbstraktBearbeitungsKnotenAdapter{
 
 					for(MweAttribut attribut:MweAttribut.getInstanzen()){
 						if(ergebnisDatum.getAttributWert(attribut).isImplausibel() &&
-								!ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
-								ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
-							ergebnisDatum.getAttributWert(attribut).setWert(
-									ersatzZielDatum.getAttributWert(attribut).getWert());
-							ergebnisDatum.getAttributWert(attribut).setGuete(
-									ersatzZielDatum.getAttributWert(attribut).getGuete());
+						  !ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
+						   ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
+							ergebnisDatum.setAttributWert(new MweAttributWert(ersatzZielDatum.getAttributWert(attribut)));
 							ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);								
 						}
 					}									

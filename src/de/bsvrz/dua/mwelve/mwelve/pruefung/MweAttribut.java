@@ -26,8 +26,8 @@
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Container für KDZ-Attribute:<br>
@@ -46,7 +46,7 @@ public class MweAttribut {
 	/**
 	 * Wertebereich
 	 */
-	private static Map<String, MweAttribut> WERTE_BEREICH = new TreeMap<String, MweAttribut>();
+	private static Map<String, MweAttribut> WERTE_BEREICH = new HashMap<String, MweAttribut>();
 	
 	/**
 	 * Attribut <code>qKfz</code>

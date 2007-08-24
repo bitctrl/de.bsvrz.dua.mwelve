@@ -28,6 +28,7 @@ package de.bsvrz.dua.mwelve.mwelve.pruefung;
 import stauma.dav.clientside.Data;
 import de.bsvrz.dua.guete.GWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.MesswertMarkierung;
 
 /**
  * Korrespondiert mit einem Attributwert eines KZ- oder LZ-Datums
@@ -36,6 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  *
  */
 public class MweAttributWert
+extends MesswertMarkierung
 implements Comparable<MweAttributWert>{
 
 	/**
@@ -47,26 +49,6 @@ implements Comparable<MweAttributWert>{
 	 * der Wert dieses Attributs
 	 */
 	private long wert = -4;
-	
-	/**
-	 * der Wert von <code>*.Status.Erfassung.NichtErfasst</code>
-	 */
-	private boolean nichtErfasst = false;
-
-	/**
-	 * der Wert von <code>*.Status.MessWertErsetzung.Implausibel</code>
-	 */
-	private boolean implausibel = false;
-
-	/**
-	 * der Wert von <code>*.Status.MessWertErsetzung.Interpoliert</code>
-	 */
-	private boolean interpoliert = false;
-	
-	/**
-	 * Indiziert, ob dieser Attributwert verändert wurde
-	 */
-	private boolean veraendert = false;
 	
 	/**
 	 * die Guete
@@ -95,8 +77,40 @@ implements Comparable<MweAttributWert>{
 										getUnscaledValue("Implausibel").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 		this.interpoliert = datenSatz.getItem(attr.getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
 										getUnscaledValue("Interpoliert").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+
+		this.formalMax = datenSatz.getItem(attr.getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+										getUnscaledValue("WertMax").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+		this.formalMin = datenSatz.getItem(attr.getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+										getUnscaledValue("WertMin").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+
+		this.logischMax = datenSatz.getItem(attr.getName()).getItem("Status").getItem("PlLogisch"). //$NON-NLS-1$ //$NON-NLS-2$
+										getUnscaledValue("WertMaxLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+		this.logischMin = datenSatz.getItem(attr.getName()).getItem("Status").getItem("PlLogisch"). //$NON-NLS-1$ //$NON-NLS-2$
+										getUnscaledValue("WertMinLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+
 		this.guete = new GWert(datenSatz.getItem(attr.getName()).getItem("Güte")); //$NON-NLS-1$
 	}
+	
+
+	/**
+	 * Kopierkonstruktor. Das Datum, das durch diesen Konstruktor erzeugt wird, ist als
+	 * <code>veraendert</code> markiert
+	 * 
+	 * @param vorlage das zu kopierende Datum
+	 */
+	public MweAttributWert(MweAttributWert vorlage){
+		this.veraendert = true;
+		this.attr = vorlage.attr;
+		this.wert = vorlage.wert;
+		this.nichtErfasst = vorlage.nichtErfasst;
+		this.implausibel = vorlage.implausibel;
+		this.interpoliert = vorlage.interpoliert;
+		this.formalMax = vorlage.formalMax;
+		this.formalMin = vorlage.formalMin;
+		this.logischMax = vorlage.logischMax;
+		this.logischMin = vorlage.logischMin;
+		this.guete = new GWert(vorlage.guete);
+	}	
 	
 	
 	/**
@@ -127,79 +141,6 @@ implements Comparable<MweAttributWert>{
 	 */
 	public final long getWert(){
 		return this.wert;
-	}
-
-
-	/**
-	 * Erfragt den Wert von <code>*.Status.MessWertErsetzung.Interpoliert</code>
-	 *  
-	 * @return der Wert von <code>*.Status.MessWertErsetzung.Interpoliert</code>
-	 */
-	public final boolean isInterpoliert(){
-		return this.interpoliert;
-	}
-	
-	
-	/**
-	 * Setzt den Wert von <code>*.Status.MessWertErsetzung.Interpoliert</code>
-	 *  
-	 * @param interpoliert der Wert von <code>*.Status.MessWertErsetzung.Interpoliert</code>
-	 */
-	public final void setInterpoliert(boolean interpoliert){
-		this.veraendert = true;
-		this.interpoliert = nichtErfasst;
-	}
-	
-	
-	/**
-	 * Erfragt den Wert von <code>*.Status.MessWertErsetzung.Implausibel</code>
-	 *  
-	 * @return der Wert von <code>*.Status.MessWertErsetzung.Implausibel</code>
-	 */
-	public final boolean isImplausibel(){
-		return this.implausibel;
-	}
-	
-	
-	/**
-	 * Setzt den Wert von <code>*.Status.MessWertErsetzung.Implausibel</code>
-	 *  
-	 * @param implausibel der Wert von <code>*.Status.MessWertErsetzung.Implausibel</code>
-	 */
-	public final void setImplausibel(boolean implausibel){
-		this.veraendert = true;
-		this.implausibel = nichtErfasst;
-	}
-	
-	
-	/**
-	 * Erfragt den Wert von <code>*.Status.Erfassung.NichtErfasst</code>
-	 *  
-	 * @return der Wert von <code>*.Status.Erfassung.NichtErfasst</code>
-	 */
-	public final boolean isNichtErfasst(){
-		return this.nichtErfasst;
-	}
-	
-	
-	/**
-	 * Setzt den Wert von <code>*.Status.Erfassung.NichtErfasst</code>
-	 *  
-	 * @param nichtErfasst der Wert von <code>*.Status.Erfassung.NichtErfasst</code>
-	 */
-	public final void setNichtErfasst(boolean nichtErfasst){
-		this.veraendert = true;
-		this.nichtErfasst = nichtErfasst;
-	}
-	
-	
-	/**
-	 * Erfragt, ob dieser Wert veraendert wurde
-	 * 
-	 * @return ob dieser Wert veraendert wurde
-	 */
-	public final boolean isVeraendert(){
-		return this.veraendert;
 	}
 
 
@@ -259,11 +200,9 @@ implements Comparable<MweAttributWert>{
 	@Override
 	public String toString() {
 		return "Attribut: " + this.attr + "\nWert: " + this.wert +   //$NON-NLS-1$ //$NON-NLS-2$
-			   "\nNicht Erfasst: " + (this.nichtErfasst?"Ja":"Nein") +  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
-			   "\nImplausibel: " + (this.implausibel?"Ja":"Nein") +  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
-			   "\nInterpoliert: " + (this.interpoliert?"Ja":"Nein") +  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 			   "\nGuete: " + this.guete +   //$NON-NLS-1$
-			   "\nVeraendert: " + (this.veraendert?"Ja":"Nein");  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+			   "\nVeraendert: " + (this.veraendert?"Ja":"Nein") +  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+			   "\n" + super.toString(); //$NON-NLS-1$
 	}
 	
 }
