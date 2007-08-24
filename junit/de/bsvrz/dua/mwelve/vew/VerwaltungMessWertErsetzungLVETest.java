@@ -261,14 +261,17 @@ implements ClientSenderInterface{
 	throws Exception{
 		
 		SystemObject fs1 = dav.getDataModel().getObject("AAA.Test.fs.kzd.1"); //$NON-NLS-1$
+		SystemObject fs3 = dav.getDataModel().getObject("AAA.Test.fs.kzd.3"); //$NON-NLS-1$
+		
 		AttributeGroup atg = dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD);
 		Aspect asp = dav.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
 		DataDescription dd = new DataDescription(atg, asp, (short)0);
 		
-		dav.subscribeSender(this, fs1, dd, SenderRole.source());
+		dav.subscribeSender(this, new SystemObject[]{fs1, fs3}, dd, SenderRole.source());
 		Pause.warte(Konstante.SEKUNDE_IN_MS);
 		
 		TestFahrstreifenImporter importer = new TestFahrstreifenImporter(dav, ROOT + "Fahrstreifen1.csv"); //$NON-NLS-1$
+		TestFahrstreifenImporter importer3 = new TestFahrstreifenImporter(dav, ROOT + "Fahrstreifen3.csv"); //$NON-NLS-1$
 		TestFahrstreifenImporter.setT(Konstante.SEKUNDE_IN_MS * T);
 		
 		GregorianCalendar start = new GregorianCalendar();
@@ -283,11 +286,14 @@ implements ClientSenderInterface{
 		long startSenden = start.getTimeInMillis() + Konstante.SEKUNDE_IN_MS * T + Konstante.SEKUNDE_IN_MS/2 * T;
 		
 		while(true){
-			Data data = importer.getNaechstenDatensatz(atg);
+			Data data1 = importer.getNaechstenDatensatz(atg);
+			Data data3 = importer3.getNaechstenDatensatz(atg);
 			DAVTest.warteBis(startSenden);
 			
-			ResultData resultat = new ResultData(fs1, dd, startDaten, data);
+			ResultData resultat = new ResultData(fs1, dd, startDaten, data1);
+			ResultData resultat3 = new ResultData(fs3, dd, startDaten, data3);
 			dav.sendData(resultat);
+			dav.sendData(resultat3);
 			startDaten += Konstante.SEKUNDE_IN_MS * T;
 			startSenden += Konstante.SEKUNDE_IN_MS * T;
 		}
