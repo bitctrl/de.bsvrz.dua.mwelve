@@ -25,7 +25,7 @@
  */
 package de.bsvrz.dua.mwelve.mwelve;
 
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.mwelve.mwelve.pruefung.LVEPruefungUndMWE;
 import de.bsvrz.dua.mwelve.mwelve.pruefung.MweParameter;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;

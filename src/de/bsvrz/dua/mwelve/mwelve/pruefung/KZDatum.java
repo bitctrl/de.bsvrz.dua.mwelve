@@ -28,8 +28,8 @@ package de.bsvrz.dua.mwelve.mwelve.pruefung;
 import java.util.HashMap;
 import java.util.Map;
 
-import stauma.dav.clientside.Data;
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**

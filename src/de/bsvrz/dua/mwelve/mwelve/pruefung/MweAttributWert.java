@@ -25,7 +25,7 @@
  */
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
-import stauma.dav.clientside.Data;
+import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dua.guete.GWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.MesswertMarkierung;
@@ -88,7 +88,7 @@ implements Comparable<MweAttributWert>{
 		this.logischMin = datenSatz.getItem(attr.getName()).getItem("Status").getItem("PlLogisch"). //$NON-NLS-1$ //$NON-NLS-2$
 										getUnscaledValue("WertMinLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		this.guete = new GWert(datenSatz.getItem(attr.getName()).getItem("Güte")); //$NON-NLS-1$
+		this.guete = new GWert(datenSatz, attr.getName());
 	}
 	
 

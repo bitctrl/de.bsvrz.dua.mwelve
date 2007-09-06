@@ -26,9 +26,9 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
-import stauma.dav.clientside.ClientDavInterface;
-import stauma.dav.clientside.Data;
-import stauma.dav.configuration.interfaces.AttributeGroup;
+import de.bsvrz.dav.daf.main.ClientDavInterface;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.CSVImporter;

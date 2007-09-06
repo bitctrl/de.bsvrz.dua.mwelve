@@ -27,12 +27,12 @@ package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
 import java.util.Date;
 
-import stauma.dav.configuration.interfaces.SystemObject;
-import sys.funclib.operatingMessage.MessageCauser;
-import sys.funclib.operatingMessage.MessageGrade;
-import sys.funclib.operatingMessage.MessageSender;
-import sys.funclib.operatingMessage.MessageType;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.operatingMessage.MessageCauser;
+import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
+import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
+import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 
 /**
  * Diese Klasse beinhaltet alle Informationen, die mit der Fortschreibung
