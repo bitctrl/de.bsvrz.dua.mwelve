@@ -45,7 +45,9 @@ public class PlFormMweLveStandardAspekteVersorger
 extends StandardAspekteVersorger{
 
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 *
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
 	 */
 	public PlFormMweLveStandardAspekteVersorger(IVerwaltung verwaltung)
 	throws DUAInitialisierungsException {

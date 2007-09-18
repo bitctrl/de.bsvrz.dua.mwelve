@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Messwertersetzung LVE
+Bundle-SymbolicName: de.bsvrz.dua.mwelve
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Bundle-Vendor: BitCtrl Systems GmbH
+Require-Bundle: de.bitctrl.dav.daf,
+ de.bitctrl.sys.funclib,
+ de.bsvrz.dua.guete,
+ de.bsvrz.dua.plformal,
+ de.bsvrz.dua.plloglve

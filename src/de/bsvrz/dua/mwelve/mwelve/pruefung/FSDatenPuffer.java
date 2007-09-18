@@ -1,5 +1,4 @@
 /**
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007 BitCtrl Systems GmbH 
  * 
  * This program is free software; you can redistribute it and/or modify it under
@@ -227,7 +226,7 @@ public class FSDatenPuffer {
 	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz für
 	 * den assoziierten Fahrstreifen<br>
 	 * 
-	 * @param datum ein KZD des assoziierten Fahrstreifens (muss 
+	 * @param kzDatum ein KZD des assoziierten Fahrstreifens (muss 
 	 * <code>!= null</code> sein)
 	 */
 	public final void aktualisiereDaten(KZDatum kzDatum){

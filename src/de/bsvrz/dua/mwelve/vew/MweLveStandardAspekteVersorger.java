@@ -46,7 +46,9 @@ extends StandardAspekteVersorger{
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 *
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
 	 */
 	public MweLveStandardAspekteVersorger(IVerwaltung verwaltung)
 	throws DUAInitialisierungsException {

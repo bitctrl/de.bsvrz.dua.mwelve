@@ -139,8 +139,7 @@ public class KZDatum {
 	/**
 	 * Erfragt den Wert eines bestimmten Attributs
 	 * 
-	 * @param attribut das Attribut
-	 * @return den Wert eines bestimmten Attributs
+	 * @param attributWert das Attribut
 	 */
 	public final void setAttributWert(MweAttributWert attributWert){
 		this.attributWerte.put(attributWert.getAttribut(), attributWert);
