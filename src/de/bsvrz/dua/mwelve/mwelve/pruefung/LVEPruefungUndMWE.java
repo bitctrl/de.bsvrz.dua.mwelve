@@ -209,6 +209,8 @@ extends AbstraktBearbeitungsKnotenAdapter{
 							KZDatum kzDatum = new KZDatum(resultat);
 							pufferFS.aktualisiereDaten(kzDatum);
 
+							System.out.println();
+							
 							if(!this.pruefungsFahrstreifen.contains(fs) || 
 									kzDatum.isDefekt() ||
 									kzDatum.isVollstaendigPlausibel()){
