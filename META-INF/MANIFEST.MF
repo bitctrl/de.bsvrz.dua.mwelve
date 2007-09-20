@@ -10,3 +10,8 @@ Require-Bundle: de.bitctrl.dav.daf,
  de.bsvrz.dua.guete,
  de.bsvrz.dua.plformal,
  de.bsvrz.dua.plloglve
+Export-Package: de.bsvrz.dua.mwelve.mwelve,
+ de.bsvrz.dua.mwelve.mwelve.pruefung,
+ de.bsvrz.dua.mwelve.plformal,
+ de.bsvrz.dua.mwelve.pllovlve,
+ de.bsvrz.dua.mwelve.vew

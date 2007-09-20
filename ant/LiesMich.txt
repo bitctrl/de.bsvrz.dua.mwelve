@@ -31,7 +31,14 @@ Diese SWE ist eine eigenständige Datenverteiler-Applikation, welche über die Kla
 de.bsvrz.dua.mwelve.VerwaltungMessWertErsetzungLVE mit folgenden Parametern gestartet werden kann
 (zusaetzlich zu den normalen Parametern jeder Datenverteiler-Applikation):
 	-KonfigurationsBereichsPid=pid(,pid)
-	
+
+Der Datenfluss durch diese Applikation ist wie folgt:
+externe Erfassung 
+	--> formale Prüfung (Publikation asp.plPrüfungFormal) 
+		-->	logische Prüfung (Publikation unter asp.plPrüfungLogisch)
+			--> Messwertersetzung 
+				--> formale Prüfung 
+					-->	logische Prüfung (Publikation unter asp.messwertErsetzung)
 	
 - Tests:
 
