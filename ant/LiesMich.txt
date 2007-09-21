@@ -44,6 +44,7 @@ externe Erfassung
 
 	Die automatischen Tests, die in Zusammenhang mit der Prüfspezifikation durchgeführt
 	werden, sind noch nicht endgültig implementiert.
+	
 	Für die Tests wird eine Verbindung zum Datenverteiler mit einer Konfiguration mit dem
 	Testkonfigurationsbereich "kb.duaTestObjekteSWE4.5" benötigt.
 	Die Verbindung wird über die statische Variable CON_DATA der Klasse
