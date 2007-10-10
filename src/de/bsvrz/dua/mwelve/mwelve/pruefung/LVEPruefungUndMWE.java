@@ -71,11 +71,12 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 * <code>vKfz</code> und<br>
 	 * <code>vPkw</code> 
 	 */
-	private static final MweAttribut[] Q_V_PKW_KFZ = new MweAttribut[]
+	private static final MweAttribut[] Q_V_PKW_KFZ_LKW = new MweAttribut[]
 						                                         {MweAttribut.Q_KFZ,
 															      MweAttribut.Q_PKW,
 															      MweAttribut.V_KFZ,
-															      MweAttribut.V_PKW}; 
+															      MweAttribut.V_PKW,
+															      MweAttribut.Q_LKW}; 
 
 	/**
 	 * Debug-Logger
@@ -208,8 +209,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 						if(pufferFS != null){
 							KZDatum kzDatum = new KZDatum(resultat);
 							pufferFS.aktualisiereDaten(kzDatum);
-
-							System.out.println();
 							
 							if(!this.pruefungsFahrstreifen.contains(fs) || 
 									kzDatum.isDefekt() ||
@@ -293,17 +292,13 @@ extends AbstraktBearbeitungsKnotenAdapter{
 				/**
 				 * das Intervall ist also nicht abgelaufen.
 				 */
-				FahrStreifen nachbar = fahrStreifenPuffer.getFahrStreifen().getNachbarFahrStreifen();
+				//FahrStreifen nachbar = fahrStreifenPuffer.getFahrStreifen().getNachbarFahrStreifen();
 				FahrStreifen ersatz = fahrStreifenPuffer.getFahrStreifen().getErsatzFahrStreifen();
-				FSDatenPuffer nachbarPuffer = this.fsAufDatenPuffer.get(nachbar);
+				//FSDatenPuffer nachbarPuffer = this.fsAufDatenPuffer.get(nachbar);
 				FSDatenPuffer ersatzPuffer = this.fsAufDatenPuffer.get(ersatz);
 				
 				if(!ersatzPuffer.isAktuellDefekt()){
-					if(!nachbarPuffer.isAktuellDefekt()){
-						zielDatum = this.plausibilisiereNachVorschrift1(fahrStreifenPuffer, nachbarPuffer, ersatzPuffer);
-					}else{
-						zielDatum = this.plausibilisiereNachVorschrift2(fahrStreifenPuffer, ersatzPuffer);
-					}					
+					zielDatum = this.plausibilisiereNachVorschrift1(fahrStreifenPuffer, ersatzPuffer);
 				}else{
 					zielDatum = fahrStreifenPuffer.befreieAeltestesAbgelaufenesDatum();
 				}
@@ -326,114 +321,107 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	
 	
 	/**
-	 * Führt eine MWE durch für den Fall, dass der Sensor des Nachbarfahrstreifens
-	 * (bei einem dreistreifigen Abschnitt ist der linke Fahrstreifen der benachbarte des
-	 * mittleren Fahrstreifens) und der Sensor des Ersatzfahrstreifen nicht defekt ist
+	 * Führt eine MWE durch für den Fall, dass der Ersatzfahrstreifen nicht defekt ist
 	 * 
 	 * @param fahrStreifenPuffer Datenpuffer des Fahrstreifens, der plausibibilisiert werden soll
-	 * @param nachbarPuffer Datenpuffer des Nachbarfahrstreifens
 	 * @param ersatzPuffer Datenpuffer des Ersatzfahrstreifens
 	 * @return das plausibilisierte Datum des Fahrstreifens oder <code>null</code>, wenn
 	 * nicht alle Daten zur Berechnung vorhanden sind
 	 */
 	private final KZDatum plausibilisiereNachVorschrift1(
 								FSDatenPuffer fahrStreifenPuffer,
-								FSDatenPuffer nachbarPuffer,
 								FSDatenPuffer ersatzPuffer){
 		KZDatum ergebnisDatum = null;
 		KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
 		
 		if(zielDatum != null){	
-			KZDatum nachbarZielDatum = nachbarPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());
-			if(nachbarZielDatum != null){
-				KZDatum ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());	
-				if(ersatzZielDatum != null){
-					/**
-					 * Es sind alle Daten zur Berechnung des Zielintervalls da!
-					 */
-					ergebnisDatum = new KZDatum(zielDatum.getDatum());
+			KZDatum ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());	
+			if(ersatzZielDatum != null){
+				/**
+				 * Es sind alle Daten zur Berechnung des Zielintervalls da!
+				 */
+				ergebnisDatum = new KZDatum(zielDatum.getDatum());
 
-					/**
-					 * Versuche Ersetzung von qKfz, qPkw, vKfz und vPkw 
-					 */
-					for(MweAttribut attribut:Q_V_PKW_KFZ){
-						this.ersetzeAttributWertNachVerfahren1(attribut, ergebnisDatum,
-								nachbarZielDatum, fahrStreifenPuffer, nachbarPuffer);
-					}
-
-					/**
-					 * Ersetze qLkw
-					 */
-					MweAttributWert attributWert = ergebnisDatum.getAttributWert(MweAttribut.Q_LKW);
-					MweAttributWert attributWertQKfz = ergebnisDatum.getAttributWert(MweAttribut.Q_KFZ);
-					MweAttributWert attributWertQKfzErsatz = ersatzZielDatum.getAttributWert(MweAttribut.Q_KFZ);
-					MweAttributWert attributWertQLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.Q_LKW);
-
-					if(attributWert.isImplausibel() &&
-							!attributWertQKfz.isImplausibel() &&
-							attributWertQKfz.getWert() >= 0 &&
-							!attributWertQKfzErsatz.isImplausibel() &&
-							attributWertQKfzErsatz.getWert() > 0 &&
-							!attributWertQLkwErsatz.isImplausibel() &&
-							attributWertQLkwErsatz.getWert() >= 0 &&
-							ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
-								ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
-
-						double qLkwErsatz = (double)attributWertQLkwErsatz.getWert();
-						GWert gueteQLkwErsatz = attributWertQLkwErsatz.getGuete();
-						double qKfzErsatz = (double)attributWertQKfzErsatz.getWert();
-						GWert gueteQKfzErsatz = attributWertQKfzErsatz.getGuete();
-						double qKfz = (double)attributWertQKfz.getWert();
-						GWert gueteQKfz = attributWertQKfz.getGuete();
-
-						/**
-						 * Ersatzwert berechnen
-						 */
-						double neuerWert = qKfz * qLkwErsatz / qKfzErsatz;
-
-						/**
-						 * Güteberechnung des Wertes
-						 */
-						GWert neueGuete = GWert.getNichtErmittelbareGuete(attributWert.getGuete().getVerfahren());
-						try {
-							neueGuete = GueteVerfahren.quotient(
-									GueteVerfahren.produkt(gueteQKfz, gueteQLkwErsatz),
-									gueteQKfzErsatz
-							);
-						} catch (GueteException e) {
-							LOGGER.error("Guete fuer qLkw kann nicht ermittelt werden", e); //$NON-NLS-1$
-							e.printStackTrace();
-						}
-
-						/**
-						 * Wert verändern
-						 */
-						ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setWert((long)(neuerWert + 0.5));
-						ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setGuete(neueGuete);
-						ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setInterpoliert(true);
-					}
-
-					/**
-					 * Ersetze vLkw
-					 */
-					MweAttributWert vLkw = ergebnisDatum.getAttributWert(MweAttribut.V_LKW);
-					MweAttributWert vLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.V_LKW);
-
-					if(vLkw.isImplausibel() &&
-							!vLkwErsatz.isImplausibel() &&
-							vLkwErsatz.getWert() >= 0 &&
-							ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
-								ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
-						ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setWert(
-								ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getWert());
-						ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setGuete(
-								ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getGuete());
-						ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setInterpoliert(true);
-					}										
+				/**
+				 * Versuche Ersetzung von qKfz, qPkw, vKfz und vPkw 
+				 */
+				for(MweAttribut attribut:Q_V_PKW_KFZ_LKW){
+					this.ersetzeAttributWertNachVerfahren1(attribut, ergebnisDatum,
+							ersatzZielDatum, fahrStreifenPuffer, ersatzPuffer);
 				}
+
+//				/**
+//				 * Ersetze qLkw
+//				 */
+//				MweAttributWert attributWert = ergebnisDatum.getAttributWert(MweAttribut.Q_LKW);
+//				MweAttributWert attributWertQKfz = ergebnisDatum.getAttributWert(MweAttribut.Q_KFZ);
+//				MweAttributWert attributWertQKfzErsatz = ersatzZielDatum.getAttributWert(MweAttribut.Q_KFZ);
+//				MweAttributWert attributWertQLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.Q_LKW);
+//
+//				if(attributWert.isImplausibel() &&
+//						!attributWertQKfz.isImplausibel() &&
+//						attributWertQKfz.getWert() >= 0 &&
+//						!attributWertQKfzErsatz.isImplausibel() &&
+//						attributWertQKfzErsatz.getWert() > 0 &&
+//						!attributWertQLkwErsatz.isImplausibel() &&
+//						attributWertQLkwErsatz.getWert() >= 0 &&
+//						ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
+//							ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
+//
+//					double qLkwErsatz = (double)attributWertQLkwErsatz.getWert();
+//					GWert gueteQLkwErsatz = attributWertQLkwErsatz.getGuete();
+//					double qKfzErsatz = (double)attributWertQKfzErsatz.getWert();
+//					GWert gueteQKfzErsatz = attributWertQKfzErsatz.getGuete();
+//					double qKfz = (double)attributWertQKfz.getWert();
+//					GWert gueteQKfz = attributWertQKfz.getGuete();
+//
+//					/**
+//					 * Ersatzwert berechnen
+//					 */
+//					double neuerWert = qKfz * qLkwErsatz / qKfzErsatz;
+//
+//					/**
+//					 * Güteberechnung des Wertes
+//					 */
+//					GWert neueGuete = GWert.getNichtErmittelbareGuete(attributWert.getGuete().getVerfahren());
+//					try {
+//						neueGuete = GueteVerfahren.quotient(
+//								GueteVerfahren.produkt(gueteQKfz, gueteQLkwErsatz),
+//								gueteQKfzErsatz
+//						);
+//					} catch (GueteException e) {
+//						LOGGER.error("Guete fuer qLkw kann nicht ermittelt werden", e); //$NON-NLS-1$
+//						e.printStackTrace();
+//					}
+//
+//					/**
+//					 * Wert verändern
+//					 */
+//					ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setWert((long)(neuerWert + 0.5));
+//					ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setGuete(neueGuete);
+//					ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setInterpoliert(true);
+//				}
+
+				/**
+				 * Ersetze vLkw
+				 */
+				MweAttributWert vLkw = ergebnisDatum.getAttributWert(MweAttribut.V_LKW);
+				MweAttributWert vLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.V_LKW);
+
+				if(vLkw.isImplausibel() &&
+						!vLkwErsatz.isImplausibel() &&
+						vLkwErsatz.getWert() >= 0 &&
+						ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
+							ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
+					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setWert(
+							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getWert());
+					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setGuete(
+							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getGuete());
+					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setInterpoliert(true);
+				}										
 			}
 		}
-		
+
 		return ergebnisDatum;
 	}
 	
@@ -538,49 +526,50 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	}
 	
 		
-	/**
-	 * Führt eine MWE durch für den Fall, dass der Sensor des Nachbarfahrstreifens defekt ist,
-	 * der Sensor des Ersatzfahrstreifen aber nicht defekt ist
-	 * 
-	 * @param fahrStreifenPuffer Datenpuffer des Fahrstreifens, der plausibibilisiert werden soll
-	 * @param ersatzPuffer Datenpuffer des Ersatzfahrstreifens
-	 * @return das plausibilisierte Datum des Fahrstreifens oder <code>null</code>, wenn
-	 * nicht alle Daten zur Berechnung vorhanden sind  
-	 */
-	private final KZDatum plausibilisiereNachVorschrift2(
-									FSDatenPuffer fahrStreifenPuffer,
-									FSDatenPuffer ersatzPuffer){
-		KZDatum ergebnisDatum = null;
-		KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
-		
-		if(zielDatum != null &&
-		  !zielDatum.isBereitsWiederFreigegeben()){
-			/**
-			 * Das heißt, das Zieldatum ist nicht vollständig plausibel und
-			 * noch nicht interpoliert
-			 */
-			
-			KZDatum ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());	
-			if(ersatzZielDatum != null){
-				if(zielDatum.getDatum().getData().getTimeValue("T").getMillis() ==  //$NON-NLS-1$
-   				   ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
-
-					ergebnisDatum = new KZDatum(zielDatum.getDatum());
-
-					for(MweAttribut attribut:MweAttribut.getInstanzen()){
-						if(ergebnisDatum.getAttributWert(attribut).isImplausibel() &&
-						  !ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
-						   ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
-							ergebnisDatum.setAttributWert(new MweAttributWert(ersatzZielDatum.getAttributWert(attribut)));
-							ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);								
-						}
-					}									
-				}
-			}
-		}
-		
-		return ergebnisDatum;
-	}
+//	/**
+//	 * Führt eine MWE durch für den Fall, dass der Sensor des Nachbarfahrstreifens defekt ist,
+//	 * der Sensor des Ersatzfahrstreifen aber nicht defekt ist
+//	 * 
+//	 * @param fahrStreifenPuffer Datenpuffer des Fahrstreifens, der plausibibilisiert werden soll
+//	 * @param ersatzPuffer Datenpuffer des Ersatzfahrstreifens
+//	 * @return das plausibilisierte Datum des Fahrstreifens oder <code>null</code>, wenn
+//	 * nicht alle Daten zur Berechnung vorhanden sind  
+//	 */
+//	@Deprecated
+//	private final KZDatum plausibilisiereNachVorschrift2(
+//									FSDatenPuffer fahrStreifenPuffer,
+//									FSDatenPuffer ersatzPuffer){
+//		KZDatum ergebnisDatum = null;
+//		KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
+//		
+//		if(zielDatum != null &&
+//		  !zielDatum.isBereitsWiederFreigegeben()){
+//			/**
+//			 * Das heißt, das Zieldatum ist nicht vollständig plausibel und
+//			 * noch nicht interpoliert
+//			 */
+//			
+//			KZDatum ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());	
+//			if(ersatzZielDatum != null){
+//				if(zielDatum.getDatum().getData().getTimeValue("T").getMillis() ==  //$NON-NLS-1$
+//   				   ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
+//
+//					ergebnisDatum = new KZDatum(zielDatum.getDatum());
+//
+//					for(MweAttribut attribut:MweAttribut.getInstanzen()){
+//						if(ergebnisDatum.getAttributWert(attribut).isImplausibel() &&
+//						  !ersatzZielDatum.getAttributWert(attribut).isImplausibel() &&
+//						   ersatzZielDatum.getAttributWert(attribut).getWert() >= 0){
+//							ergebnisDatum.setAttributWert(new MweAttributWert(ersatzZielDatum.getAttributWert(attribut)));
+//							ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);								
+//						}
+//					}									
+//				}
+//			}
+//		}
+//		
+//		return ergebnisDatum;
+//	}
 
 	
 	/**
