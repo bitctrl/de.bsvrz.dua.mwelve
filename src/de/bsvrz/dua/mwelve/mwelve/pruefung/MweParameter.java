@@ -35,7 +35,7 @@ import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
+import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 
 /**
  * Korrespondiert mit <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>
@@ -79,7 +79,7 @@ implements ClientReceiverInterface{
 						 final SystemObject objekt){
 		DataDescription datenBeschreibung = new DataDescription(
 				dav.getDataModel().getAttributeGroup("atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-				dav.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_SOLL),
+				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL),
 				(short)0);
 		dav.subscribeReceiver(this, objekt, datenBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
