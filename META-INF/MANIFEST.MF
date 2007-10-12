@@ -5,11 +5,10 @@ Bundle-SymbolicName: de.bsvrz.dua.mwelve
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
 Bundle-Vendor: BitCtrl Systems GmbH
-Require-Bundle: de.bitctrl.dav.daf,
- de.bitctrl.sys.funclib,
- de.bsvrz.dua.guete,
+Require-Bundle: de.bsvrz.dua.guete,
  de.bsvrz.dua.plformal,
- de.bsvrz.dua.plloglve
+ de.bsvrz.dua.plloglve,
+ de.bsvrz.sys.funclib.bitctrl
 Export-Package: de.bsvrz.dua.mwelve.mwelve,
  de.bsvrz.dua.mwelve.mwelve.pruefung,
  de.bsvrz.dua.mwelve.plformal,
