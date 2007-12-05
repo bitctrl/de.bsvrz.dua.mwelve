@@ -19,9 +19,9 @@ asp.messWertErsetzung publiziert.
 Versionsgeschichte
 ==================
 
-1.0.0b
+1.0.0
 
-  - Erste Auslieferung (beta, nur teilweise nach Prüfspezifikation getestet)
+  - Erste Auslieferung
 
 
 Bemerkungen
