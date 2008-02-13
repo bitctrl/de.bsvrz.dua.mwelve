@@ -131,8 +131,8 @@ public class MweFortschreibungsAttribut {
 			MweParameter parameter = MweParameter.getParameter(this.objekt);
 			if(parameter.getMaxErsetzungsDauer() >= ersetztesDatum.getDatenZeit() - this.fortschreibungSeit){
 				ersetztesDatum.getAttributWert(this.attribut).setWert(this.letzterPlausiblerWert.getWert());
-				ersetztesDatum.getAttributWert(this.attribut).setImplausibel(true);
 				ersetztesDatum.getAttributWert(this.attribut).setInterpoliert(true);
+				ersetztesDatum.getAttributWert(this.attribut).setImplausibel(false);
 				ersetztesDatum.getAttributWert(this.attribut).setGuete(this.letzterPlausiblerWert.getGuete());
 			}
 			

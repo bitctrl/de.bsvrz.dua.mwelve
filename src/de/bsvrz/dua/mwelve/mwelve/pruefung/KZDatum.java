@@ -31,6 +31,7 @@ import java.util.Map;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 
 /**
  * Korrespondiert mit einer Instanz eines KZD-<code>ResultData</code>-Objektes
@@ -212,6 +213,29 @@ public class KZDatum {
 	 */
 	private final void modifiziereGgfDatenSatz(final MweAttributWert attr, Data datenSatz){
 		if(attr.isVeraendert()){
+			
+			if( DUAUtensilien.isWertInWerteBereich(datenSatz.getItem(attr.getAttribut().getName()).getItem("Wert"), attr.getWert())){ //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getUnscaledValue("Wert").set(attr.getWert()); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
+					getUnscaledValue("Implausibel").set(attr.isImplausibel()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
+					getUnscaledValue("Interpoliert").set(attr.isInterpoliert()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
+					getUnscaledValue("Index").set(attr.getGuete().getIndexUnskaliert()); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
+					getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
+			}else{
+				datenSatz.getItem(attr.getAttribut().getName()).getUnscaledValue("Wert").set(DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
+					getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
+					getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
+					getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
+					getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$				
+			}			
+			
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMax").set(attr.isFormalMax()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
@@ -222,14 +246,6 @@ public class KZDatum {
 				getUnscaledValue("WertMinLogisch").set(attr.isLogischMin()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("Erfassung").  //$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Implausibel").set(attr.isImplausibel()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status").getItem("MessWertErsetzung").  //$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Interpoliert").set(attr.isInterpoliert()?DUAKonstanten.JA:DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
-				getUnscaledValue("Index").set(attr.getGuete().getIndexUnskaliert()); //$NON-NLS-1$
-			datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte"). //$NON-NLS-1$
-				getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
 		}
 	}
 

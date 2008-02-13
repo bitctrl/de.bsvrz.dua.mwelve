@@ -122,10 +122,10 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		for(SystemObject fsObjekt:dieVerwaltung.getSystemObjekte()){
 			FahrStreifen fs = FahrStreifen.getInstanz(fsObjekt);
 			if(fs != null){
-				if(fs.getErsatzFahrStreifen() != null && fs.getNachbarFahrStreifen() != null){
+				if(fs.getErsatzFahrStreifen() != null /** && fs.getNachbarFahrStreifen() != null*/){
 					this.pruefungsFahrstreifen.add(fs);
 					this.fsAufDatenPuffer.put(fs, new FSDatenPuffer(fs));
-					this.fsAufDatenPuffer.put(fs.getNachbarFahrStreifen(), new FSDatenPuffer(fs.getNachbarFahrStreifen()));
+					/**this.fsAufDatenPuffer.put(fs.getNachbarFahrStreifen(), new FSDatenPuffer(fs.getNachbarFahrStreifen()));*/
 					this.fsAufDatenPuffer.put(fs.getErsatzFahrStreifen(), new FSDatenPuffer(fs.getErsatzFahrStreifen()));
 				}
 			}else{
@@ -155,19 +155,19 @@ extends AbstraktBearbeitungsKnotenAdapter{
 				triggerFuerFS.add(fs);
 			}
 			
-			/**
-			 * jeder Fahrstreifen triggert die Fahrstreifen, für die er Nachbar ist
-			 */
-			FahrStreifen nachbar = fs.getNachbarFahrStreifen();
-			
-			Collection<FahrStreifen> triggerFuerNachbar = this.triggerListe.get(nachbar);
-			if(triggerFuerNachbar == null){
-				triggerFuerNachbar = new HashSet<FahrStreifen>();
-				triggerFuerNachbar.add(fs);
-				this.triggerListe.put(nachbar, triggerFuerNachbar);
-			}else{
-				triggerFuerNachbar.add(fs);
-			}
+//			/**
+//			 * jeder Fahrstreifen triggert die Fahrstreifen, für die er Nachbar ist
+//			 */
+//			FahrStreifen nachbar = fs.getNachbarFahrStreifen();
+//			
+//			Collection<FahrStreifen> triggerFuerNachbar = this.triggerListe.get(nachbar);
+//			if(triggerFuerNachbar == null){
+//				triggerFuerNachbar = new HashSet<FahrStreifen>();
+//				triggerFuerNachbar.add(fs);
+//				this.triggerListe.put(nachbar, triggerFuerNachbar);
+//			}else{
+//				triggerFuerNachbar.add(fs);
+//			}
 			
 			/**
 			 * jeder Fahrstreifen trigger die Fahrstreifen, für die er Ersatzfahrstreifen ist
@@ -418,6 +418,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setGuete(
 							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getGuete());
 					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setInterpoliert(true);
+					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setImplausibel(false);
 				}										
 			}
 		}
@@ -448,6 +449,10 @@ extends AbstraktBearbeitungsKnotenAdapter{
 															FSDatenPuffer ersetzungsPuffer){
 		MweAttributWert attributWert = ergebnisDatum.getAttributWert(attribut);
 		MweAttributWert attributWertErsetzung = ersetzungsDatum.getAttributWert(attribut);
+		
+		if(attribut.equals(MweAttribut.Q_PKW)){
+			System.out.println();
+		}
 		
 		if(attributWert.isImplausibel() && 
 		  !attributWertErsetzung.isImplausibel() &&
@@ -520,6 +525,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			ergebnisDatum.getAttributWert(attribut).setWert(Math.round(neuerWert));
 			ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
 			ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
+			ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
 		}
 		
 		return ergebnisDatum;
