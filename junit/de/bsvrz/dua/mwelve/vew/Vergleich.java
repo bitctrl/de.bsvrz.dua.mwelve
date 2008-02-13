@@ -25,8 +25,6 @@
  */
 package de.bsvrz.dua.mwelve.vew;
 
-import java.sql.Date;
-
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ResultData;
@@ -48,9 +46,9 @@ public class Vergleich {
 	private SystemObject fahrstreifen1 = null;
 
 	/**
-	 * Fahrstreifen2
+	 * Fahrstreifen3
 	 */
-	private SystemObject fahrstreifen2 = null;
+	private SystemObject fahrstreifen3 = null;
 	
 	/**
 	 * alle hier betrachteten Fahrstreifen
@@ -101,8 +99,8 @@ public class Vergleich {
 					 final TestDatei outputCsv)
 	throws Exception{
 		this.fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1"); //$NON-NLS-1$
-		this.fahrstreifen2 = dav.getDataModel().getObject("Fahrstreifen2"); //$NON-NLS-1$
-		this.fahrstreifen = new SystemObject[]{this.fahrstreifen1, this.fahrstreifen2};
+		this.fahrstreifen3 = dav.getDataModel().getObject("Fahrstreifen3"); //$NON-NLS-1$
+		this.fahrstreifen = new SystemObject[]{this.fahrstreifen1, this.fahrstreifen3};
 		TestFahrstreifenImporter.setT(Initialisierung.INTERVALL_LAENGE);
 		this.inputImporter = new TestFahrstreifenImporter(dav, Initialisierung.WURZEL + inputCsv.getDateiName());
 		this.outputImporter = new TestFahrstreifenImporter(dav, Initialisierung.WURZEL + outputCsv.getDateiName());
@@ -136,13 +134,13 @@ public class Vergleich {
 							this.fahrstreifen[i],
 							this.ddPlMwe,
 							zeitStempel,
-							this.outputImporter.getDatensatz(i));
+							this.outputImporter.getDatensatz(i==1?2:i));
 
 				frage[i] = new ResultData(
 						this.fahrstreifen[i],
 						this.ddPlLog,
 						zeitStempel,
-						this.inputImporter.getDatensatz(i));
+						this.inputImporter.getDatensatz(i==1?2:i));
 			}
 		}
 		
@@ -195,16 +193,22 @@ public class Vergleich {
 			for(int i = 0; i<ergebnisse.length; i++){
 				for(int j = 0; j<erwarteteErgebnisse.length; j++){
 					if(ergebnisse[i].getObject().equals(erwarteteErgebnisse[j].getObject())){
-						ResultData soll = erwarteteErgebnisse[j];
-						ResultData ist = ergebnisse[i];
-						passt = soll.getDataTime() == ist.getDataTime() &&
-						soll.getData().toString().equals(ist.getData().toString());
+//						ResultData soll = erwarteteErgebnisse[j];
+//						ResultData ist = ergebnisse[i];
+//						passt = soll.getDataTime() == ist.getDataTime() &&
+//								soll.getData().toString().equals(ist.getData().toString());
+						
+						KurzZeitDatum kzdSoll = new KurzZeitDatum(erwarteteErgebnisse[j]);
+						KurzZeitDatum kzdIst = new KurzZeitDatum(ergebnisse[i]);
+						passt = kzdSoll.equals(kzdIst);						
+						
 						this.info = "Zeile: " + zeilenNummer + " (" + dateiInfo + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						if(!passt){
-							this.info += "\nSoll-Zeit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(soll.getDataTime())); //$NON-NLS-1$
-							this.info += "\nIst-Zeit:  " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ist.getDataTime())); //$NON-NLS-1$
-							this.info += "\nSoll-Data: " + soll.getData().toString(); //$NON-NLS-1$
-							this.info += "\nIst-Data:  " + ist.getData().toString() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+							this.info += "\nSoll != Ist\n" + kzdSoll.compare(kzdIst); //$NON-NLS-1$
+//							this.info += "\nSoll-Zeit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(soll.getDataTime())); //$NON-NLS-1$
+//							this.info += "\nIst-Zeit:  " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ist.getDataTime())); //$NON-NLS-1$
+//							this.info += "\nSoll-Data: " + soll.getData().toString(); //$NON-NLS-1$
+//							this.info += "\nIst-Data:  " + ist.getData().toString() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 						}
 						break;
 					}

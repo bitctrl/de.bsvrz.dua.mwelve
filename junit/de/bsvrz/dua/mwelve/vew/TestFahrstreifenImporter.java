@@ -149,24 +149,24 @@ extends CSVImporter{
 					String vKfzStatus = this.aktuelleZeile[1 + 18 + (index) * 2];
 					modifyAttribut("vKfz", vKfz, vKfzStatus, datensatz); //$NON-NLS-1$
 					
-					long vPkw = Integer.parseInt(this.aktuelleZeile[26 + (index) * 2]);
-					String vPkwStatus = this.aktuelleZeile[1 + 26 + (index) * 2];
+					long vPkw = Integer.parseInt(this.aktuelleZeile[24 + (index) * 2]);
+					String vPkwStatus = this.aktuelleZeile[1 + 24 + (index) * 2];
 					modifyAttribut("vPkw", vPkw, vPkwStatus, datensatz); //$NON-NLS-1$
 					
-					long vLkw = Integer.parseInt(this.aktuelleZeile[32 + (index) * 2]);
-					String vLkwStatus = this.aktuelleZeile[1 + 32 + (index) * 2];
+					long vLkw = Integer.parseInt(this.aktuelleZeile[30 + (index) * 2]);
+					String vLkwStatus = this.aktuelleZeile[1 + 30 + (index) * 2];
 					modifyAttribut("vLkw", vLkw, vLkwStatus, datensatz); //$NON-NLS-1$
 					
-					long vgKfz = Integer.parseInt(this.aktuelleZeile[38 + (index) * 2]);
-					String vgKfzStatus = this.aktuelleZeile[1 + 38 + (index) * 2];
+					long vgKfz = Integer.parseInt(this.aktuelleZeile[36 + (index) * 2]);
+					String vgKfzStatus = this.aktuelleZeile[1 + 36 + (index) * 2];
 					modifyAttribut("vgKfz", vgKfz, vgKfzStatus, datensatz); //$NON-NLS-1$
 					
-					long b = Integer.parseInt(this.aktuelleZeile[44 + (index) * 2]);
-					String bStatus = this.aktuelleZeile[1 + 44 + (index) * 2];
+					long b = Integer.parseInt(this.aktuelleZeile[42 + (index) * 2]);
+					String bStatus = this.aktuelleZeile[1 + 42 + (index) * 2];
 					modifyAttribut("b", b, bStatus, datensatz); //$NON-NLS-1$
 					
-					long tNetto = Integer.parseInt(this.aktuelleZeile[50 + (index) * 2]);
-					String tStatus = this.aktuelleZeile[1 + 50 + (index) * 2];
+					long tNetto = Integer.parseInt(this.aktuelleZeile[48 + (index) * 2]);
+					String tStatus = this.aktuelleZeile[1 + 48 + (index) * 2];
 					modifyAttribut("tNetto", tNetto, tStatus, datensatz); //$NON-NLS-1$
 																	
 				}catch(ArrayIndexOutOfBoundsException ex){
@@ -208,32 +208,41 @@ extends CSVImporter{
 			String[] splitStatus = status.trim().split(" "); //$NON-NLS-1$
 			
 			for(int i = 0; i<splitStatus.length;i++) {
-				if(splitStatus[i].equalsIgnoreCase("Fehl")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("Fehl")){ //$NON-NLS-1$
 					errCode = errCode-2;
+				}
 				
-				if(splitStatus[i].equalsIgnoreCase("nErm")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("nErm")){ //$NON-NLS-1$
 					errCode = errCode-1;
+				}
 				
-				if(splitStatus[i].equalsIgnoreCase("Impl")) //$NON-NLS-1$
-					 impl = DUAKonstanten.JA;
+				if(splitStatus[i].equalsIgnoreCase("Impl")){ //$NON-NLS-1$
+					impl = DUAKonstanten.JA;
+				}
 				
-				if(splitStatus[i].equalsIgnoreCase("Intp")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("Intp")){ //$NON-NLS-1$
 					intp = DUAKonstanten.JA;				
+				}
 
-				if(splitStatus[i].equalsIgnoreCase("nErf")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("nErf")){ //$NON-NLS-1$
 					nErf = DUAKonstanten.JA;
+				}
 
-				if(splitStatus[i].equalsIgnoreCase("wMaL")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("wMaL")){ //$NON-NLS-1$
 					wMaL = DUAKonstanten.JA;
+				}
 				
-				if(splitStatus[i].equalsIgnoreCase("wMax")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("wMax")){ //$NON-NLS-1$
 					wMax = DUAKonstanten.JA;
+				}
 
-				if(splitStatus[i].equalsIgnoreCase("wMiL")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("wMiL")){ //$NON-NLS-1$
 					wMiL = DUAKonstanten.JA;
+				}
 
-				if(splitStatus[i].equalsIgnoreCase("wMin")) //$NON-NLS-1$
+				if(splitStatus[i].equalsIgnoreCase("wMin")){ //$NON-NLS-1$
 					wMin = DUAKonstanten.JA;
+				}
 				
 				try {
 					guete = Float.parseFloat(splitStatus[i].replace(",", ".")); //$NON-NLS-1$ //$NON-NLS-2$

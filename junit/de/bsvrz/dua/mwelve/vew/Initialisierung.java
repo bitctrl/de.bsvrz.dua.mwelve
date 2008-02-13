@@ -67,15 +67,29 @@ public class Initialisierung {
 	 */
 	public static final TestDatei INPUT_CSV = new TestDatei("PL_Pruef_LVE_Grenz.csv", ".xls)PL-Pruef LVE Grenz");   //$NON-NLS-1$   //$NON-NLS-2$
 	
+	/**
+	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
+	 * <code>.xls)Messwerters. LVE</code>
+	 */
+	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_LVE.csv", ".xls)Messwerters. LVE");   //$NON-NLS-1$   //$NON-NLS-2$
+
 //	/**
-//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden
+//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
+//	 * <code>.xls)Messwerters. PL-gepr</code>
 //	 */
 //	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_PL_gepr.csv", ".xls)Messwerters. PL-gepr");   //$NON-NLS-1$   //$NON-NLS-2$
 
-	/**
-	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden
-	 */
-	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_LVE.csv", ".xls)Messwerters. Ers. LVE");   //$NON-NLS-1$   //$NON-NLS-2$
+//	/**
+//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
+//	 * <code>.xls)Messwerters. Ers. LVE</code>
+//	 */
+//	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_Ers_LVE.csv", ".xls)Messwerters. Ers. LVE");   //$NON-NLS-1$   //$NON-NLS-2$
+
+//	/**
+//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
+//	 * <code>.xls)Messwerters. Ers. PL-g</code>
+//	 */
+//	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_Ers_PL_g.csv", ".xls)Messwerters. Ers. PL-g");   //$NON-NLS-1$   //$NON-NLS-2$
 
 	/**
 	 * Erfassungsintervall der Kurzzeitdaten in ms

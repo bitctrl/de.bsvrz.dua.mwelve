@@ -47,7 +47,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class Test{
+public class MessWertErsetzungLVETest{
 
 	/**
 	 * Soll das JUnit-Assertion-Framewort benutzt und die Applikation beendet werden,
@@ -93,7 +93,7 @@ public class Test{
 				if(results != null){
 					for(ResultData result:results){
 						if(result != null && result.getData() != null){
-							Test.this.antwort = result;
+							MessWertErsetzungLVETest.this.antwort = result;
 							synchronized (dav) {
 								dav.notifyAll();
 							}
@@ -131,19 +131,19 @@ public class Test{
 				
 			}.start();
 
-			if(VERBOSE){
-				for(ResultData f:frage){
-					System.out.println("Sende: " + f); //$NON-NLS-1$	
-				}	
-			}
 
 			synchronized (dav) {
+				if(VERBOSE){
+					for(ResultData f:frage){
+						System.out.println("Sende: " + f); //$NON-NLS-1$	
+					}	
+				}
 				dav.wait();
+				if(VERBOSE){
+					System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
+				}
 			}
 				
-			if(VERBOSE){
-				System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
-			}
 			
 			Vergleich.Ergebnis ergebnis = vergleich.getErgebnis(new ResultData[]{this.antwort});
 			
@@ -160,10 +160,7 @@ public class Test{
 						}	
 						System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
 					}
-					System.out.println(ergebnis.toString());
-					
-					//////////////
-					System.exit(0);
+					System.out.println(ergebnis.toString());					
 				}
 			}
 		}		
