@@ -52,14 +52,14 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 /**
  * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE.
  * Seine Aufgabe besteht in der Auswertung der Aufrufparameter, der Anmeldung
- * beim Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung formal
- * (1 u. 2), PL-Prüfung logisch LVE (1 u. 2), Messwertersetzung LVE sowie Publikation.
+ * beim Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung formal,
+ * PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation.
  * Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden Daten zuständig.
  * Die Verwaltung gibt ein Objekt des Moduls PL-Prüfung formal als Beobachterobjekt an,
  * an das die zu überprüfenden Daten durch den Aktualisierungsmechanismus weitergeleitet
- * werden. Weiterhin stellt die Verwaltung die Verkettung der Module PL-Prüfung formal
- * (1), PL-Prüfung logisch LVE (1), Messwertersetzung LVE, PL-Prüfung formal (2),
- * PL-Prüfung logisch LVE (2) sowie Publikation in dieser Reihenfolge her.
+ * werden. Weiterhin stellt die Verwaltung die Verkettung der Module PL-Prüfung formal,
+ * PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge
+ * her.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
@@ -71,16 +71,21 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 	 * Instanz des Moduls PL-Prüfung formal (1)
 	 */
 	private PlPruefungFormal plForm1  = null;
-	
-	/**
-	 * Instanz des Moduls PL-Prüfung formal (2)
-	 */
-	private PlPruefungFormal plForm2  = null;
+
 
 	/**
-	 * Instanz des Moduls PL-Prüfung logisch LVE (1)
+	 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
 	 */
-	private PlPruefungLogischLVE plLog2 = null;
+//	/**
+//	 * Instanz des Moduls PL-Prüfung formal (2)
+//	 */
+//	private PlPruefungFormal plForm2  = null;
+//
+//	/**
+//	 * Instanz des Moduls PL-Prüfung logisch LVE (1)
+//	 */
+//	private PlPruefungLogischLVE plLog2 = null;
+	
 	
 	/**
 	 * Instanz des Moduls PL-Prüfung logisch LVE (2)
@@ -135,12 +140,17 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
 		this.mwe = new MessWertErsetzungLVE();
-		this.plForm2 = new PlPruefungFormal(
-				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plLog2 = new PlPruefungLogischLVE(
-				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		
+		/**
+		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
+		 */
+//		this.plForm2 = new PlPruefungFormal(
+//				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+//		this.plLog2 = new PlPruefungLogischLVE(
+//				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		
 		this.pub = new PublikationsModul(
-				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
+				new TestMweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
 				ModulTyp.MESSWERTERSETZUNG_LVE);
 
 
@@ -152,14 +162,19 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.plLog1.setPublikation(true);
 		this.plLog1.initialisiere(this);
 
-		this.mwe.setNaechstenBearbeitungsKnoten(this.plForm2);
+		this.mwe.setNaechstenBearbeitungsKnoten(this.pub);
 		this.mwe.initialisiere(this);
 
-		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
-		this.plForm2.initialisiere(this);
-
-		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
-		this.plLog2.initialisiere(this);
+		
+		/**
+		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
+		 */
+//		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
+//		this.plForm2.initialisiere(this);
+//
+//		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
+//		this.plLog2.initialisiere(this);
+		
 		
 		this.pub.initialisiere(this);
 
