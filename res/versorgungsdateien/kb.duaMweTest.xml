@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE konfigurationsBereich PUBLIC "-//K2S//DTD Dokument//DE" "K2S.dtd">
+<konfigurationsBereich pid="kb.duaMweTest" verantwortlich="kv.aoe.bitctrl.tester">
+	<konfigurationsAenderung stand="31.01.2008" version="1" autor="Thomas Thierfelder, BitCtrl Systems GmbH" grund="Test Pl-Pruefung logisch LVE">
+		Konfigurationsbereich neu erstellt.
+	</konfigurationsAenderung>
+	<modell>
+	</modell>
+	<objekte>
+		<konfigurationsObjekt pid="Fahrstreifen1" name="Fahrstreifen1" typ="typ.fahrStreifen">
+			<info>
+				<kurzinfo>info</kurzinfo>
+			</info>
+			<datensatz
+				attributgruppe="atg.fahrStreifen">				
+				<datum name="Typ" wert="HauptFahrStreifen" />
+				<datum name="Lage" wert="HFS" />
+				<datum name="FahrStreifenQuelle" wert="null" />
+				<datum name="ErsatzFahrStreifen" wert="Fahrstreifen3" />
+			</datensatz>						
+		</konfigurationsObjekt>
+		
+		<konfigurationsObjekt pid="Fahrstreifen3" name="Fahrstreifen3" typ="typ.fahrStreifen">
+			<info>
+				<kurzinfo>info</kurzinfo>
+			</info>
+			<datensatz
+				attributgruppe="atg.fahrStreifen">				
+				<datum name="Typ" wert="ÜberholFahrStreifen" />
+				<datum name="Lage" wert="2ÜFS" />
+				<datum name="FahrStreifenQuelle" wert="null" />
+				<datum name="ErsatzFahrStreifen" wert="null" />
+			</datensatz>						
+		</konfigurationsObjekt>
+		
+	</objekte>
+</konfigurationsBereich>
