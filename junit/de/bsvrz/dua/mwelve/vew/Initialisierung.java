@@ -28,6 +28,8 @@ package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Collection;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.mwelve.mwelve.MessWertErsetzungLVE;
@@ -41,7 +43,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 
 /**
@@ -94,7 +95,7 @@ public class Initialisierung {
 	/**
 	 * Erfassungsintervall der Kurzzeitdaten in ms
 	 */
-	public static final long INTERVALL_LAENGE = Konstante.MINUTE_IN_MS;
+	public static final long INTERVALL_LAENGE = Constants.MILLIS_PER_MINUTE;
 
 	/**
 	 * ANPASSEN:
@@ -150,7 +151,7 @@ public class Initialisierung {
 							this.verbindung, this.getKonfigurationsBereiche());
 					this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
-					String infoStr = Konstante.LEERSTRING;
+					String infoStr = Constants.EMPTY_STRING;
 					for(SystemObject obj:this.objekte){
 						infoStr += obj + "\n"; //$NON-NLS-1$
 					}

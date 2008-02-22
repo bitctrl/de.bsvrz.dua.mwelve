@@ -27,10 +27,11 @@ package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Date;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.MesswertUnskaliert;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Repraesentation eines Kurzzeitdatums fuer Testzwecke
@@ -99,7 +100,7 @@ public class KurzZeitDatum {
 	 */
 	public final String compare(KurzZeitDatum that) {
 		boolean gleich = true;
-		String info = Konstante.LEERSTRING;
+		String info = Constants.EMPTY_STRING;
 		
 		if(!this.original.getObject().equals(that.original.getObject())){
 			info += this.original.getObject() + " != " + that.original.getObject() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$

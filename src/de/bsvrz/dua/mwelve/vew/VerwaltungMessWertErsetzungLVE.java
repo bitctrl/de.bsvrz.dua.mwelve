@@ -28,6 +28,8 @@ package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Collection;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
@@ -47,7 +49,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGue
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE.
@@ -128,7 +129,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 				this.verbindung, this.getKonfigurationsBereiche());
 		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
-		String infoStr = Konstante.LEERSTRING;
+		String infoStr = Constants.EMPTY_STRING;
 		for(SystemObject obj:this.objekte){
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}

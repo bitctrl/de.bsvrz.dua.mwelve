@@ -26,12 +26,13 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.CSVImporter;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 
 /**
@@ -51,7 +52,7 @@ extends CSVImporter{
 	/**
 	 * T
 	 */
-	protected static long INTERVALL = Konstante.MINUTE_IN_MS;
+	protected static long INTERVALL = Constants.MILLIS_PER_MINUTE;
 	
 	/**
 	 * die Zeile, die als letztes eingelesen wurde
@@ -131,7 +132,7 @@ extends CSVImporter{
 				try{
 					datensatz.getTimeValue("T").setMillis(INTERVALL); //$NON-NLS-1$
 					datensatz.getUnscaledValue("ArtMittelwertbildung").set(1); //$NON-NLS-1$
-					modifyAttribut("sKfz", DUAKonstanten.NICHT_ERMITTELBAR, Konstante.LEERSTRING, datensatz); //$NON-NLS-1$
+					modifyAttribut("sKfz", DUAKonstanten.NICHT_ERMITTELBAR, Constants.EMPTY_STRING, datensatz); //$NON-NLS-1$
 					
 					long qKfz = Integer.parseInt(this.aktuelleZeile[0 + (index) * 2]);
 					String qKfzStatus = this.aktuelleZeile[1 + 0 + (index) * 2];
