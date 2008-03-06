@@ -37,8 +37,6 @@ import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.guete.GWert;
-import de.bsvrz.dua.guete.GueteException;
-import de.bsvrz.dua.guete.GueteVerfahren;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
@@ -76,7 +74,8 @@ extends AbstraktBearbeitungsKnotenAdapter{
 															      MweAttribut.Q_PKW,
 															      MweAttribut.V_KFZ,
 															      MweAttribut.V_PKW,
-															      MweAttribut.Q_LKW}; 
+															      MweAttribut.Q_LKW,
+															      MweAttribut.V_LKW}; 
 
 	/**
 	 * Debug-Logger
@@ -402,24 +401,24 @@ extends AbstraktBearbeitungsKnotenAdapter{
 //					ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setInterpoliert(true);
 //				}
 
-				/**
-				 * Ersetze vLkw
-				 */
-				MweAttributWert vLkw = ergebnisDatum.getAttributWert(MweAttribut.V_LKW);
-				MweAttributWert vLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.V_LKW);
-
-				if(vLkw.isImplausibel() &&
-						!vLkwErsatz.isImplausibel() &&
-						vLkwErsatz.getWert() >= 0 &&
-						ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
-							ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
-					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setWert(
-							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getWert());
-					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setGuete(
-							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getGuete());
-					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setInterpoliert(true);
-					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setImplausibel(false);
-				}										
+//				/**
+//				 * Ersetze vLkw
+//				 */
+//				MweAttributWert vLkw = ergebnisDatum.getAttributWert(MweAttribut.V_LKW);
+//				MweAttributWert vLkwErsatz = ersatzZielDatum.getAttributWert(MweAttribut.V_LKW);
+//
+//				if(vLkw.isImplausibel() &&
+//						!vLkwErsatz.isImplausibel() &&
+//						vLkwErsatz.getWert() >= 0 &&
+//						ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() == //$NON-NLS-1$
+//							ersatzZielDatum.getDatum().getData().getTimeValue("T").getMillis()){ //$NON-NLS-1$
+//					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setWert(
+//							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getWert());
+//					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setGuete(
+//							ersatzZielDatum.getAttributWert(MweAttribut.V_LKW).getGuete());
+//					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setInterpoliert(true);
+//					ergebnisDatum.getAttributWert(MweAttribut.V_LKW).setImplausibel(false);
+//				}										
 			}
 		}
 
@@ -429,7 +428,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	
 	/**
 	 * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
-	 * Attribut innerhalb eines KZ-Datensatzes durch
+	 * Attribut innerhalb eines KZ-Datensatzes durch (Stand: 05.03.2008)
 	 * 
 	 * @param attribut das Attribut, für das die MWE durchgeführt werden soll
 	 * @param ergebnisDatum das Datum, innerhalb dem der Attributwert mit dem zu ersetzenden
@@ -449,43 +448,19 @@ extends AbstraktBearbeitungsKnotenAdapter{
 															FSDatenPuffer ersetzungsPuffer){
 		MweAttributWert attributWert = ergebnisDatum.getAttributWert(attribut);
 		MweAttributWert attributWertErsetzung = ersetzungsDatum.getAttributWert(attribut);
-		
-		if(attribut.equals(MweAttribut.Q_PKW)){
-			System.out.println();
-		}
-		
+				
 		if(attributWert.isImplausibel() && 
+		  !attributWertErsetzung.isInterpoliert() &&
 		  !attributWertErsetzung.isImplausibel() &&
+		  !attributWertErsetzung.isFormalMax() &&
+		  !attributWertErsetzung.isFormalMin() &&
+		  !attributWertErsetzung.isLogischMax() &&
+		  !attributWertErsetzung.isLogischMin() &&
 		   attributWertErsetzung.getWert() >= 0){
 			
 			double wertErsetzung = (double)attributWertErsetzung.getWert();
 			GWert gueteErsetzung = attributWertErsetzung.getGuete();
-			
-			double alterWertErsetzung = 1.0; 
-			KZDatum altesDatumErsetzung = ersetzungsPuffer.getVorgaengerVon(ersetzungsDatum);
-			GWert alteGueteErsetzung = GWert.getMaxGueteWert(GueteVerfahren.STANDARD);
-
-			if(altesDatumErsetzung != null && 
-			   !altesDatumErsetzung.isDefekt() &&
-			   !altesDatumErsetzung.getAttributWert(attribut).isImplausibel() &&
-				altesDatumErsetzung.getAttributWert(attribut).getWert() >= 0){
-				
-				alterWertErsetzung = altesDatumErsetzung.getAttributWert(attribut).getWert();
-				alteGueteErsetzung = altesDatumErsetzung.getAttributWert(attribut).getGuete();
-			}
-
-			double alterWert = 1.0; 
-			KZDatum altesDatum = fahrStreifenPuffer.getVorgaengerVon(ergebnisDatum);
-			GWert alteGuete = GWert.getMaxGueteWert(GueteVerfahren.STANDARD);
-			
-			if(altesDatum != null &&
-			  !altesDatum.isDefekt() &&
-			  !altesDatum.getAttributWert(attribut).isImplausibel() &&
-			   altesDatum.getAttributWert(attribut).getWert() >= 0){
-				alterWert = altesDatum.getAttributWert(attribut).getWert();
-				alteGuete = altesDatum.getAttributWert(attribut).getGuete();
-			}
-			
+						
 			/**
 			 * ggf. Intervallanpassung
 			 */
@@ -494,31 +469,19 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			   ersetzungsDatum.getDatum().getData().getTimeValue("T").getMillis()){  //$NON-NLS-1$
 				double faktor = ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() /  //$NON-NLS-1$
 								ersetzungsDatum.getDatum().getData().getTimeValue("T").getMillis();  //$NON-NLS-1$
-				if(alterWertErsetzung != 1.0){
-					alterWertErsetzung = alterWertErsetzung * faktor;
-				}
 				wertErsetzung = wertErsetzung * faktor;
 			}
 			
 			/**
 			 * Wertberechnung
 			 */
-			double neuerWert = (alterWert * wertErsetzung) / alterWertErsetzung;
+			double neuerWert = wertErsetzung;
 			
 			/**
 			 * Güteberechnung des Wertes
 			 */
-			GWert neueGuete = GWert.getNichtErmittelbareGuete(GueteVerfahren.STANDARD);
-			try {
-				neueGuete = GueteVerfahren.quotient(
-									GueteVerfahren.produkt(alteGuete, gueteErsetzung),
-									alteGueteErsetzung
-								  );
-			} catch (GueteException e) {
-				LOGGER.error("Guete von " + attribut + " konnte nicht ermittelt werden", e); //$NON-NLS-1$ //$NON-NLS-2$
-				e.printStackTrace();
-			}
-			
+			GWert neueGuete = gueteErsetzung;
+
 			/**
 			 * Wert verändern
 			 */
@@ -526,10 +489,122 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
 			ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
 			ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
+			ergebnisDatum.getAttributWert(attribut).setFormalMax(false);
+			ergebnisDatum.getAttributWert(attribut).setFormalMin(false);
+			ergebnisDatum.getAttributWert(attribut).setLogischMax(false);
+			ergebnisDatum.getAttributWert(attribut).setLogischMin(false);
+			ergebnisDatum.getAttributWert(attribut).setNichtErfasst(attributWertErsetzung.isNichtErfasst());
 		}
 		
 		return ergebnisDatum;
 	}
+
+	
+//	Implementierung von veralteten Anforderungen
+//	
+//	/**
+//	 * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
+//	 * Attribut innerhalb eines KZ-Datensatzes durch
+//	 * 
+//	 * @param attribut das Attribut, für das die MWE durchgeführt werden soll
+//	 * @param ergebnisDatum das Datum, innerhalb dem der Attributwert mit dem zu ersetzenden
+//	 * Datum steht
+//	 * @param ersetzungsDatum das Datum, durch das das zu ersetzenden Datum ersetzt werden soll 
+//	 * @param fahrStreifenPuffer der Datenpuffer des Fahrstreifens, der MW-ersetzt werden soll
+//	 * @param ersetzungsPuffer der Datenpuffer des Fahrstreifens, durch den die Ersetzung durchgeführt
+//	 * werden soll
+//	 * @return eine veränderte Version von <code>ergebnisDatum</code>, für die
+//	 * ggf. der Wert des Attributs <code>attribut</code> ersetzt und gekennzeichnet
+//	 * wurde
+//	 */
+//	private final KZDatum ersetzeAttributWertNachVerfahren1(MweAttribut attribut,
+//															KZDatum ergebnisDatum, 
+//															KZDatum ersetzungsDatum,
+//															FSDatenPuffer fahrStreifenPuffer,
+//															FSDatenPuffer ersetzungsPuffer){
+//		MweAttributWert attributWert = ergebnisDatum.getAttributWert(attribut);
+//		MweAttributWert attributWertErsetzung = ersetzungsDatum.getAttributWert(attribut);
+//		
+//		if(attributWert.isImplausibel() && 
+//		  !attributWertErsetzung.isImplausibel()&&
+//		  !attributWertErsetzung.isFormalMax() &&
+//		  !attributWertErsetzung.isFormalMin() &&
+//		  !attributWertErsetzung.isLogischMax() &&
+//		  !attributWertErsetzung.isLogischMin() &&
+//		   attributWertErsetzung.getWert() >= 0){
+//			
+//			double wertErsetzung = (double)attributWertErsetzung.getWert();
+//			GWert gueteErsetzung = attributWertErsetzung.getGuete();
+//			
+//			double alterWertErsetzung = 1.0; 
+//			KZDatum altesDatumErsetzung = ersetzungsPuffer.getVorgaengerVon(ersetzungsDatum);
+//			GWert alteGueteErsetzung = GWert.getMaxGueteWert(GueteVerfahren.STANDARD);
+//
+//			if(altesDatumErsetzung != null && 
+//			   !altesDatumErsetzung.isDefekt() &&
+//			   !altesDatumErsetzung.getAttributWert(attribut).isImplausibel() &&
+//				altesDatumErsetzung.getAttributWert(attribut).getWert() >= 0){
+//				
+//				alterWertErsetzung = altesDatumErsetzung.getAttributWert(attribut).getWert();
+//				alteGueteErsetzung = altesDatumErsetzung.getAttributWert(attribut).getGuete();
+//			}
+//
+//			double alterWert = 1.0; 
+//			KZDatum altesDatum = fahrStreifenPuffer.getVorgaengerVon(ergebnisDatum);
+//			GWert alteGuete = GWert.getMaxGueteWert(GueteVerfahren.STANDARD);
+//			
+//			if(altesDatum != null &&
+//			  !altesDatum.isDefekt() &&
+//			  !altesDatum.getAttributWert(attribut).isImplausibel() &&
+//			   altesDatum.getAttributWert(attribut).getWert() >= 0){
+//				alterWert = altesDatum.getAttributWert(attribut).getWert();
+//				alteGuete = altesDatum.getAttributWert(attribut).getGuete();
+//			}
+//			
+//			/**
+//			 * ggf. Intervallanpassung
+//			 */
+//			if(attribut.isQWert() && 
+//			   ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() !=   //$NON-NLS-1$
+//			   ersetzungsDatum.getDatum().getData().getTimeValue("T").getMillis()){  //$NON-NLS-1$
+//				double faktor = ergebnisDatum.getDatum().getData().getTimeValue("T").getMillis() /  //$NON-NLS-1$
+//								ersetzungsDatum.getDatum().getData().getTimeValue("T").getMillis();  //$NON-NLS-1$
+//				if(alterWertErsetzung != 1.0){
+//					alterWertErsetzung = alterWertErsetzung * faktor;
+//				}
+//				wertErsetzung = wertErsetzung * faktor;
+//			}
+//			
+//			/**
+//			 * Wertberechnung
+//			 */
+//			double neuerWert = (alterWert * wertErsetzung) / alterWertErsetzung;
+//			
+//			/**
+//			 * Güteberechnung des Wertes
+//			 */
+//			GWert neueGuete = GWert.getNichtErmittelbareGuete(GueteVerfahren.STANDARD);
+//			try {
+//				neueGuete = GueteVerfahren.quotient(
+//									GueteVerfahren.produkt(alteGuete, gueteErsetzung),
+//									alteGueteErsetzung
+//								  );
+//			} catch (GueteException e) {
+//				LOGGER.error("Guete von " + attribut + " konnte nicht ermittelt werden", e); //$NON-NLS-1$ //$NON-NLS-2$
+//				e.printStackTrace();
+//			}
+//			
+//			/**
+//			 * Wert verändern
+//			 */
+//			ergebnisDatum.getAttributWert(attribut).setWert(Math.round(neuerWert));
+//			ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
+//			ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
+//			ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
+//		}
+//		
+//		return ergebnisDatum;
+//	}
 	
 		
 //	/**
