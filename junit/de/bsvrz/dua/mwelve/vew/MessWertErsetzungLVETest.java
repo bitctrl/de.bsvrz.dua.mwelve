@@ -84,7 +84,7 @@ public class MessWertErsetzungLVETest{
 		/**
 		 * Anmeldung
 		 */
-		SystemObject fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1");	 //$NON-NLS-1$
+		SystemObject fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen3");	 //$NON-NLS-1$
 		DataDescription ddAntwort = new DataDescription(dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD), 
 				  										dav.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 		dav.subscribeReceiver(new ClientReceiverInterface(){

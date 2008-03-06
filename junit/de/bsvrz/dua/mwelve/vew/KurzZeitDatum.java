@@ -127,7 +127,7 @@ public class KurzZeitDatum {
 			gleich = false;
 		}
 		if(!this.qLkw.equals(that.qLkw)){
-			info += "qKfz: " + this.qLkw + " != " + that.qLkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			info += "qLkw: " + this.qLkw + " != " + that.qLkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
 		if(!this.vKfz.equals(that.vKfz)){

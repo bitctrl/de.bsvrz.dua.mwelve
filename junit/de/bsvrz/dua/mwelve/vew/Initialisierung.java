@@ -61,7 +61,9 @@ public class Initialisierung {
 	 * Wurzelverzeichnis der Testdaten
 	 * 
 	 */
-	public static final String WURZEL = ".\\res\\testDaten\\"; //$NON-NLS-1$
+	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.1(05.03.08)\\"; //$NON-NLS-1$
+//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7(20.02.08)\\"; //$NON-NLS-1$
+//	public static final String WURZEL = ".\\res\\testDaten\\V_2.2(14.01.08)\\"; //$NON-NLS-1$
 	
 	/**
 	 * Datei aus der die Eingabedaten fuer den Test ausgelesen werden
@@ -73,24 +75,6 @@ public class Initialisierung {
 	 * <code>.xls)Messwerters. LVE</code>
 	 */
 	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_LVE.csv", ".xls)Messwerters. LVE");   //$NON-NLS-1$   //$NON-NLS-2$
-
-//	/**
-//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
-//	 * <code>.xls)Messwerters. PL-gepr</code>
-//	 */
-//	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_PL_gepr.csv", ".xls)Messwerters. PL-gepr");   //$NON-NLS-1$   //$NON-NLS-2$
-
-//	/**
-//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
-//	 * <code>.xls)Messwerters. Ers. LVE</code>
-//	 */
-//	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_Ers_LVE.csv", ".xls)Messwerters. Ers. LVE");   //$NON-NLS-1$   //$NON-NLS-2$
-
-//	/**
-//	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen werden<br>
-//	 * <code>.xls)Messwerters. Ers. PL-g</code>
-//	 */
-//	public static final TestDatei OUTPUT_CSV = new TestDatei("Messwerters_Ers_PL_g.csv", ".xls)Messwerters. Ers. PL-g");   //$NON-NLS-1$   //$NON-NLS-2$
 
 	/**
 	 * Erfassungsintervall der Kurzzeitdaten in ms
