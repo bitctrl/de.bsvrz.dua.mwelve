@@ -151,7 +151,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 //				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
 		
 		this.pub = new PublikationsModul(
-				new TestMweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
+				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
 				ModulTyp.MESSWERTERSETZUNG_LVE);
 
 
