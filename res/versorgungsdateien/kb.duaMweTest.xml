@@ -20,6 +20,19 @@
 			</datensatz>						
 		</konfigurationsObjekt>
 		
+		<konfigurationsObjekt pid="Fahrstreifen2" name="Fahrstreifen2" typ="typ.fahrStreifen">
+			<info>
+				<kurzinfo>info</kurzinfo>
+			</info>
+			<datensatz
+				attributgruppe="atg.fahrStreifen">				
+				<datum name="Typ" wert="ÜberholFahrStreifen" />
+				<datum name="Lage" wert="1ÜFS" />
+				<datum name="FahrStreifenQuelle" wert="null" />
+				<datum name="ErsatzFahrStreifen" wert="Fahrstreifen1" />
+			</datensatz>						
+		</konfigurationsObjekt>
+		
 		<konfigurationsObjekt pid="Fahrstreifen3" name="Fahrstreifen3" typ="typ.fahrStreifen">
 			<info>
 				<kurzinfo>info</kurzinfo>
@@ -29,7 +42,7 @@
 				<datum name="Typ" wert="ÜberholFahrStreifen" />
 				<datum name="Lage" wert="2ÜFS" />
 				<datum name="FahrStreifenQuelle" wert="null" />
-				<datum name="ErsatzFahrStreifen" wert="null" />
+				<datum name="ErsatzFahrStreifen" wert="Fahrstreifen2" />
 			</datensatz>						
 		</konfigurationsObjekt>
 		
