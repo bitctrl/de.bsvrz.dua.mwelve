@@ -61,7 +61,8 @@ public class Initialisierung {
 	 * Wurzelverzeichnis der Testdaten
 	 * 
 	 */
-	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.1(05.03.08)\\"; //$NON-NLS-1$
+	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.2(12.03.08)\\"; //$NON-NLS-1$
+//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.1(05.03.08)\\"; //$NON-NLS-1$
 //	public static final String WURZEL = ".\\res\\testDaten\\V_2.7(20.02.08)\\"; //$NON-NLS-1$
 //	public static final String WURZEL = ".\\res\\testDaten\\V_2.2(14.01.08)\\"; //$NON-NLS-1$
 	

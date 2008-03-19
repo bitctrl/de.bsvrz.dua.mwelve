@@ -120,15 +120,16 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 	@Override
 	protected void initialisiere()
 	throws DUAInitialisierungsException {
+
 		super.initialisiere();
-		
 		DuaVerkehrsNetz.initialisiere(this.verbindung);
-				
+		
 		Collection<SystemObject> alleFsObjImKB = DUAUtensilien.getBasisInstanzen(
 				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_FAHRSTREIFEN),
 				this.verbindung, this.getKonfigurationsBereiche());
 		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
+		
 		String infoStr = Constants.EMPTY_STRING;
 		for(SystemObject obj:this.objekte){
 			infoStr += obj + "\n"; //$NON-NLS-1$
@@ -188,7 +189,7 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 				(short)0);			
 		
 		this.verbindung.subscribeReceiver(this, this.objekte, anmeldungsBeschreibungKZD,
-					ReceiveOptions.normal(), ReceiverRole.receiver());
+					ReceiveOptions.normal(), ReceiverRole.receiver());		
 	}
 	
 	
