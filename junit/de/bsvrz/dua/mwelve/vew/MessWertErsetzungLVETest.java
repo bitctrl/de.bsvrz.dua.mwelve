@@ -53,7 +53,7 @@ public class MessWertErsetzungLVETest{
 	 * Soll das JUnit-Assertion-Framewort benutzt und die Applikation beendet werden,
 	 * wenn ein Fehler aufgetreten ist
 	 */
-	private static final boolean USE_ASSERTION = false;
+	private static final boolean USE_ASSERTION = true;
 	
 	/**
 	 * Verbose

@@ -452,10 +452,10 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		if(attributWert.isImplausibel() && 
 		  !attributWertErsetzung.isInterpoliert() &&
 		  !attributWertErsetzung.isImplausibel() &&
-//		  !attributWertErsetzung.isFormalMax() &&
-//		  !attributWertErsetzung.isFormalMin() &&
-//		  !attributWertErsetzung.isLogischMax() &&
-//		  !attributWertErsetzung.isLogischMin() &&
+		  !attributWertErsetzung.isFormalMax() &&
+		  !attributWertErsetzung.isFormalMin() &&
+		  !attributWertErsetzung.isLogischMax() &&
+		  !attributWertErsetzung.isLogischMin() &&
 		   attributWertErsetzung.getWert() >= 0){
 			
 			double wertErsetzung = (double)attributWertErsetzung.getWert();
