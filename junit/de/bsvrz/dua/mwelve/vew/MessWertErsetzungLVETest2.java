@@ -47,13 +47,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class MessWertErsetzungLVETest{
+public class MessWertErsetzungLVETest2{
 
 	/**
 	 * Soll das JUnit-Assertion-Framewort benutzt und die Applikation beendet werden,
 	 * wenn ein Fehler aufgetreten ist
 	 */
-	private static final boolean USE_ASSERTION = true;
+	private static final boolean USE_ASSERTION = false;
 	
 	/**
 	 * Verbose
@@ -84,7 +84,7 @@ public class MessWertErsetzungLVETest{
 		/**
 		 * Anmeldung
 		 */
-		SystemObject fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen3");	 //$NON-NLS-1$
+		SystemObject fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen2");	 //$NON-NLS-1$
 		DataDescription ddAntwort = new DataDescription(dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD), 
 				  										dav.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 		dav.subscribeReceiver(new ClientReceiverInterface(){
@@ -93,7 +93,7 @@ public class MessWertErsetzungLVETest{
 				if(results != null){
 					for(ResultData result:results){
 						if(result != null && result.getData() != null){
-							MessWertErsetzungLVETest.this.antwort = result;
+							MessWertErsetzungLVETest2.this.antwort = result;
 							synchronized (dav) {
 								dav.notifyAll();
 							}
