@@ -164,6 +164,8 @@ public class MessWertErsetzungLVETest3{
 				}
 			}
 		}		
+		
+		dav.disconnect(false, "Alles ok."); //$NON-NLS-1$
 	}
 
 }

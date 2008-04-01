@@ -163,7 +163,9 @@ public class MessWertErsetzungLVETest1{
 					System.out.println(ergebnis.toString());					
 				}
 			}
-		}		
+		}
+		
+		dav.disconnect(false, "Alles ok."); //$NON-NLS-1$
 	}
 
 }
