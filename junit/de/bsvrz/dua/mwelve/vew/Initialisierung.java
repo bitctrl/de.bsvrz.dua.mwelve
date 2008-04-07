@@ -63,10 +63,13 @@ public class Initialisierung {
 	 * 
 	 */
 	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
-								File.separator + "V_2.7.6(01.04.08)" + File.separator; //$NON-NLS-1$
+								File.separator + "V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
+//	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
+//								File.separator + "V_2.7.6(01.04.08)" + File.separator; //$NON-NLS-1$
 //	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
 //								File.separator + "V_2.7.3(20.03.08)" + File.separator; //$NON-NLS-1$
 
+//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.9(05.04.08)\\"; //$NON-NLS-1$
 //	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.6(01.04.08)\\"; //$NON-NLS-1$
 //	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.3(20.03.08)\\"; //$NON-NLS-1$
 //	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.2(12.03.08)\\"; //$NON-NLS-1$
