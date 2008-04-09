@@ -42,57 +42,60 @@ import de.bsvrz.dua.mwelve.mwelve.MessWertErsetzungLVE;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
- * Test nach PrSpez
+ * Test nach PrSpez.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class MessWertErsetzungLVETest1{
+public class MessWertErsetzungLVETest1 {
 
 	/**
-	 * Soll das JUnit-Assertion-Framewort benutzt und die Applikation beendet werden,
-	 * wenn ein Fehler aufgetreten ist
+	 * Soll das JUnit-Assertion-Framewort benutzt und die Applikation beendet
+	 * werden, wenn ein Fehler aufgetreten ist.
 	 */
 	private static final boolean USE_ASSERTION = false;
-	
-	/**
-	 * Verbose
-	 */
-	private static final boolean VERBOSE = false;
-	
-	/**
-	 * letzte empfangene Antwort
-	 */
-	private ResultData antwort = null;
-	
 
 	/**
-	 * Testet die die SWE 4.5 nach PrSpez
+	 * Verbose.
+	 */
+	private static final boolean VERBOSE = false;
+
+	/**
+	 * letzte empfangene Antwort.
+	 */
+	private ResultData antwort = null;
+
+	/**
+	 * Testet die die SWE 4.5 nach PrSpez.
 	 * 
-	 * @throws Exception wird weitergereicht
+	 * @throws Exception
+	 *             wird weitergereicht
 	 */
 	@org.junit.Test
-	public void testAlles()
-	throws Exception{		
-		
+	public void testAlles() throws Exception {
+
 		/**
 		 * Initialisierung
 		 */
-		final ClientDavInterface dav = Initialisierung.getVerwaltung().getVerbindung();
+		final ClientDavInterface dav = Initialisierung.getVerwaltung()
+				.getVerbindung();
 		final MessWertErsetzungLVE testModul = Initialisierung.getMWE();
-		
+
 		/**
 		 * Anmeldung
 		 */
-		SystemObject fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1");	 //$NON-NLS-1$
-		DataDescription ddAntwort = new DataDescription(dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD), 
-				  										dav.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
-		dav.subscribeReceiver(new ClientReceiverInterface(){
+		SystemObject fahrstreifen1 = dav.getDataModel().getObject(
+				"Fahrstreifen1"); //$NON-NLS-1$
+		DataDescription ddAntwort = new DataDescription(dav.getDataModel()
+				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
+				.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		dav.subscribeReceiver(new ClientReceiverInterface() {
 
 			public void update(ResultData[] results) {
-				if(results != null){
-					for(ResultData result:results){
-						if(result != null && result.getData() != null){
+				if (results != null) {
+					for (ResultData result : results) {
+						if (result != null && result.getData() != null) {
 							MessWertErsetzungLVETest1.this.antwort = result;
 							synchronized (dav) {
 								dav.notifyAll();
@@ -101,70 +104,71 @@ public class MessWertErsetzungLVETest1{
 					}
 				}
 			}
-			
-		}, new SystemObject[]{fahrstreifen1}, ddAntwort, ReceiveOptions.normal(), ReceiverRole.receiver());
-		
+
+		}, new SystemObject[] { fahrstreifen1 }, ddAntwort, ReceiveOptions
+				.normal(), ReceiverRole.receiver());
+
 		/**
 		 * Hole Daten
 		 */
-		Vergleich vergleich = new Vergleich(dav, 
-											Initialisierung.INPUT_CSV, 
-											Initialisierung.OUTPUT_CSV);
-		
+		Vergleich vergleich = new Vergleich(dav, Initialisierung.INPUT_CSV,
+				Initialisierung.OUTPUT_CSV);
+
 		/**
 		 * eigentlicher Test
 		 */
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(0);
 		ResultData[] frage = null;
-		
-		while( (frage = vergleich.getFrage(cal.getTimeInMillis())) != null ){
+
+		while ((frage = vergleich.getFrage(cal.getTimeInMillis())) != null) {
 			cal.add(Calendar.MINUTE, 1);
-		
+
 			final ResultData[] dummyFrage = frage;
-			new Thread(){
+			new Thread() {
 
 				@Override
 				public void run() {
 					testModul.aktualisiereDaten(dummyFrage);
 				}
-				
-			}.start();
 
+			} .start();
 
 			synchronized (dav) {
-				if(VERBOSE){
-					for(ResultData f:frage){
+				if (VERBOSE) {
+					for (ResultData f : frage) {
 						System.out.println("Sende: " + f); //$NON-NLS-1$	
-					}	
+					}
 				}
 				dav.wait();
-				if(VERBOSE){
+				if (VERBOSE) {
 					System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
 				}
 			}
-				
-			
-			Vergleich.Ergebnis ergebnis = vergleich.getErgebnis(new ResultData[]{this.antwort});
-			
-			if(USE_ASSERTION){
-				Assert.assertTrue(ergebnis.toString(), ergebnis.passtZusammen());
-			}else{
-				if(ergebnis.passtZusammen()){
+
+			Vergleich.Ergebnis ergebnis = vergleich
+					.getErgebnis(new ResultData[] { this.antwort });
+
+			if (USE_ASSERTION) {
+				Assert
+						.assertTrue(ergebnis.toString(), ergebnis
+								.passtZusammen());
+			} else {
+				if (ergebnis.passtZusammen()) {
 					System.out.println(ergebnis.toString() + ": OK"); //$NON-NLS-1$
-				}else{
+				} else {
 					System.out.println("Fehler:"); //$NON-NLS-1$
-					if(!VERBOSE){
-						for(ResultData f:frage){
+					if (!VERBOSE) {
+						for (ResultData f : frage) {
 							System.out.println("Sende: " + f); //$NON-NLS-1$	
-						}	
+						}
 						System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
 					}
-					System.out.println(ergebnis.toString());					
+					System.out.println(ergebnis.toString());
 				}
 			}
 		}
-		
+
 		dav.disconnect(false, "Alles ok."); //$NON-NLS-1$
 	}
 

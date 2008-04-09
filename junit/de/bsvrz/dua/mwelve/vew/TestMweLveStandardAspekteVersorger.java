@@ -32,43 +32,40 @@ import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Diese Klasse repraesentiert die Versorgung des Moduls
- * Messwertersetzung LVE (innerhalb des Tests des Moduls 
- * Messwertersetzung LVE) mit Standard-Publikationsinformationen
- * (Zuordnung von Objekt-Datenbeschreibung-Kombination zu Standard-
- * Publikationsaspekt).
+ * Diese Klasse repraesentiert die Versorgung des Moduls Messwertersetzung LVE
+ * (innerhalb des Tests des Moduls Messwertersetzung LVE) mit
+ * Standard-Publikationsinformationen (Zuordnung von
+ * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class TestMweLveStandardAspekteVersorger 
-extends StandardAspekteVersorger{
+public class TestMweLveStandardAspekteVersorger extends
+		StandardAspekteVersorger {
 
-	
 	/**
-	 * Standardkonstruktor
-	 *
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * Standardkonstruktor.
+	 * 
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException wird weitergereicht
 	 */
 	public TestMweLveStandardAspekteVersorger(IVerwaltung verwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void init()
-	throws DUAInitialisierungsException{
+	protected void init() throws DUAInitialisierungsException {
 
 		this.standardAspekte = new StandardAspekteAdapter(
-				new StandardPublikationsZuordnung[] {
-						new StandardPublikationsZuordnung(
-								DUAKonstanten.TYP_FAHRSTREIFEN,
-								DUAKonstanten.ATG_KZD,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH,
-								DUAKonstanten.ASP_MESSWERTERSETZUNG)});
-	}	
+				new StandardPublikationsZuordnung[] { new StandardPublikationsZuordnung(
+						DUAKonstanten.TYP_FAHRSTREIFEN, DUAKonstanten.ATG_KZD,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH,
+						DUAKonstanten.ASP_MESSWERTERSETZUNG) });
+	}
 }

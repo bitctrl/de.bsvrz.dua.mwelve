@@ -32,36 +32,34 @@ import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Diese Klasse repräsentiert die Versorgung des Moduls
- * Messwertersetzung LVE (innerhalb der SWE Messwertersetzung LVE)
- * mit Standard-Publikationsinformationen (Zuordnung von
- * Objekt-Datenbeschreibung-Kombination zu Standard-
- * Publikationsaspekt).
+ * Diese Klasse repräsentiert die Versorgung des Moduls Messwertersetzung LVE
+ * (innerhalb der SWE Messwertersetzung LVE) mit
+ * Standard-Publikationsinformationen (Zuordnung von
+ * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class MweLveStandardAspekteVersorger 
-extends StandardAspekteVersorger{
+public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
-	
 	/**
-	 * Standardkonstruktor
-	 *
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * Standardkonstruktor.
+	 * 
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException wird weitergereicht
 	 */
 	public MweLveStandardAspekteVersorger(IVerwaltung verwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void init()
-	throws DUAInitialisierungsException{
+	protected void init() throws DUAInitialisierungsException {
 
 		this.standardAspekte = new StandardAspekteAdapter(
 				new StandardPublikationsZuordnung[] {
@@ -75,6 +73,6 @@ extends StandardAspekteVersorger{
 								DUAKonstanten.ATG_LZD,
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_MESSWERTERSETZUNG) });
-					
-	}	
+
+	}
 }

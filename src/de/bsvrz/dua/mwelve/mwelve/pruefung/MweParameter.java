@@ -23,6 +23,7 @@
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
  */
+
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
 import java.util.HashMap;
@@ -38,137 +39,144 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 
 /**
- * Korrespondiert mit <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>
+ * Korrespondiert mit
+ * <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class MweParameter
-implements ClientReceiverInterface{
-	
+public final class MweParameter implements ClientReceiverInterface {
+
 	/**
-	 * Statischer Speicher aller Fahrstreifenparameter der MWE
+	 * Statischer Speicher aller Fahrstreifenparameter der MWE.
 	 */
-	private static Map<SystemObject, MweParameter> PARAMETER_MAP = new HashMap<SystemObject, MweParameter>();
-	
+	private static Map<SystemObject, MweParameter> parameterMap = new HashMap<SystemObject, MweParameter>();
+
 	/**
-	 * Maximale Zeitdauer, über die implausible Messwerte ersetzt werden
+	 * Maximale Zeitdauer, über die implausible Messwerte ersetzt werden.
 	 */
 	private long maxErsetzungsDauer = -1;
-	
+
 	/**
-	 * Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
-	 * Ersatzwert nicht interpoliert werden kann
+	 * Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem Ersatzwert.
+	 * nicht interpoliert werden kann
 	 */
 	private long maxWiederholungsZeit = -1;
-	
+
 	/**
-	 * Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung, wenn
-	 * wegen fehlendem Ersatzswert nicht interpoliert werden kann
+	 * Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung, wenn wegen.
+	 * fehlendem Ersatzswert nicht interpoliert werden kann.
 	 */
 	private long maxWiederholungAnzahl = -1;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param dav Datenverteiler-Verbindung
-	 * @param objekt das Fahrstreifenobjekt auf dessen Parameter sich angemeldet werden soll
+	 * @param dav
+	 *            Datenverteiler-Verbindung
+	 * @param objekt
+	 *            das Fahrstreifenobjekt auf dessen Parameter sich angemeldet
+	 *            werden soll
 	 */
-	private MweParameter(final ClientDavInterface dav,
-						 final SystemObject objekt){
+	private MweParameter(final ClientDavInterface dav, final SystemObject objekt) {
 		DataDescription datenBeschreibung = new DataDescription(
-				dav.getDataModel().getAttributeGroup("atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
+				dav.getDataModel().getAttributeGroup(
+						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
 				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL),
-				(short)0);
-		dav.subscribeReceiver(this, objekt, datenBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());
+				(short) 0);
+		dav.subscribeReceiver(this, objekt, datenBeschreibung, ReceiveOptions
+				.normal(), ReceiverRole.receiver());
 	}
-	
-	
+
 	/**
-	 * Initialisiert alle Parameteranmeldungen
+	 * Initialisiert alle Parameteranmeldungen.
 	 * 
-	 * @param dav Datenverteiler-Verbindung
-	 * @param objekte die Fahrstreifenobjekte auf deren Parameter sich angemeldet werden soll
+	 * @param dav
+	 *            Datenverteiler-Verbindung
+	 * @param objekte
+	 *            die Fahrstreifenobjekte auf deren Parameter sich angemeldet
+	 *            werden soll
 	 */
-	public static final void initialisiere(final ClientDavInterface dav, 
-										   final SystemObject[] objekte){
-		for(SystemObject objekt:objekte){
-			PARAMETER_MAP.put(objekt, new MweParameter(dav, objekt));
+	public static void initialisiere(final ClientDavInterface dav,
+			final SystemObject[] objekte) {
+		for (SystemObject objekt : objekte) {
+			parameterMap.put(objekt, new MweParameter(dav, objekt));
 		}
 	}
 
-	
 	/**
-	 * Erfragt die aktuellen MWE-Parameter eines Fahrstreifens
+	 * Erfragt die aktuellen MWE-Parameter eines Fahrstreifens.
 	 * 
-	 * @param fsObj ein Systemobjekt eines Fahrstreifens
-	 * @return die aktuellen MWE-Parameter eines Fahrstreifens oder <code>null</code>,
-	 * wenn diese nicht ermittelt werden konnten
+	 * @param fsObj
+	 *            ein Systemobjekt eines Fahrstreifens
+	 * @return die aktuellen MWE-Parameter eines Fahrstreifens oder
+	 *         <code>null</code>, wenn diese nicht ermittelt werden konnten
 	 */
-	public static final MweParameter getParameter(final SystemObject fsObj){
-		return PARAMETER_MAP.get(fsObj);
+	public static MweParameter getParameter(final SystemObject fsObj) {
+		return parameterMap.get(fsObj);
 	}
-	
-	
+
 	/**
-	 * Erfragt, ob für einen Fahrstreifen gültige Parameter vorhanden sind
+	 * Erfragt, ob für einen Fahrstreifen gültige Parameter vorhanden sind.
 	 * 
-	 * @param fsObj ein Systemobjekt eines Fahrstreifens
+	 * @param fsObj
+	 *            ein Systemobjekt eines Fahrstreifens
 	 * @return ob für einen Fahrstreifen gültige Parameter vorhanden sind
 	 */
-	public static final boolean isParameterValide(final SystemObject fsObj){
-		MweParameter parameter = PARAMETER_MAP.get(fsObj);
+	public static boolean isParameterValide(final SystemObject fsObj) {
+		MweParameter parameter = parameterMap.get(fsObj);
 		return parameter != null && parameter.getMaxErsetzungsDauer() != -1;
 	}
 
-	
-	
 	/**
-	 * Erfragt die Maximale Zeitdauer, über die implausible Messwerte ersetzt werden
-	 *
+	 * Erfragt die Maximale Zeitdauer, über die implausible Messwerte ersetzt
+	 * werden.
+	 * 
 	 * @return Maximale Zeitdauer, über die implausible Messwerte ersetzt werden
 	 */
 	public synchronized long getMaxErsetzungsDauer() {
 		return maxErsetzungsDauer;
 	}
-	
 
 	/**
 	 * Erfragt Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
-	 * Ersatzwert nicht interpoliert werden kann 
+	 * Ersatzwert nicht interpoliert werden kann.
 	 * 
 	 * @return Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
-	 * Ersatzwert nicht interpoliert werden kann 
+	 *         Ersatzwert nicht interpoliert werden kann
 	 */
 	public synchronized long getMaxWiederholungsZeit() {
 		return maxWiederholungsZeit;
 	}
 
-
 	/**
 	 * Erfragt Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung,
-	 * wenn wegen fehlendem Ersatzswert nicht interpoliert werden kann
-	 *  
-	 * @return Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung, wenn
-	 * wegen fehlendem Ersatzswert nicht interpoliert werden kann 
+	 * wenn wegen fehlendem Ersatzswert nicht interpoliert werden kann.
+	 * 
+	 * @return Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung,
+	 *         wenn wegen fehlendem Ersatzswert nicht interpoliert werden kann
 	 */
 	public synchronized long getMaxWiederholungAnzahl() {
 		return maxWiederholungAnzahl;
 	}
-	
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc}.
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
 					synchronized (this) {
-						this.maxErsetzungsDauer = resultat.getData().getTimeValue("MaxErsetzungsDauer").getMillis(); //$NON-NLS-1$
-						this.maxWiederholungsZeit = resultat.getData().getTimeValue("MaxWiederholungsZeit").getMillis(); //$NON-NLS-1$
-						this.maxWiederholungAnzahl = resultat.getData().getUnscaledValue("MaxWiederholungAnzahl").longValue(); //$NON-NLS-1$
+						this.maxErsetzungsDauer = resultat.getData()
+								.getTimeValue("MaxErsetzungsDauer").getMillis(); //$NON-NLS-1$
+						this.maxWiederholungsZeit = resultat
+								.getData()
+								.getTimeValue("MaxWiederholungsZeit").getMillis(); //$NON-NLS-1$
+						this.maxWiederholungAnzahl = resultat
+								.getData()
+								.getUnscaledValue("MaxWiederholungAnzahl").longValue(); //$NON-NLS-1$
 					}
 				}
 			}

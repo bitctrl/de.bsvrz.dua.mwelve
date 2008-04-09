@@ -26,18 +26,17 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
-
-
 /**
- * CSV-Eingabe-Datei mit Alias
+ * CSV-Eingabe-Datei mit Alias.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
 public class TestDatei {
-	
+
 	/**
-	 * der Dateiname
+	 * der Dateiname.
 	 */
 	private String dateiName = null;
 
@@ -45,39 +44,38 @@ public class TestDatei {
 	 * Alias der Datei (z.B. Tabellenname)
 	 */
 	private String alias = "kein Alias"; //$NON-NLS-1$
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param dateiName der Dateiname
-	 * @param alias Alias der Datei (z.B. Tabellenname)
+	 * @param dateiName
+	 *            der Dateiname
+	 * @param alias
+	 *            Alias der Datei (z.B. Tabellenname)
 	 */
-	public TestDatei(final String dateiName, final String alias){
+	public TestDatei(final String dateiName, final String alias) {
 		this.dateiName = dateiName;
-		if(alias != null){
+		if (alias != null) {
 			this.alias = alias;
 		}
 	}
-	
-	
+
 	/**
-	 * Erfragt den Dateiname
+	 * Erfragt den Dateiname.
 	 * 
 	 * @return der Dateiname
 	 */
-	public final String getDateiName(){
+	public final String getDateiName() {
 		return this.dateiName;
 	}
-	
-	
+
 	/**
-	 * Erfragt den Alias der Datei (z.B. Tabellenname)
+	 * Erfragt den Alias der Datei (z.B. Tabellenname).
 	 * 
 	 * @return der Alias der Datei (z.B. Tabellenname)
 	 */
-	public final String getAlias(){
+	public final String getAlias() {
 		return this.alias;
 	}
-	
+
 }

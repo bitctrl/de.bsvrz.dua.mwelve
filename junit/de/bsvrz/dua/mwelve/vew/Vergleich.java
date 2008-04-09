@@ -23,6 +23,7 @@
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
  */
+
 package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Date;
@@ -35,130 +36,130 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Liest alle Eingangs- und Ausgangsdaten fuer den Test nach PrSpez und
- * Vergleicht die Ergebnisse
+ * Vergleicht die Ergebnisse.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
 public class Vergleich {
-	
+
 	/**
-	 * Fahrstreifen1
+	 * Fahrstreifen1.
 	 */
 	private SystemObject fahrstreifen1 = null;
 
 	/**
-	 * Fahrstreifen2
+	 * Fahrstreifen2.
 	 */
 	private SystemObject fahrstreifen2 = null;
 
 	/**
-	 * Fahrstreifen3
+	 * Fahrstreifen3.
 	 */
 	private SystemObject fahrstreifen3 = null;
-	
+
 	/**
-	 * alle hier betrachteten Fahrstreifen
+	 * alle hier betrachteten Fahrstreifen.
 	 */
 	private SystemObject[] fahrstreifen = null;
-	
+
 	/**
-	 * Importer fuer die Eingangsdaten
+	 * Importer fuer die Eingangsdaten.
 	 */
 	private TestFahrstreifenImporter inputImporter = null;
 
 	/**
-	 * Importer fuer die erwarteten Ausgangsdaten
+	 * Importer fuer die erwarteten Ausgangsdaten.
 	 */
 	private TestFahrstreifenImporter outputImporter = null;
-	
+
 	/**
-	 * Datenbeschreibung der logisch ueberprueften LVE-Daten
+	 * Datenbeschreibung der logisch ueberprueften LVE-Daten.
 	 */
 	private DataDescription ddPlLog = null;
-	
+
 	/**
-	 * Datenbeschreibung der messwertersetzten LVE-Daten
+	 * Datenbeschreibung der messwertersetzten LVE-Daten..
 	 */
 	private DataDescription ddPlMwe = null;
-		
+
 	/**
-	 * letzte erwartete Ergebnisse
+	 * letzte erwartete Ergebnisse.
 	 */
 	private ResultData[] erwarteteErgebnisse = null;
-	
+
 	/**
-	 * Informationen zu den Eingabedateien
+	 * Informationen zu den Eingabedateien.
 	 */
 	private String dateiInfo = null;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param dav Datenverteiler-Verbindung
-	 * @param inputCsv Dateiname der CSV-Datei mit den Eingangsdaten
-	 * @param outputCsv Dateiname der CSV-Datei mit den erwarteten Ausgangsdaten
-	 * @throws Exception wird weitergereicht
+	 * @param dav
+	 *            Datenverteiler-Verbindung
+	 * @param inputCsv
+	 *            Dateiname der CSV-Datei mit den Eingangsdaten
+	 * @param outputCsv
+	 *            Dateiname der CSV-Datei mit den erwarteten Ausgangsdaten
+	 * @throws Exception
+	 *             wird weitergereicht
 	 */
-	public Vergleich(ClientDavInterface dav, 
-					 final TestDatei inputCsv,
-					 final TestDatei outputCsv)
-	throws Exception{
+	public Vergleich(ClientDavInterface dav, final TestDatei inputCsv,
+			final TestDatei outputCsv) throws Exception {
 		this.fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1"); //$NON-NLS-1$
 		this.fahrstreifen2 = dav.getDataModel().getObject("Fahrstreifen2"); //$NON-NLS-1$
 		this.fahrstreifen3 = dav.getDataModel().getObject("Fahrstreifen3"); //$NON-NLS-1$
-		this.fahrstreifen = new SystemObject[]{this.fahrstreifen1, this.fahrstreifen2, this.fahrstreifen3};
+		this.fahrstreifen = new SystemObject[] { this.fahrstreifen1,
+				this.fahrstreifen2, this.fahrstreifen3 };
 		TestFahrstreifenImporter.setT(Initialisierung.INTERVALL_LAENGE);
-		this.inputImporter = new TestFahrstreifenImporter(dav, Initialisierung.WURZEL + inputCsv.getDateiName());
-		this.outputImporter = new TestFahrstreifenImporter(dav, Initialisierung.WURZEL + outputCsv.getDateiName());
-		this.dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" + outputCsv.getAlias() + "\"";  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		this.ddPlLog = new DataDescription(
-				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
-				dav.getDataModel().getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
-		this.ddPlMwe = new DataDescription(
-				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
-				dav.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
-	}	
+		this.inputImporter = new TestFahrstreifenImporter(dav,
+				Initialisierung.WURZEL + inputCsv.getDateiName());
+		this.outputImporter = new TestFahrstreifenImporter(dav,
+				Initialisierung.WURZEL + outputCsv.getDateiName());
+		this.dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" + outputCsv.getAlias() + "\""; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		this.ddPlLog = new DataDescription(dav.getDataModel()
+				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
+				.getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
+		this.ddPlMwe = new DataDescription(dav.getDataModel()
+				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
+				.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+	}
 
-	
 	/**
-	 * Indikator für Anfang
+	 * Indikator für Anfang.
 	 */
 	private static int a = 0;
-	
+
 	/**
-	 * Erfragt eine Menge von Eingangdatensaetzen fuer den Test fuer alle
-	 * hier behandelten Fahrstreifen (mit dem uebergebenen Zeitstempel)
+	 * Erfragt eine Menge von Eingangdatensaetzen fuer den Test fuer alle hier
+	 * behandelten Fahrstreifen (mit dem uebergebenen Zeitstempel).
 	 * 
-	 * @param zeitStempel der geforderte Zeitstempel der Daten
-	 * @return eine Menge von Eingangdatensaetzen fuer den Test fuer alle
-	 * hier behandelten Fahrstreifen (mit dem uebergebenen Zeitstempel)
+	 * @param zeitStempel
+	 *            der geforderte Zeitstempel der Daten
+	 * @return eine Menge von Eingangdatensaetzen fuer den Test fuer alle hier
+	 *         behandelten Fahrstreifen (mit dem uebergebenen Zeitstempel)
 	 */
-	public final ResultData[] getFrage(final long zeitStempel){
+	public final ResultData[] getFrage(final long zeitStempel) {
 		ResultData[] frage = null;
-		
-		if(this.inputImporter.next() && this.outputImporter.next()){
+
+		if (this.inputImporter.next() && this.outputImporter.next()) {
 			this.erwarteteErgebnisse = new ResultData[3];
 			frage = new ResultData[3];
-			
-			for(int i = 0; i<3; i++){
-				this.erwarteteErgebnisse[i] = new ResultData( 
-							this.fahrstreifen[i],
-							this.ddPlMwe,
-							zeitStempel,
-							this.outputImporter.getDatensatz(i));
 
-				frage[i] = new ResultData(
-						this.fahrstreifen[i],
-						this.ddPlLog,
-						zeitStempel,
-						this.inputImporter.getDatensatz(i));
+			for (int i = 0; i < 3; i++) {
+				this.erwarteteErgebnisse[i] = new ResultData(
+						this.fahrstreifen[i], this.ddPlMwe, zeitStempel,
+						this.outputImporter.getDatensatz(i));
+
+				frage[i] = new ResultData(this.fahrstreifen[i], this.ddPlLog,
+						zeitStempel, this.inputImporter.getDatensatz(i));
 			}
 		}
-		
-		if(a++ == 0){
-			ResultData [] reverse = new ResultData[3];
+
+		if (a++ == 0) {
+			ResultData[] reverse = new ResultData[3];
 			reverse[0] = frage[2];
 			reverse[1] = frage[1];
 			reverse[2] = frage[0];
@@ -166,62 +167,68 @@ public class Vergleich {
 		}
 		return frage;
 	}
-	
-	
+
 	/**
 	 * Erfragt das Ergebnis des Vergleichs von tatsaechlichem Ergebnis und
-	 * erwartetem Ergebnis
+	 * erwartetem Ergebnis.
 	 * 
-	 * @param ergebnisse die tatsaechlich eingetroffenen Ergebnisse
+	 * @param ergebnisse
+	 *            die tatsaechlich eingetroffenen Ergebnisse
 	 * @return das Ergebnis des Vergleichs von tatsaechlichem Ergebnis und
-	 * erwartetem Ergebnis
+	 *         erwartetem Ergebnis
 	 */
-	public final Ergebnis getErgebnis(ResultData[] ergebnisse){
-		return new Ergebnis(this.inputImporter.getZeilenNummer() + 1, this.dateiInfo, this.erwarteteErgebnisse, ergebnisse);
+	public final Ergebnis getErgebnis(ResultData[] ergebnisse) {
+		return new Ergebnis(this.inputImporter.getZeilenNummer() + 1,
+				this.dateiInfo, this.erwarteteErgebnisse, ergebnisse);
 	}
-	
-	
+
 	/**
-	 * Ergebnis der Ueberpruefung von Soll- und Ist-Wert 
+	 * Ergebnis der Ueberpruefung von Soll- und Ist-Wert.
 	 * 
 	 * @author BitCtrl Systems GmbH, Thierfelder
-	 *
+	 * 
 	 */
-	protected static class Ergebnis{
-		
+	protected static class Ergebnis {
+
 		/**
-		 * indiziert, dass Soll- und Ist-Wert uebereinstimmen
+		 * indiziert, dass Soll- und Ist-Wert uebereinstimmen.
 		 */
 		private boolean passt = false;
-		
+
 		/**
-		 * illustriert die fehlerhafte Uebereinstimmung
+		 * illustriert die fehlerhafte Uebereinstimmung.
 		 */
 		private String info = null;
-		
-		
+
 		/**
-		 * Standardkonstruktor
+		 * Standardkonstruktor.
 		 * 
-		 * @param zeilenNummer die Zeilennummer in der CSV-Eingabe-Datei in der der Fehler aufgetacht ist
-		 * @param dateiInfo Informationen zu den Test-Dateien
-		 * @param erwarteteErgebnisse Menge von erwarteten <code>ResultData</code>-Datensaetzen
-		 * @param ergebnisse Menge von tatsaechlich erhaltenen <code>ResultData</code>-Datensaetzen
+		 * @param zeilenNummer
+		 *            die Zeilennummer in der CSV-Eingabe-Datei in der der
+		 *            Fehler aufgetacht ist
+		 * @param dateiInfo
+		 *            Informationen zu den Test-Dateien
+		 * @param erwarteteErgebnisse
+		 *            Menge von erwarteten <code>ResultData</code>-Datensaetzen
+		 * @param ergebnisse
+		 *            Menge von tatsaechlich erhaltenen <code>ResultData</code>-Datensaetzen
 		 */
 		protected Ergebnis(final int zeilenNummer, final String dateiInfo,
-				ResultData[] erwarteteErgebnisse, ResultData[] ergebnisse){
-			for(int i = 0; i<ergebnisse.length; i++){
-				for(int j = 0; j<erwarteteErgebnisse.length; j++){
-					if(ergebnisse[i].getObject().equals(erwarteteErgebnisse[j].getObject())){
+				ResultData[] erwarteteErgebnisse, ResultData[] ergebnisse) {
+			for (int i = 0; i < ergebnisse.length; i++) {
+				for (int j = 0; j < erwarteteErgebnisse.length; j++) {
+					if (ergebnisse[i].getObject().equals(
+							erwarteteErgebnisse[j].getObject())) {
 						ResultData soll = erwarteteErgebnisse[j];
 						ResultData ist = ergebnisse[i];
-						
+
 						KurzZeitDatum kzdSoll = new KurzZeitDatum(soll);
 						KurzZeitDatum kzdIst = new KurzZeitDatum(ist);
-						passt = soll.getDataTime() == ist.getDataTime() && kzdSoll.equals(kzdIst);						
-						
+						passt = soll.getDataTime() == ist.getDataTime()
+								&& kzdSoll.equals(kzdIst);
+
 						this.info = "Zeile: " + zeilenNummer + " (" + dateiInfo + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						if(!passt){
+						if (!passt) {
 							this.info += "\nSoll != Ist\n" + kzdSoll.compare(kzdIst); //$NON-NLS-1$
 							this.info += "\nSoll-Zeit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(soll.getDataTime())); //$NON-NLS-1$
 							this.info += "\nIst-Zeit:  " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ist.getDataTime())); //$NON-NLS-1$
@@ -231,17 +238,15 @@ public class Vergleich {
 				}
 			}
 		}
-		
-		
+
 		/**
-		 * Erfragt, ob Soll- und Ist-Wert uebereinstimmen
+		 * Erfragt, ob Soll- und Ist-Wert uebereinstimmen.
 		 * 
 		 * @return ob Soll- und Ist-Wert uebereinstimmen
 		 */
-		protected final boolean passtZusammen(){
+		protected final boolean passtZusammen() {
 			return passt;
 		}
-
 
 		/**
 		 * {@inheritDoc}
@@ -250,6 +255,6 @@ public class Vergleich {
 		public String toString() {
 			return this.info;
 		}
-		
+
 	}
 }

@@ -51,110 +51,107 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 
 /**
- * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE.
- * Seine Aufgabe besteht in der Auswertung der Aufrufparameter, der Anmeldung
- * beim Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung formal,
- * PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation.
- * Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden Daten zuständig.
- * Die Verwaltung gibt ein Objekt des Moduls PL-Prüfung formal als Beobachterobjekt an,
- * an das die zu überprüfenden Daten durch den Aktualisierungsmechanismus weitergeleitet
- * werden. Weiterhin stellt die Verwaltung die Verkettung der Module PL-Prüfung formal,
- * PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge
- * her.
+ * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE. Seine
+ * Aufgabe besteht in der Auswertung der Aufrufparameter, der Anmeldung beim
+ * Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung
+ * formal, PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation.
+ * Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden Daten
+ * zuständig. Die Verwaltung gibt ein Objekt des Moduls PL-Prüfung formal als
+ * Beobachterobjekt an, an das die zu überprüfenden Daten durch den
+ * Aktualisierungsmechanismus weitergeleitet werden. Weiterhin stellt die
+ * Verwaltung die Verkettung der Module PL-Prüfung formal, PL-Prüfung logisch
+ * LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge her.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class VerwaltungMessWertErsetzungLVE
-extends AbstraktVerwaltungsAdapterMitGuete{
+public class VerwaltungMessWertErsetzungLVE extends
+		AbstraktVerwaltungsAdapterMitGuete {
 
 	/**
-	 * Instanz des Moduls PL-Prüfung formal (1)
+	 * Instanz des Moduls PL-Prüfung formal (1).
 	 */
-	private PlPruefungFormal plForm1  = null;
-
+	private PlPruefungFormal plForm1 = null;
 
 	/**
-	 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
+	 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
+	 * Messwertersetzung weg
 	 */
-//	/**
-//	 * Instanz des Moduls PL-Prüfung formal (2)
-//	 */
-//	private PlPruefungFormal plForm2  = null;
-//
-//	/**
-//	 * Instanz des Moduls PL-Prüfung logisch LVE (1)
-//	 */
-//	private PlPruefungLogischLVE plLog2 = null;
-	
-	
+	// /**
+	// * Instanz des Moduls PL-Prüfung formal (2)
+	// */
+	// private PlPruefungFormal plForm2 = null;
+	//
+	// /**
+	// * Instanz des Moduls PL-Prüfung logisch LVE (1)
+	// */
+	// private PlPruefungLogischLVE plLog2 = null;
+
 	/**
-	 * Instanz des Moduls PL-Prüfung logisch LVE (2)
+	 * Instanz des Moduls PL-Prüfung logisch LVE (2).
 	 */
 	private PlPruefungLogischLVE plLog1 = null;
-	
+
 	/**
-	 * Instanz des Moduls Messwertersetzung LVE
+	 * Instanz des Moduls Messwertersetzung LVE.
 	 */
 	private MessWertErsetzungLVE mwe = null;
-	
+
 	/**
 	 * Modul, das nur publiziert (die Publikation kann nicht im Modul MWE selbst
 	 * erfolgen, da die Daten nach diesem Modul noch einmal formal und logisch
-	 * plausibilisiert werden müssen)
+	 * plausibilisiert werden müssen).
 	 */
 	private PublikationsModul pub = null;
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void initialisiere()
-	throws DUAInitialisierungsException {
+	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(this.verbindung);
-		
-		Collection<SystemObject> alleFsObjImKB = DUAUtensilien.getBasisInstanzen(
-				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_FAHRSTREIFEN),
-				this.verbindung, this.getKonfigurationsBereiche());
+
+		Collection<SystemObject> alleFsObjImKB = DUAUtensilien
+				.getBasisInstanzen(this.verbindung.getDataModel().getType(
+						DUAKonstanten.TYP_FAHRSTREIFEN), this.verbindung, this
+						.getKonfigurationsBereiche());
 		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
-		
 		String infoStr = Constants.EMPTY_STRING;
-		for(SystemObject obj:this.objekte){
+		for (SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
 		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		
-		this.plForm1 = new PlPruefungFormal(
-				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.plLog1 = new PlPruefungLogischLVE(
-				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.mwe = new MessWertErsetzungLVE();
-		
-		/**
-		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
-		 */
-//		this.plForm2 = new PlPruefungFormal(
-//				new PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-//		this.plLog2 = new PlPruefungLogischLVE(
-//				new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		
-		this.pub = new PublikationsModul(
-				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(), 
-				ModulTyp.MESSWERTERSETZUNG_LVE);
 
+		this.plForm1 = new PlPruefungFormal(
+				new PlFormMweLveStandardAspekteVersorger(this)
+						.getStandardPubInfos());
+		this.plLog1 = new PlPruefungLogischLVE(
+				new PlLogMweLveStandardAspekteVersorger(this)
+						.getStandardPubInfos());
+		this.mwe = new MessWertErsetzungLVE();
+
+		/**
+		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
+		 * Messwertersetzung weg
+		 */
+		// this.plForm2 = new PlPruefungFormal(
+		// new
+		// PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		// this.plLog2 = new PlPruefungLogischLVE(
+		// new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
+		this.pub = new PublikationsModul(new MweLveStandardAspekteVersorger(
+				this).getStandardPubInfos(), ModulTyp.MESSWERTERSETZUNG_LVE);
 
 		this.plForm1.setNaechstenBearbeitungsKnoten(this.plLog1);
 		this.plForm1.setPublikation(true);
@@ -167,72 +164,71 @@ extends AbstraktVerwaltungsAdapterMitGuete{
 		this.mwe.setNaechstenBearbeitungsKnoten(this.pub);
 		this.mwe.initialisiere(this);
 
-		
 		/**
-		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der Messwertersetzung weg 
+		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
+		 * Messwertersetzung weg
 		 */
-//		this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
-//		this.plForm2.initialisiere(this);
-//
-//		this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);		
-//		this.plLog2.initialisiere(this);
-		
-		
+		// this.plForm2.setNaechstenBearbeitungsKnoten(this.plLog2);
+		// this.plForm2.initialisiere(this);
+		//
+		// this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);
+		// this.plLog2.initialisiere(this);
+
 		this.pub.initialisiere(this);
 
 		/**
 		 * Auf Daten anmelden und Start
 		 */
 		DataDescription anmeldungsBeschreibungKZD = new DataDescription(
-				this.verbindung.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
-				this.verbindung.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG),
-				(short)0);			
-		
-		this.verbindung.subscribeReceiver(this, this.objekte, anmeldungsBeschreibungKZD,
-					ReceiveOptions.normal(), ReceiverRole.receiver());		
+				this.verbindung.getDataModel().getAttributeGroup(
+						DUAKonstanten.ATG_KZD), this.verbindung.getDataModel()
+						.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG),
+				(short) 0);
+
+		this.verbindung.subscribeReceiver(this, this.objekte,
+				anmeldungsBeschreibungKZD, ReceiveOptions.normal(),
+				ReceiverRole.receiver());
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
 		this.plForm1.aktualisiereDaten(resultate);
 	}
-	
-	
+
 	/**
-	 * Startet diese Applikation
+	 * Startet diese Applikation.
 	 * 
-	 * @param argumente Argumente der Kommandozeile
+	 * @param argumente
+	 *            Argumente der Kommandozeile
 	 */
-	public static void main(String argumente[]){
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.
-        				UncaughtExceptionHandler(){
-            public void uncaughtException(@SuppressWarnings("unused")
-			Thread t, Throwable e) {
-            	e.printStackTrace();
-                LOGGER.error("Applikation wird wegen" +  //$NON-NLS-1$
-                		" unerwartetem Fehler beendet", e);  //$NON-NLS-1$
-                Runtime.getRuntime().exit(0);
-            }
-        });
-		StandardApplicationRunner.run(
-					new VerwaltungMessWertErsetzungLVE(), argumente);
+	public static void main(String[] argumente) {
+		Thread
+				.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+					public void uncaughtException(@SuppressWarnings("unused")
+					Thread t, Throwable e) {
+						e.printStackTrace();
+						LOGGER.error("Applikation wird wegen" + //$NON-NLS-1$
+								" unerwartetem Fehler beendet", e); //$NON-NLS-1$
+						Runtime.getRuntime().exit(0);
+					}
+				});
+		StandardApplicationRunner.run(new VerwaltungMessWertErsetzungLVE(),
+				argumente);
 	}
 
-	
 	/**
 	 * {@inheritDoc}.<br>
 	 * 
 	 * Standard-Gütefaktor für Ersetzungen (90%)<br>
 	 * Wenn das Modul Messwertersetzung LVE einen Messwert ersetzt, so
-	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn
-	 * kein anderer Wert über die Kommandozeile übergeben wurde)
+	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn kein
+	 * anderer Wert über die Kommandozeile übergeben wurde)
 	 */
 	@Override
 	public double getStandardGueteFaktor() {
 		return 0.9;
 	}
-	
+
 }

@@ -23,6 +23,7 @@
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
  */
+
 package de.bsvrz.dua.mwelve.vew;
 
 import java.util.Date;
@@ -34,42 +35,87 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.MesswertUnskaliert;
 
 /**
- * Repraesentation eines Kurzzeitdatums fuer Testzwecke
+ * Repraesentation eines Kurzzeitdatums fuer Testzwecke.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
 public class KurzZeitDatum {
 
 	/**
-	 * das Originaldatum
+	 * das Originaldatum.
 	 */
 	private ResultData original = null;
+
+	/**
+	 * interne Repraesentationen des Originaldatums.
+	 */
+	private long t = -1;
 	
 	/**
-	 * interne Repraesentationen des Originaldatums
+	 * <code>ArtMittelwertbildung</code>.
 	 */
-	private long T = -1;
-	private long ArtMittelwertbildung = 1;
+	private long artMittelwertbildung = 1;
+	
+	/**
+	 * <code>qKfz</code>.
+	 */
 	private MesswertUnskaliert qKfz = new MesswertUnskaliert("qKfz"); //$NON-NLS-1$
+	
+	/**
+	 * <code>qLkw</code>.
+	 */
 	private MesswertUnskaliert qLkw = new MesswertUnskaliert("qLkw"); //$NON-NLS-1$
+	
+	/**
+	 * <code>qPkw</code>.
+	 */
 	private MesswertUnskaliert qPkw = new MesswertUnskaliert("qPkw"); //$NON-NLS-1$
+	
+	/**
+	 * <code>vKfz</code>.
+	 */
 	private MesswertUnskaliert vKfz = new MesswertUnskaliert("vKfz"); //$NON-NLS-1$
+	
+	/**
+	 * <code>vLkw</code>.
+	 */
 	private MesswertUnskaliert vLkw = new MesswertUnskaliert("vLkw"); //$NON-NLS-1$
+	
+	/**
+	 * <code>vPkw</code>.
+	 */
 	private MesswertUnskaliert vPkw = new MesswertUnskaliert("vPkw"); //$NON-NLS-1$
+	
+	/**
+	 * <code>vgKfz</code>.
+	 */
 	private MesswertUnskaliert vgKfz = new MesswertUnskaliert("vgKfz"); //$NON-NLS-1$
+	
+	/**
+	 * <code>b</code>.
+	 */
 	private MesswertUnskaliert b = new MesswertUnskaliert("b"); //$NON-NLS-1$
+	
+	/**
+	 * <code>tNetto</code>.
+	 */
 	private MesswertUnskaliert tNetto = new MesswertUnskaliert("tNetto"); //$NON-NLS-1$
 	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param resultat das <code>ResultData</code>-Objekt, aus dem sich dieses KZD speist
+	 * @param resultat
+	 *            das <code>ResultData</code>-Objekt, aus dem sich dieses KZD
+	 *            speist
 	 */
-	public KurzZeitDatum(final ResultData resultat){
+	public KurzZeitDatum(final ResultData resultat) {
 		this.original = resultat;
-		this.T = resultat.getData().getTimeValue("T").getMillis(); //$NON-NLS-1$
-		this.ArtMittelwertbildung = resultat.getData().getUnscaledValue("ArtMittelwertbildung").longValue(); //$NON-NLS-1$
+		this.t = resultat.getData().getTimeValue("T").getMillis(); //$NON-NLS-1$
+		this.artMittelwertbildung = resultat.getData().getUnscaledValue(
+				"ArtMittelwertbildung").longValue(); //$NON-NLS-1$
 		this.qKfz = new MesswertUnskaliert("qKfz", resultat.getData()); //$NON-NLS-1$
 		this.qLkw = new MesswertUnskaliert("qLkw", resultat.getData()); //$NON-NLS-1$
 		this.qPkw = new MesswertUnskaliert("qPkw", resultat.getData()); //$NON-NLS-1$
@@ -81,84 +127,85 @@ public class KurzZeitDatum {
 		this.tNetto = new MesswertUnskaliert("tNetto", resultat.getData()); //$NON-NLS-1$		
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return compare((KurzZeitDatum)obj) == null;	
+		return compare((KurzZeitDatum) obj) == null;
 	}
-	
-	
+
 	/**
-	 * Erfragt den Unterschied zwischen diesem und dem uebergebenen Datum
+	 * Erfragt den Unterschied zwischen diesem und dem uebergebenen Datum.
 	 * 
-	 * @param that ein anderes KZD
-	 * @return der Unterschied zwischen diesem und dem uebergebenen Datum
-	 * oder <code>null</code> wenn beide Daten gleich sind
+	 * @param that
+	 *            ein anderes KZD
+	 * @return der Unterschied zwischen diesem und dem uebergebenen Datum oder
+	 *         <code>null</code> wenn beide Daten gleich sind
 	 */
 	public final String compare(KurzZeitDatum that) {
 		boolean gleich = true;
 		String info = Constants.EMPTY_STRING;
-		
-		if(!this.original.getObject().equals(that.original.getObject())){
-			info += this.original.getObject() + " != " + that.original.getObject() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+
+		if (!this.original.getObject().equals(that.original.getObject())) {
+			info += this.original.getObject()
+					+ " != " + that.original.getObject() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			gleich = false;
 		}
-		if(this.original.getDataTime() != that.original.getDataTime()){
-			info += DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.original.getDataTime())) + " != " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(that.original.getDataTime())) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (this.original.getDataTime() != that.original.getDataTime()) {
+			info += DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
+					this.original.getDataTime()))
+					+ " != " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(that.original.getDataTime())) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			gleich = false;
 		}
-		if(this.T != that.T){
-			info += "T: " + this.T + " != " + that.T + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (this.t != that.t) {
+			info += "T: " + this.t + " != " + that.t + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(this.ArtMittelwertbildung != that.ArtMittelwertbildung){
-			info += "ArtMittelwertbildung: " + this.ArtMittelwertbildung + " != " + that.ArtMittelwertbildung + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (this.artMittelwertbildung != that.artMittelwertbildung) {
+			info += "ArtMittelwertbildung: " + this.artMittelwertbildung + " != " + that.artMittelwertbildung + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.qKfz.equals(that.qKfz)){
+		if (!this.qKfz.equals(that.qKfz)) {
 			info += "qKfz: " + this.qKfz + " != " + that.qKfz + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.qPkw.equals(that.qPkw)){
+		if (!this.qPkw.equals(that.qPkw)) {
 			info += "qPkw: " + this.qPkw + " != " + that.qPkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.qLkw.equals(that.qLkw)){
+		if (!this.qLkw.equals(that.qLkw)) {
 			info += "qLkw: " + this.qLkw + " != " + that.qLkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.vKfz.equals(that.vKfz)){
+		if (!this.vKfz.equals(that.vKfz)) {
 			info += "vKfz: " + this.vKfz + " != " + that.vKfz + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.vPkw.equals(that.vPkw)){
+		if (!this.vPkw.equals(that.vPkw)) {
 			info += "vPkw: " + this.vPkw + " != " + that.vPkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.vLkw.equals(that.vLkw)){
+		if (!this.vLkw.equals(that.vLkw)) {
 			info += "vLkw: " + this.vLkw + " != " + that.vLkw + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		
-		if(!this.vgKfz.equals(that.vgKfz)){
+
+		if (!this.vgKfz.equals(that.vgKfz)) {
 			info += "vgKfz: " + this.vgKfz + " != " + that.vgKfz + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.b.equals(that.b)){
+		if (!this.b.equals(that.b)) {
 			info += "b: " + this.b + " != " + that.b + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		if(!this.tNetto.equals(that.tNetto)){
+		if (!this.tNetto.equals(that.tNetto)) {
 			info += "tNetto: " + this.tNetto + " != " + that.tNetto + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			gleich = false;
 		}
-		
-		return gleich?null:info;
-	}	
-	
+
+		return gleich ? null : info;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -167,5 +214,5 @@ public class KurzZeitDatum {
 	public String toString() {
 		return this.original.getData().toString();
 	}
-	
+
 }
