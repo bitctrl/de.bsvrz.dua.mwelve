@@ -75,11 +75,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			MweAttribut.V_PKW, MweAttribut.Q_LKW, MweAttribut.V_LKW };
 
 	/**
-	 * Debug-Logger.
-	 */
-	private static final Debug LOGGER = Debug.getLogger();
-
-	/**
 	 * Menge aller Fahrstreifen, die sowohl einen Nachbar- wie auch einen
 	 * Ersatzfahrstreifen besitzen und somit hier plausibilisiert werden.
 	 */
@@ -267,7 +262,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 						}
 
 					} else {
-						LOGGER
+						Debug.getLogger()
 								.warning("Fahrstreifen-Datum zu " + resultat.getObject() + //$NON-NLS-1$
 										" konnte nicht extrahiert werden"); //$NON-NLS-1$
 						weiterzuleitendeResultate.add(resultat);

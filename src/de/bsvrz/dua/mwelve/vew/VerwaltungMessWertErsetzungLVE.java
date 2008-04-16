@@ -49,6 +49,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGue
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE. Seine
@@ -131,7 +132,7 @@ public class VerwaltungMessWertErsetzungLVE extends
 		for (SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		Debug.getLogger().config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
@@ -209,7 +210,7 @@ public class VerwaltungMessWertErsetzungLVE extends
 					public void uncaughtException(@SuppressWarnings("unused")
 					Thread t, Throwable e) {
 						e.printStackTrace();
-						LOGGER.error("Applikation wird wegen" + //$NON-NLS-1$
+						Debug.getLogger().error("Applikation wird wegen" + //$NON-NLS-1$
 								" unerwartetem Fehler beendet", e); //$NON-NLS-1$
 						Runtime.getRuntime().exit(0);
 					}

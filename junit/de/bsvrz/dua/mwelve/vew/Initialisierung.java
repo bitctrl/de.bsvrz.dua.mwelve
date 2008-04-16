@@ -44,6 +44,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Statischer Speicher fuer die Initialisierungsdaten.
@@ -188,7 +189,7 @@ public final class Initialisierung {
 							for (SystemObject obj : this.objekte) {
 								infoStr += obj + "\n"; //$NON-NLS-1$
 							}
-							LOGGER
+							Debug.getLogger()
 									.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 							messwertersetzungLVE = new MessWertErsetzungLVE();
