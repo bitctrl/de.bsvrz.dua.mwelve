@@ -205,16 +205,6 @@ public class VerwaltungMessWertErsetzungLVE extends
 	 *            Argumente der Kommandozeile
 	 */
 	public static void main(String[] argumente) {
-		Thread
-				.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-					public void uncaughtException(@SuppressWarnings("unused")
-					Thread t, Throwable e) {
-						e.printStackTrace();
-						Debug.getLogger().error("Applikation wird wegen" + //$NON-NLS-1$
-								" unerwartetem Fehler beendet", e); //$NON-NLS-1$
-						Runtime.getRuntime().exit(0);
-					}
-				});
 		StandardApplicationRunner.run(new VerwaltungMessWertErsetzungLVE(),
 				argumente);
 	}
