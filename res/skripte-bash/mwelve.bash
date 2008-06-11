@@ -33,7 +33,7 @@ fi
 ################################################################################
 
 # Applikation starten
-java $jvmArgs -jar ../de.bsvrz.dua.mwelve-runtime.jar \
+$java $jvmArgs -jar ../de.bsvrz.dua.mwelve-runtime.jar \
 	$dav1 \
 	-KonfigurationsBereichsPid=$kb \
 	-debugLevelStdErrText=ERROR \

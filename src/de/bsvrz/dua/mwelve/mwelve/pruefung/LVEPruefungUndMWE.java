@@ -263,8 +263,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
 					} else {
 						Debug.getLogger()
-								.warning("Fahrstreifen-Datum zu " + resultat.getObject() + //$NON-NLS-1$
-										" konnte nicht extrahiert werden"); //$NON-NLS-1$
+								.warning("Fahrstreifen zu Datensatz konnte nicht identifiziert werden: " + resultat.getObject());
 						weiterzuleitendeResultate.add(resultat);
 					}
 				}
