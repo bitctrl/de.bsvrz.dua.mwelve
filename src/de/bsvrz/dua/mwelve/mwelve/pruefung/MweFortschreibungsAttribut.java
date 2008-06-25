@@ -153,11 +153,11 @@ public class MweFortschreibungsAttribut {
 						.getInstance()
 						.sendMessage(
 								MessageType.APPLICATION_DOMAIN,
-								"Applikation Messwertersetzung LVE", MessageGrade.WARNING, //$NON-NLS-1$
+								null, MessageGrade.WARNING, //$NON-NLS-1$
 								this.objekt,
 								new MessageCauser(
 										LVEPruefungUndMWE.sDav.getLocalUser(),
-										"keine Messwertersetzung möglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
 								"keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		} else {
