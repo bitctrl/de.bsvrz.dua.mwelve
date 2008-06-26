@@ -70,6 +70,10 @@ public final class Initialisierung {
 	 * Wurzelverzeichnis der Testdaten
 	 * 
 	 */
+	
+//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
+
+	
 	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
 			File.separator + "V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
 	// public static final String WURZEL = ".." + File.separator + "testDaten" +
@@ -126,20 +130,6 @@ public final class Initialisierung {
 			"-debugLevelStdErrText=WARNING", //$NON-NLS-1$
 			"-debugLevelFileText=WARNING", //$NON-NLS-1$
 			"-KonfigurationsBereichsPid=kb.duaMweTest" }; //$NON-NLS-1$
-
-	// /**
-	// * ANPASSEN:
-	// *
-	// * Verbindungsdaten
-	// *
-	// */
-	// private static final String[] CON_DATA = new String[] {
-	// "-datenverteiler=localhost:8083", //$NON-NLS-1$
-	// "-benutzer=Tester", //$NON-NLS-1$
-	// "-authentifizierung=c:\\passwd", //$NON-NLS-1$
-	// "-debugLevelStdErrText=WARNING", //$NON-NLS-1$
-	// "-debugLevelFileText=WARNING", //$NON-NLS-1$
-	// "-KonfigurationsBereichsPid=kb.duaMweTest"}; //$NON-NLS-1$
 
 	// ///////////////////////////////////////////////////////////////////////////////////
 
