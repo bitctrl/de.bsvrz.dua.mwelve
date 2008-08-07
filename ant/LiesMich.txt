@@ -19,6 +19,14 @@ asp.messWertErsetzung publiziert.
 Versionsgeschichte
 ==================
 
+1.1.0
+
+  - Logging veraendert:
+ 	Ausgabe "Systemobjekt kann nicht identifiziert werden?" entfernt.
+ 	Dieser Zustand kann/darf im Prinzip nicht auftreten. Sollte dies dennoch geschehen,
+ 	so wird jetzt eine Laufzeit-Exception geworfen. 
+  
+  
 1.0.0
 
   - Erste Auslieferung
