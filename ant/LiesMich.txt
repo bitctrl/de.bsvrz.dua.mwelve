@@ -18,6 +18,10 @@ asp.messWertErsetzung publiziert.
 
 Versionsgeschichte
 ==================
+1.1.2
+
+  - FIX: Sämtliche Konstruktoren DataDescription(atg, asp, sim) ersetzt durch
+         DataDescription(atg, asp)
 
 1.1.0
 

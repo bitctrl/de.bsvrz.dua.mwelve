@@ -83,8 +83,7 @@ public final class MweParameter implements ClientReceiverInterface {
 		DataDescription datenBeschreibung = new DataDescription(
 				dav.getDataModel().getAttributeGroup(
 						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL),
-				(short) 0);
+				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dav.subscribeReceiver(this, objekt, datenBeschreibung, ReceiveOptions
 				.normal(), ReceiverRole.receiver());
 	}
