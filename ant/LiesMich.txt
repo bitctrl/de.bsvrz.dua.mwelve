@@ -18,6 +18,11 @@ asp.messWertErsetzung publiziert.
 
 Versionsgeschichte
 ==================
+
+1.1.3
+
+  - FIX: Null-Ueberpruefung vorm Zugriff auf den lokalen Puffer.
+
 1.1.2
 
   - FIX: Sämtliche Konstruktoren DataDescription(atg, asp, sim) ersetzt durch
