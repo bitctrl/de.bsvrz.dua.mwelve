@@ -360,8 +360,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 		KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
 
 		if (zielDatum != null) {
-			KZDatum ersatzZielDatum = ersatzPuffer
+			KZDatum ersatzZielDatum = null;
+			if(ersatzPuffer != null && zielDatum.getDatum() != null) {
+				ersatzZielDatum = ersatzPuffer
 					.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());
+			}
 			if (ersatzZielDatum != null) {
 				/**
 				 * Es sind alle Daten zur Berechnung des Zielintervalls da!
