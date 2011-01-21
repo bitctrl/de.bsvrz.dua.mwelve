@@ -50,6 +50,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.debug.Debug;
+import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 
 /**
  * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE. Seine
@@ -121,7 +122,8 @@ public class VerwaltungMessWertErsetzungLVE extends
 
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(this.verbindung);
-
+		MessageSender.getInstance().setApplicationLabel("Messwertersetzung LVE");
+		
 		Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(this.verbindung.getDataModel().getType(
 						DUAKonstanten.TYP_FAHRSTREIFEN), this.verbindung, this

@@ -35,6 +35,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltungMitGuete;
+import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 
 /**
  * Das Modul Messwertersetzung LVE meldet sich auf alle benötigten Parameter der
@@ -68,7 +69,7 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
-
+		
 		if (dieVerwaltung instanceof IVerwaltungMitGuete) {
 			guete = ((IVerwaltungMitGuete) dieVerwaltung).getGueteFaktor();
 		} else {
