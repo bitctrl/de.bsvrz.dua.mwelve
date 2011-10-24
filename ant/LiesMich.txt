@@ -19,6 +19,11 @@ asp.messWertErsetzung publiziert.
 Versionsgeschichte
 ==================
 
+1.1.4
+
+  - Senden von reinen Betriebsmeldungen in DUA um die Umsetzung von Objekt-PID/ID nach
+    Betriebsmeldungs-ID erweitert.  
+
 1.1.3
 
   - FIX: Null-Ueberpruefung vorm Zugriff auf den lokalen Puffer.

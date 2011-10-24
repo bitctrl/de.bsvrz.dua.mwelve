@@ -41,6 +41,8 @@ import de.bsvrz.dua.mwelve.pllovlve.PlLogMweLveStandardAspekteVersorger;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
 import de.bsvrz.dua.plloglve.plloglve.PlPruefungLogischLVE;
 import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
+import de.bsvrz.sys.funclib.bitctrl.daf.BetriebsmeldungIdKonverter;
+import de.bsvrz.sys.funclib.bitctrl.daf.DefaultBetriebsMeldungsIdKonverter;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
@@ -70,6 +72,11 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  */
 public class VerwaltungMessWertErsetzungLVE extends
 		AbstraktVerwaltungsAdapterMitGuete {
+
+	/**
+	 * Der statische Umsetzer fuer die Betriebsmeldungs-Id.
+	 */
+	private static final BetriebsmeldungIdKonverter konverter = new DefaultBetriebsMeldungsIdKonverter();
 
 	/**
 	 * Instanz des Moduls PL-Prüfung formal (1).
@@ -122,19 +129,22 @@ public class VerwaltungMessWertErsetzungLVE extends
 
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(this.verbindung);
-		MessageSender.getInstance().setApplicationLabel("Messwertersetzung LVE");
-		
+		MessageSender.getInstance()
+				.setApplicationLabel("Messwertersetzung LVE");
+
 		Collection<SystemObject> alleFsObjImKB = DUAUtensilien
-				.getBasisInstanzen(this.verbindung.getDataModel().getType(
-						DUAKonstanten.TYP_FAHRSTREIFEN), this.verbindung, this
-						.getKonfigurationsBereiche());
+				.getBasisInstanzen(
+						this.verbindung.getDataModel().getType(
+								DUAKonstanten.TYP_FAHRSTREIFEN),
+						this.verbindung, this.getKonfigurationsBereiche());
 		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
 		String infoStr = Constants.EMPTY_STRING;
 		for (SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		Debug.getLogger().config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		Debug.getLogger().config(
+				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
@@ -221,6 +231,15 @@ public class VerwaltungMessWertErsetzungLVE extends
 	@Override
 	public double getStandardGueteFaktor() {
 		return 0.9;
+	}
+
+	/**
+	 * Erfragt den statischen Umsetzer fuer die Betriebsmeldungs-Id.
+	 * 
+	 * @return der statischen Umsetzer fuer die Betriebsmeldungs-Id.
+	 */
+	public static final BetriebsmeldungIdKonverter getStaticBmvIdKonverter() {
+		return konverter;
 	}
 
 }

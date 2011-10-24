@@ -29,10 +29,13 @@ package de.bsvrz.dua.mwelve.mwelve.pruefung;
 import java.util.Date;
 
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dua.mwelve.vew.VerwaltungMessWertErsetzungLVE;
+import de.bsvrz.sys.funclib.bitctrl.daf.BetriebsmeldungDaten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.operatingMessage.MessageCauser;
 import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
 import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
+import de.bsvrz.sys.funclib.operatingMessage.MessageState;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 
 /**
@@ -133,8 +136,7 @@ public class MweFortschreibungsAttribut {
 
 			MweParameter parameter = MweParameter.getParameter(this.objekt);
 			if (parameter.getMaxErsetzungsDauer() >= ersetztesDatum
-					.getDatenZeit()
-					- this.fortschreibungSeit) {
+					.getDatenZeit() - this.fortschreibungSeit) {
 				ersetztesDatum.getAttributWert(this.attribut).setWert(
 						this.letzterPlausiblerWert.getWert());
 				ersetztesDatum.getAttributWert(this.attribut).setInterpoliert(
@@ -147,18 +149,36 @@ public class MweFortschreibungsAttribut {
 
 			if (parameter.getMaxWiederholungAnzahl() < this.fortschreibungMale
 					|| parameter.getMaxWiederholungsZeit() < ersetztesDatum
-							.getDatenZeit()
-							- this.fortschreibungSeit) {
+							.getDatenZeit() - this.fortschreibungSeit) {
+
 				MessageSender
 						.getInstance()
 						.sendMessage(
+								VerwaltungMessWertErsetzungLVE
+										.getStaticBmvIdKonverter().konvertiere(
+												new BetriebsmeldungDaten(
+														this.objekt), null,
+												new Object[0]),
 								MessageType.APPLICATION_DOMAIN,
-								null, MessageGrade.WARNING, //$NON-NLS-1$
-								this.objekt,
+								null,
+								MessageGrade.WARNING, //$NON-NLS-1$
+								this.objekt, MessageState.MESSAGE,
 								new MessageCauser(
 										LVEPruefungUndMWE.sDav.getLocalUser(),
 										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
 								"keine Messwertersetzung möglich"); //$NON-NLS-1$
+
+//				MessageSender
+//						.getInstance()
+//						.sendMessage(
+//								MessageType.APPLICATION_DOMAIN,
+//								null,
+//								MessageGrade.WARNING, //$NON-NLS-1$
+//								this.objekt,
+//								new MessageCauser(
+//										LVEPruefungUndMWE.sDav.getLocalUser(),
+//										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+//								"keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		} else {
 			this.fortschreibungSeit = -1;
