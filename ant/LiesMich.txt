@@ -19,6 +19,12 @@ asp.messWertErsetzung publiziert.
 Versionsgeschichte
 ==================
 
+1.2.0
+
+  - Neues Kommandozeilenargument -ignoriereLangzeitdaten. Der Defaultwert
+    "false" behält das aktuelle Verhalten bei, bei dem die Langzeitdaten von der
+    SW-Einheit verarbeitet werden
+
 1.1.4
 
   - Senden von reinen Betriebsmeldungen in DUA um die Umsetzung von Objekt-PID/ID nach

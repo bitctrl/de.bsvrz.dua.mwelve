@@ -26,10 +26,14 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Diese Klasse repräsentiert die Versorgung des Moduls Messwertersetzung LVE
@@ -43,36 +47,49 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  */
 public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
+	private static final Debug LOGGER = Debug.getLogger();
+
 	/**
 	 * Standardkonstruktor.
 	 * 
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
-	public MweLveStandardAspekteVersorger(IVerwaltung verwaltung)
+	public MweLveStandardAspekteVersorger(final IVerwaltung verwaltung)
 			throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void init() throws DUAInitialisierungsException {
-
-		this.standardAspekte = new StandardAspekteAdapter(
-				new StandardPublikationsZuordnung[] {
-						new StandardPublikationsZuordnung(
-								DUAKonstanten.TYP_FAHRSTREIFEN,
-								DUAKonstanten.ATG_KZD,
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_MESSWERTERSETZUNG),
-						new StandardPublikationsZuordnung(
-								DUAKonstanten.TYP_FAHRSTREIFEN,
-								DUAKonstanten.ATG_LZD,
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_MESSWERTERSETZUNG) });
-
+		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<StandardAspekteVersorger.StandardPublikationsZuordnung>();
+		zuordnungen.add(new StandardPublikationsZuordnung(
+				DUAKonstanten.TYP_FAHRSTREIFEN, DUAKonstanten.ATG_KZD,
+				DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+				DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		if (isVerarbeiteLangzeitdaten()) {
+			LOGGER.config("Langzeitdaten werden verarbeitet.");
+			zuordnungen.add(new StandardPublikationsZuordnung(
+					DUAKonstanten.TYP_FAHRSTREIFEN, DUAKonstanten.ATG_LZD,
+					DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+					DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		} else {
+			LOGGER.config("Langzeitdaten werden ignoriert.");
+		}
+		standardAspekte = new StandardAspekteAdapter(
+				zuordnungen.toArray(new StandardPublikationsZuordnung[0]));
 	}
+
+	private boolean isVerarbeiteLangzeitdaten() {
+		final String arg = verwaltung.getArgument("ignoriereLangzeitdaten");
+		if (arg == null) {
+			return true;
+		}
+
+		final boolean ignoriereLangzeitdaten = Boolean.parseBoolean(arg);
+		return !ignoriereLangzeitdaten;
+	}
+
 }
