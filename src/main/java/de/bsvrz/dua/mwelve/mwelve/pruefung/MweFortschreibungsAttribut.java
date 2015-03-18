@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.bsvrz.dav.daf.main.config.SystemObject;
@@ -41,10 +42,11 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 /**
  * Diese Klasse beinhaltet alle Informationen, die mit der Fortschreibung eines
  * Attributwertes bzgl. eines Fahrstreifens in Verbindung stehen.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: MweFortschreibungsAttribut.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
 public class MweFortschreibungsAttribut {
 
@@ -76,7 +78,7 @@ public class MweFortschreibungsAttribut {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param objekt
 	 *            ein Fahrstreifenobjekt
 	 * @param attribut
@@ -93,16 +95,16 @@ public class MweFortschreibungsAttribut {
 	 * Dieser Methode muss <b>jedes</b> für den assoziierten Fahrstreifen
 	 * empfangene Datum übergeben werden, damit der jeweils letzte plausible
 	 * Wert pro Fahrstreifen ermittelt werden kann.
-	 * 
+	 *
 	 * @param datum
 	 *            ein FS-Datum
 	 */
 	public final void aktualisiere(final KZDatum datum) {
-		MweAttributWert wert = datum.getAttributWert(this.attribut);
+		final MweAttributWert wert = datum.getAttributWert(attribut);
 		if (wert != null) {
 			if (!wert.isImplausibel() && !wert.isInterpoliert()
-					&& wert.getWert() >= 0) {
-				this.letzterPlausiblerWert = wert;
+					&& (wert.getWert() >= 0)) {
+				letzterPlausiblerWert = wert;
 			}
 		}
 	}
@@ -113,76 +115,75 @@ public class MweFortschreibungsAttribut {
 	 * dies nach den Parametern der MWE möglich ist.<br>
 	 * Die Fortschreibung erfolgt mit dem letzten Wert für diesen Fahrstreifen,
 	 * der nicht implausibel war.
-	 * 
+	 *
 	 * @param ersetztesDatum
 	 *            ein (jedes) Datum, das durch die beiden MWE-Stufen (AFo S.
 	 *            111) gegangen ist
 	 */
-	public final void schreibeGgfFort(KZDatum ersetztesDatum) {
-		MweAttributWert wert = ersetztesDatum.getAttributWert(this.attribut);
+	public final void schreibeGgfFort(final KZDatum ersetztesDatum) {
+		final MweAttributWert wert = ersetztesDatum.getAttributWert(attribut);
 
-		if (wert != null && wert.isImplausibel() && !wert.isInterpoliert()
-				&& letzterPlausiblerWert != null
-				&& MweParameter.isParameterValide(this.objekt)) {
+		if ((wert != null) && wert.isImplausibel() && !wert.isInterpoliert()
+				&& (letzterPlausiblerWert != null)
+				&& MweParameter.isParameterValide(objekt)) {
 			/**
 			 * Es wird versucht, ein Datum zu veröffentlichen, das noch
 			 * implausible Attributewerte besitzt, die noch nicht interpoliert
 			 * wurden
 			 */
-			if (this.fortschreibungSeit < 0) {
-				this.fortschreibungSeit = ersetztesDatum.getDatenZeit();
+			if (fortschreibungSeit < 0) {
+				fortschreibungSeit = ersetztesDatum.getDatenZeit();
 			}
-			this.fortschreibungMale++;
+			fortschreibungMale++;
 
-			MweParameter parameter = MweParameter.getParameter(this.objekt);
-			if (parameter.getMaxErsetzungsDauer() >= ersetztesDatum
-					.getDatenZeit() - this.fortschreibungSeit) {
-				ersetztesDatum.getAttributWert(this.attribut).setWert(
-						this.letzterPlausiblerWert.getWert());
-				ersetztesDatum.getAttributWert(this.attribut).setInterpoliert(
-						true);
-				ersetztesDatum.getAttributWert(this.attribut).setImplausibel(
-						false);
-				ersetztesDatum.getAttributWert(this.attribut).setGuete(
-						this.letzterPlausiblerWert.getGuete());
+			final MweParameter parameter = MweParameter.getParameter(objekt);
+			if (parameter.getMaxErsetzungsDauer() >= (ersetztesDatum
+					.getDatenZeit() - fortschreibungSeit)) {
+				ersetztesDatum.getAttributWert(attribut).setWert(
+						letzterPlausiblerWert.getWert());
+				ersetztesDatum.getAttributWert(attribut).setInterpoliert(true);
+				ersetztesDatum.getAttributWert(attribut).setImplausibel(false);
+				ersetztesDatum.getAttributWert(attribut).setGuete(
+						letzterPlausiblerWert.getGuete());
 			}
 
-			if (parameter.getMaxWiederholungAnzahl() < this.fortschreibungMale
-					|| parameter.getMaxWiederholungsZeit() < ersetztesDatum
-							.getDatenZeit() - this.fortschreibungSeit) {
+			if ((parameter.getMaxWiederholungAnzahl() < fortschreibungMale)
+					|| (parameter.getMaxWiederholungsZeit() < (ersetztesDatum
+							.getDatenZeit() - fortschreibungSeit))) {
 
 				MessageSender
-						.getInstance()
-						.sendMessage(
-								VerwaltungMessWertErsetzungLVE
-										.getStaticBmvIdKonverter().konvertiere(
-												new BetriebsmeldungDaten(
-														this.objekt), null,
-												new Object[0]),
-								MessageType.APPLICATION_DOMAIN,
-								null,
-								MessageGrade.WARNING, //$NON-NLS-1$
-								this.objekt, MessageState.MESSAGE,
-								new MessageCauser(
-										LVEPruefungUndMWE.sDav.getLocalUser(),
-										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
-								"keine Messwertersetzung möglich"); //$NON-NLS-1$
+				.getInstance()
+				.sendMessage(
+						VerwaltungMessWertErsetzungLVE
+						.getStaticBmvIdKonverter()
+										.konvertiere(
+								new BetriebsmeldungDaten(objekt),
+												null, new Object[0]),
+										MessageType.APPLICATION_DOMAIN,
+										null,
+										MessageGrade.WARNING,
+								objekt,
+								MessageState.MESSAGE,
+										new MessageCauser(
+												LVEPruefungUndMWE.sDav.getLocalUser(),
+												"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+						"keine Messwertersetzung möglich"); //$NON-NLS-1$
 
-//				MessageSender
-//						.getInstance()
-//						.sendMessage(
-//								MessageType.APPLICATION_DOMAIN,
-//								null,
-//								MessageGrade.WARNING, //$NON-NLS-1$
-//								this.objekt,
-//								new MessageCauser(
-//										LVEPruefungUndMWE.sDav.getLocalUser(),
-//										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
-//								"keine Messwertersetzung möglich"); //$NON-NLS-1$
+				// MessageSender
+				// .getInstance()
+				// .sendMessage(
+				// MessageType.APPLICATION_DOMAIN,
+				// null,
+				//								MessageGrade.WARNING, //$NON-NLS-1$
+				// this.objekt,
+				// new MessageCauser(
+				// LVEPruefungUndMWE.sDav.getLocalUser(),
+				//										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+				//								"keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		} else {
-			this.fortschreibungSeit = -1;
-			this.fortschreibungMale = 0;
+			fortschreibungSeit = -1;
+			fortschreibungMale = 0;
 		}
 	}
 
@@ -191,10 +192,12 @@ public class MweFortschreibungsAttribut {
 	 */
 	@Override
 	public String toString() {
-		String s = "Fortschreibung fuer (" + this.objekt + "): " + this.attribut; //$NON-NLS-1$ //$NON-NLS-2$
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(
+				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+		String s = "Fortschreibung fuer (" + objekt + "): " + attribut; //$NON-NLS-1$ //$NON-NLS-2$
 
-		s += "\nletzter plausibler Wert: " + this.letzterPlausiblerWert; //$NON-NLS-1$
-		s += "\nfortgeschrieben seit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.fortschreibungSeit)); //$NON-NLS-1$
+		s += "\nletzter plausibler Wert: " + letzterPlausiblerWert; //$NON-NLS-1$
+		s += "\nfortgeschrieben seit: " + dateFormat.format(new Date(fortschreibungSeit)); //$NON-NLS-1$
 		s += "\nfortgeschrieben zum " + fortschreibungMale + ". mal"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		return s;

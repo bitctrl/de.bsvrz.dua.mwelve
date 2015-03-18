@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.bsvrz.dav.daf.main.ClientDavInterface;
@@ -37,9 +38,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 /**
  * Liest alle Eingangs- und Ausgangsdaten fuer den Test nach PrSpez und
  * Vergleicht die Ergebnisse.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class Vergleich {
@@ -96,7 +97,7 @@ public class Vergleich {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param dav
 	 *            Datenverteiler-Verbindung
 	 * @param inputCsv
@@ -106,25 +107,25 @@ public class Vergleich {
 	 * @throws Exception
 	 *             wird weitergereicht
 	 */
-	public Vergleich(ClientDavInterface dav, final TestDatei inputCsv,
+	public Vergleich(final ClientDavInterface dav, final TestDatei inputCsv,
 			final TestDatei outputCsv) throws Exception {
-		this.fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1"); //$NON-NLS-1$
-		this.fahrstreifen2 = dav.getDataModel().getObject("Fahrstreifen2"); //$NON-NLS-1$
-		this.fahrstreifen3 = dav.getDataModel().getObject("Fahrstreifen3"); //$NON-NLS-1$
-		this.fahrstreifen = new SystemObject[] { this.fahrstreifen1,
-				this.fahrstreifen2, this.fahrstreifen3 };
+		fahrstreifen1 = dav.getDataModel().getObject("Fahrstreifen1"); //$NON-NLS-1$
+		fahrstreifen2 = dav.getDataModel().getObject("Fahrstreifen2"); //$NON-NLS-1$
+		fahrstreifen3 = dav.getDataModel().getObject("Fahrstreifen3"); //$NON-NLS-1$
+		fahrstreifen = new SystemObject[] { fahrstreifen1, fahrstreifen2,
+				fahrstreifen3 };
 		TestFahrstreifenImporter.setT(Initialisierung.INTERVALL_LAENGE);
-		this.inputImporter = new TestFahrstreifenImporter(dav,
+		inputImporter = new TestFahrstreifenImporter(dav,
 				Initialisierung.WURZEL + inputCsv.getDateiName());
-		this.outputImporter = new TestFahrstreifenImporter(dav,
+		outputImporter = new TestFahrstreifenImporter(dav,
 				Initialisierung.WURZEL + outputCsv.getDateiName());
-		this.dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" + outputCsv.getAlias() + "\""; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		this.ddPlLog = new DataDescription(dav.getDataModel()
-				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
-				.getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
-		this.ddPlMwe = new DataDescription(dav.getDataModel()
-				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
-				.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" + outputCsv.getAlias() + "\""; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		ddPlLog = new DataDescription(dav.getDataModel().getAttributeGroup(
+				DUAKonstanten.ATG_KZD), dav.getDataModel().getAspect(
+				DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
+		ddPlMwe = new DataDescription(dav.getDataModel().getAttributeGroup(
+				DUAKonstanten.ATG_KZD), dav.getDataModel().getAspect(
+				DUAKonstanten.ASP_MESSWERTERSETZUNG));
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class Vergleich {
 	/**
 	 * Erfragt eine Menge von Eingangdatensaetzen fuer den Test fuer alle hier
 	 * behandelten Fahrstreifen (mit dem uebergebenen Zeitstempel).
-	 * 
+	 *
 	 * @param zeitStempel
 	 *            der geforderte Zeitstempel der Daten
 	 * @return eine Menge von Eingangdatensaetzen fuer den Test fuer alle hier
@@ -144,22 +145,21 @@ public class Vergleich {
 	public final ResultData[] getFrage(final long zeitStempel) {
 		ResultData[] frage = null;
 
-		if (this.inputImporter.next() && this.outputImporter.next()) {
-			this.erwarteteErgebnisse = new ResultData[3];
+		if (inputImporter.next() && outputImporter.next()) {
+			erwarteteErgebnisse = new ResultData[3];
 			frage = new ResultData[3];
 
 			for (int i = 0; i < 3; i++) {
-				this.erwarteteErgebnisse[i] = new ResultData(
-						this.fahrstreifen[i], this.ddPlMwe, zeitStempel,
-						this.outputImporter.getDatensatz(i));
+				erwarteteErgebnisse[i] = new ResultData(fahrstreifen[i],
+						ddPlMwe, zeitStempel, outputImporter.getDatensatz(i));
 
-				frage[i] = new ResultData(this.fahrstreifen[i], this.ddPlLog,
-						zeitStempel, this.inputImporter.getDatensatz(i));
+				frage[i] = new ResultData(fahrstreifen[i], ddPlLog,
+						zeitStempel, inputImporter.getDatensatz(i));
 			}
 		}
 
 		if (a++ == 0) {
-			ResultData[] reverse = new ResultData[3];
+			final ResultData[] reverse = new ResultData[3];
 			reverse[0] = frage[2];
 			reverse[1] = frage[1];
 			reverse[2] = frage[0];
@@ -171,22 +171,22 @@ public class Vergleich {
 	/**
 	 * Erfragt das Ergebnis des Vergleichs von tatsaechlichem Ergebnis und
 	 * erwartetem Ergebnis.
-	 * 
+	 *
 	 * @param ergebnisse
 	 *            die tatsaechlich eingetroffenen Ergebnisse
 	 * @return das Ergebnis des Vergleichs von tatsaechlichem Ergebnis und
 	 *         erwartetem Ergebnis
 	 */
-	public final Ergebnis getErgebnis(ResultData[] ergebnisse) {
-		return new Ergebnis(this.inputImporter.getZeilenNummer() + 1,
-				this.dateiInfo, this.erwarteteErgebnisse, ergebnisse);
+	public final Ergebnis getErgebnis(final ResultData[] ergebnisse) {
+		return new Ergebnis(inputImporter.getZeilenNummer() + 1, dateiInfo,
+				erwarteteErgebnisse, ergebnisse);
 	}
 
 	/**
 	 * Ergebnis der Ueberpruefung von Soll- und Ist-Wert.
-	 * 
+	 *
 	 * @author BitCtrl Systems GmbH, Thierfelder
-	 * 
+	 *
 	 */
 	protected static class Ergebnis {
 
@@ -202,7 +202,7 @@ public class Vergleich {
 
 		/**
 		 * Standardkonstruktor.
-		 * 
+		 *
 		 * @param zeilenNummer
 		 *            die Zeilennummer in der CSV-Eingabe-Datei in der der
 		 *            Fehler aufgetacht ist
@@ -211,27 +211,29 @@ public class Vergleich {
 		 * @param erwarteteErgebnisse
 		 *            Menge von erwarteten <code>ResultData</code>-Datensaetzen
 		 * @param ergebnisse
-		 *            Menge von tatsaechlich erhaltenen <code>ResultData</code>-Datensaetzen
+		 *            Menge von tatsaechlich erhaltenen <code>ResultData</code>
+		 *            -Datensaetzen
 		 */
 		protected Ergebnis(final int zeilenNummer, final String dateiInfo,
-				ResultData[] erwarteteErgebnisse, ResultData[] ergebnisse) {
-			for (int i = 0; i < ergebnisse.length; i++) {
-				for (int j = 0; j < erwarteteErgebnisse.length; j++) {
-					if (ergebnisse[i].getObject().equals(
-							erwarteteErgebnisse[j].getObject())) {
-						ResultData soll = erwarteteErgebnisse[j];
-						ResultData ist = ergebnisse[i];
+				final ResultData[] erwarteteErgebnisse,
+				final ResultData[] ergebnisse) {
 
-						KurzZeitDatum kzdSoll = new KurzZeitDatum(soll);
-						KurzZeitDatum kzdIst = new KurzZeitDatum(ist);
-						passt = soll.getDataTime() == ist.getDataTime()
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(
+					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+
+			for (final ResultData ist : ergebnisse) {
+				for (final ResultData soll : erwarteteErgebnisse) {
+					if (ist.getObject().equals(soll.getObject())) {
+						final KurzZeitDatum kzdSoll = new KurzZeitDatum(soll);
+						final KurzZeitDatum kzdIst = new KurzZeitDatum(ist);
+						passt = (soll.getDataTime() == ist.getDataTime())
 								&& kzdSoll.equals(kzdIst);
 
-						this.info = "Zeile: " + zeilenNummer + " (" + dateiInfo + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						info = "Zeile: " + zeilenNummer + " (" + dateiInfo + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						if (!passt) {
-							this.info += "\nSoll != Ist\n" + kzdSoll.compare(kzdIst); //$NON-NLS-1$
-							this.info += "\nSoll-Zeit: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(soll.getDataTime())); //$NON-NLS-1$
-							this.info += "\nIst-Zeit:  " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ist.getDataTime())); //$NON-NLS-1$
+							info += "\nSoll != Ist\n" + kzdSoll.compare(kzdIst); //$NON-NLS-1$
+							info += "\nSoll-Zeit: " + dateFormat.format(new Date(soll.getDataTime())); //$NON-NLS-1$
+							info += "\nIst-Zeit:  " + dateFormat.format(new Date(ist.getDataTime())); //$NON-NLS-1$
 						}
 						break;
 					}
@@ -241,7 +243,7 @@ public class Vergleich {
 
 		/**
 		 * Erfragt, ob Soll- und Ist-Wert uebereinstimmen.
-		 * 
+		 *
 		 * @return ob Soll- und Ist-Wert uebereinstimmen
 		 */
 		protected final boolean passtZusammen() {
@@ -253,7 +255,7 @@ public class Vergleich {
 		 */
 		@Override
 		public String toString() {
-			return this.info;
+			return info;
 		}
 
 	}
