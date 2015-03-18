@@ -43,10 +43,11 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Test nach PrSpez.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: MessWertErsetzungLVETest1.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
 public class MessWertErsetzungLVETest1 {
 
@@ -68,7 +69,7 @@ public class MessWertErsetzungLVETest1 {
 
 	/**
 	 * Testet die die SWE 4.5 nach PrSpez.
-	 * 
+	 *
 	 * @throws Exception
 	 *             wird weitergereicht
 	 */
@@ -85,18 +86,19 @@ public class MessWertErsetzungLVETest1 {
 		/**
 		 * Anmeldung
 		 */
-		SystemObject fahrstreifen1 = dav.getDataModel().getObject(
+		final SystemObject fahrstreifen1 = dav.getDataModel().getObject(
 				"Fahrstreifen1"); //$NON-NLS-1$
-		DataDescription ddAntwort = new DataDescription(dav.getDataModel()
-				.getAttributeGroup(DUAKonstanten.ATG_KZD), dav.getDataModel()
-				.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		final DataDescription ddAntwort = new DataDescription(dav
+				.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD), dav
+				.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 		dav.subscribeReceiver(new ClientReceiverInterface() {
 
-			public void update(ResultData[] results) {
+			@Override
+			public void update(final ResultData[] results) {
 				if (results != null) {
-					for (ResultData result : results) {
-						if (result != null && result.getData() != null) {
-							MessWertErsetzungLVETest1.this.antwort = result;
+					for (final ResultData result : results) {
+						if ((result != null) && (result.getData() != null)) {
+							antwort = result;
 							synchronized (dav) {
 								dav.notifyAll();
 							}
@@ -105,19 +107,19 @@ public class MessWertErsetzungLVETest1 {
 				}
 			}
 
-		}, new SystemObject[] { fahrstreifen1 }, ddAntwort, ReceiveOptions
-				.normal(), ReceiverRole.receiver());
+		}, new SystemObject[] { fahrstreifen1 }, ddAntwort,
+				ReceiveOptions.normal(), ReceiverRole.receiver());
 
 		/**
 		 * Hole Daten
 		 */
-		Vergleich vergleich = new Vergleich(dav, Initialisierung.INPUT_CSV,
-				Initialisierung.OUTPUT_CSV);
+		final Vergleich vergleich = new Vergleich(dav,
+				Initialisierung.INPUT_CSV, Initialisierung.OUTPUT_CSV);
 
 		/**
 		 * eigentlicher Test
 		 */
-		GregorianCalendar cal = new GregorianCalendar();
+		final GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(0);
 		ResultData[] frage = null;
 
@@ -132,37 +134,35 @@ public class MessWertErsetzungLVETest1 {
 					testModul.aktualisiereDaten(dummyFrage);
 				}
 
-			} .start();
+			}.start();
 
 			synchronized (dav) {
 				if (VERBOSE) {
-					for (ResultData f : frage) {
-						System.out.println("Sende: " + f); //$NON-NLS-1$	
+					for (final ResultData f : frage) {
+						System.out.println("Sende: " + f); //$NON-NLS-1$
 					}
 				}
 				dav.wait();
 				if (VERBOSE) {
-					System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
+					System.out.println("Empfange: " + antwort); //$NON-NLS-1$
 				}
 			}
 
-			Vergleich.Ergebnis ergebnis = vergleich
-					.getErgebnis(new ResultData[] { this.antwort });
+			final Vergleich.Ergebnis ergebnis = vergleich
+					.getErgebnis(new ResultData[] { antwort });
 
 			if (USE_ASSERTION) {
-				Assert
-						.assertTrue(ergebnis.toString(), ergebnis
-								.passtZusammen());
+				Assert.assertTrue(ergebnis.toString(), ergebnis.passtZusammen());
 			} else {
 				if (ergebnis.passtZusammen()) {
 					System.out.println(ergebnis.toString() + ": OK"); //$NON-NLS-1$
 				} else {
 					System.out.println("Fehler:"); //$NON-NLS-1$
 					if (!VERBOSE) {
-						for (ResultData f : frage) {
-							System.out.println("Sende: " + f); //$NON-NLS-1$	
+						for (final ResultData f : frage) {
+							System.out.println("Sende: " + f); //$NON-NLS-1$
 						}
-						System.out.println("Empfange: " + this.antwort); //$NON-NLS-1$
+						System.out.println("Empfange: " + antwort); //$NON-NLS-1$
 					}
 					System.out.println(ergebnis.toString());
 				}

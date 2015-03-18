@@ -37,9 +37,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
  * diesen werden jeweils drei historische Werte in einem Ringpuffer
  * bereitgehalten. Außerdem wird für jedes in der MWE betrachtete Attribut die
  * Historie seiner Fortschreibung gespeichert
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class FSDatenPuffer {
@@ -57,13 +57,13 @@ public class FSDatenPuffer {
 	/**
 	 * die letzten drei emfangenen Datensätze im Ringpuffer.
 	 */
-	private KZDatum[] ringPuffer = new KZDatum[PUFFER_KAPAZITAET];
+	private final KZDatum[] ringPuffer = new KZDatum[PUFFER_KAPAZITAET];
 
 	/**
 	 * Mappt alle innerhalb der MWE betrachteten Attribute auf ihre
 	 * Eigenschaften bezüglich der Fortschreibung von Messwerten.
 	 */
-	private Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung = new HashMap<MweAttribut, MweFortschreibungsAttribut>();
+	private final Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung = new HashMap<MweAttribut, MweFortschreibungsAttribut>();
 
 	/**
 	 * aktueller Index auf den Ringpuffer.
@@ -72,7 +72,7 @@ public class FSDatenPuffer {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param fs
 	 *            der Fahrstreifen, dessen Daten hier gepuffert werden sollen
 	 */
@@ -82,8 +82,8 @@ public class FSDatenPuffer {
 					"Als Fahrstreifen wurde <<null>> uebergeben"); //$NON-NLS-1$
 		}
 		this.fs = fs;
-		for (MweAttribut attribut : MweAttribut.getInstanzen()) {
-			this.messWertFortschreibung.put(attribut,
+		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
+			messWertFortschreibung.put(attribut,
 					new MweFortschreibungsAttribut(fs.getSystemObject(),
 							attribut));
 		}
@@ -94,13 +94,13 @@ public class FSDatenPuffer {
 	 * veröffentlicht werden sollen. Sie überprüft in allen (innerhalb der MWE)
 	 * betrachteten Attributen, ob diese ersetzt wurden und versucht sie ggf.
 	 * fortzuschreiben.
-	 * 
+	 *
 	 * @param kzDatum
 	 *            das zur Veröffentlichung stehende KZ-Datum
 	 */
-	public final void schreibeDatenFortWennNotwendig(KZDatum kzDatum) {
-		for (MweAttribut attribut : MweAttribut.getInstanzen()) {
-			MweFortschreibungsAttribut fortschreibung = messWertFortschreibung
+	public final void schreibeDatenFortWennNotwendig(final KZDatum kzDatum) {
+		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
+			final MweFortschreibungsAttribut fortschreibung = messWertFortschreibung
 					.get(attribut);
 			fortschreibung.schreibeGgfFort(kzDatum);
 		}
@@ -109,21 +109,21 @@ public class FSDatenPuffer {
 	/**
 	 * Erfragt den unmittelbar vor dem übergebenen Datum in diesen Puffer
 	 * eingespeisten Datensatz.
-	 * 
+	 *
 	 * @param kzDatum
 	 *            ein Datensatz
 	 * @return das Vorgängerdatum oder <code>null</code>, wenn dieses nicht
 	 *         existiert
 	 */
-	public final KZDatum getVorgaengerVon(KZDatum kzDatum) {
+	public final KZDatum getVorgaengerVon(final KZDatum kzDatum) {
 		KZDatum ergebnis = null;
 
 		for (int i = 0; i < PUFFER_KAPAZITAET; i++) {
-			if (this.ringPuffer[i] != null) {
-				if (this.ringPuffer[i].getDatum().getDataTime() == kzDatum
+			if (ringPuffer[i] != null) {
+				if (ringPuffer[i].getDatum().getDataTime() == kzDatum
 						.getDatum().getDataTime()) {
-					ergebnis = this.ringPuffer[(i + PUFFER_KAPAZITAET - 1)
-							% PUFFER_KAPAZITAET];
+					ergebnis = ringPuffer[((i + PUFFER_KAPAZITAET) - 1)
+					                      % PUFFER_KAPAZITAET];
 					break;
 				}
 			}
@@ -134,11 +134,11 @@ public class FSDatenPuffer {
 
 	/**
 	 * Erfragt den Fahrstreifen, dessen Daten hier gepuffert werden.
-	 * 
+	 *
 	 * @return der Fahrstreifen, dessen Daten hier gepuffert werden
 	 */
 	public final FahrStreifen getFahrStreifen() {
-		return this.fs;
+		return fs;
 	}
 
 	/**
@@ -148,19 +148,19 @@ public class FSDatenPuffer {
 	 * Es wird angenommen, dass ein Intervall dann abgelaufen ist, wenn
 	 * innerhalb dieses Puffers nicht freigegebene Daten von mehr als einem
 	 * Intervall stehen
-	 * 
+	 *
 	 * @return ob in diesem Puffer Daten für mehr als ein Intervall gespeichert
 	 *         sind, die noch nicht wieder freigegeben wurden
 	 */
 	public final boolean isIntervallAbgelaufen() {
 		int nichtWiederFreiGegebenZaehler = 0;
 
-		for (KZDatum kzDatum : this.ringPuffer) {
+		for (final KZDatum kzDatum : ringPuffer) {
 			if (kzDatum != null) {
 				if (!kzDatum.isBereitsWiederFreigegeben()) {
 					nichtWiederFreiGegebenZaehler++;
 				}
-					
+
 				if (nichtWiederFreiGegebenZaehler > 1) {
 					break;
 				}
@@ -173,12 +173,12 @@ public class FSDatenPuffer {
 	/**
 	 * Erfragt, ob in diesem Puffer wenigstens ein Datum gespeichert ist, das
 	 * noch nicht wieder an ein anderes Modul weitergegeben wurde.
-	 * 
+	 *
 	 * @return ob in diesem Puffer wenigstens ein Datum gespeichert ist, das
 	 *         noch nicht wieder an ein anderes Modul weitergegeben wurde
 	 */
 	public final boolean habeNochNichtFreigegebenesDatum() {
-		for (KZDatum kzDatum : this.ringPuffer) {
+		for (final KZDatum kzDatum : ringPuffer) {
 			if (kzDatum != null) {
 				if (!kzDatum.isBereitsWiederFreigegeben()) {
 					return true;
@@ -193,15 +193,15 @@ public class FSDatenPuffer {
 	 * Befreit das in diesem Puffer stehende Datum, das zu einem bereits
 	 * abgelaufenen Intervall gehören muss. Dies ist das älteste Datum, das noch
 	 * nicht wieder freigegeben wurde
-	 * 
+	 *
 	 * @return das in diesem Puffer stehende Datum, das zu einem bereits
 	 *         abgelaufenen Intervall gehören muss
 	 */
 	public final KZDatum befreieAeltestesAbgelaufenesDatum() {
 		KZDatum abgelaufenesDatum = null;
 
-		for (KZDatum kzDatum : this.ringPuffer) {
-			if (kzDatum != null && !kzDatum.isBereitsWiederFreigegeben()) {
+		for (final KZDatum kzDatum : ringPuffer) {
+			if ((kzDatum != null) && !kzDatum.isBereitsWiederFreigegeben()) {
 				if (abgelaufenesDatum == null) {
 					abgelaufenesDatum = kzDatum;
 				} else {
@@ -221,14 +221,14 @@ public class FSDatenPuffer {
 	 * Erfragt, ob dieser Fahrstreifen aktuell als <code>defekt</code>
 	 * eingeschätzt wird. Er ist <code>defekt</code>, wenn das letzte Datum
 	 * keine Nutzdaten enthielt, oder noch nie ein Datum angekommen ist.
-	 * 
+	 *
 	 * @return ob dieser Fahrstreifen aktuell als <code>defekt</code>
 	 *         eingeschätzt wird
 	 */
 	public final boolean isAktuellDefekt() {
 		boolean defekt = true;
 
-		KZDatum aktuellesDatum = this.getDatumAktuell();
+		final KZDatum aktuellesDatum = getDatumAktuell();
 		if (aktuellesDatum != null) {
 			defekt = aktuellesDatum.isDefekt();
 		}
@@ -238,40 +238,42 @@ public class FSDatenPuffer {
 
 	/**
 	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz für den
-	 * assoziierten Fahrstreifen<br>.
-	 * 
+	 * assoziierten Fahrstreifen<br>
+	 * .
+	 *
 	 * @param kzDatum
 	 *            ein KZD des assoziierten Fahrstreifens (muss
 	 *            <code>!= null</code> sein)
 	 */
-	public final void aktualisiereDaten(KZDatum kzDatum) {
-		for (MweAttribut attribut : MweAttribut.getInstanzen()) {
-			MweFortschreibungsAttribut fortschreibung = this.messWertFortschreibung
+	public final void aktualisiereDaten(final KZDatum kzDatum) {
+		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
+			final MweFortschreibungsAttribut fortschreibung = messWertFortschreibung
 					.get(attribut);
 			if (fortschreibung != null) {
 				fortschreibung.aktualisiere(kzDatum);
 			}
 		}
-		this.ringPuffer[ringPufferIndex] = kzDatum;
+		ringPuffer[ringPufferIndex] = kzDatum;
 		ringPufferIndex = (ringPufferIndex + 1) % PUFFER_KAPAZITAET;
 	}
 
 	/**
 	 * Erfragt das letzte in diesen Puffer eingespeiste Datum.
-	 * 
+	 *
 	 * @return das letzte in diesen Puffer eingespeiste Datum oder
 	 *         <code>null</code>, wenn noch nie ein Datum eingespeist wurde
 	 */
 	public final KZDatum getDatumAktuell() {
-		return this.ringPuffer[(ringPufferIndex + PUFFER_KAPAZITAET - 1)
-				% PUFFER_KAPAZITAET];
+		return ringPuffer[((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
+		                  % PUFFER_KAPAZITAET];
 	}
 
 	/**
 	 * Erfragt das Datum innerhalb dieses Puffers, das den übergebenen
 	 * Zeitstempel besitzt.
-	 * 
-	 * @param zeitStempel1 der Zeitstempel des Datums
+	 *
+	 * @param zeitStempel1
+	 *            der Zeitstempel des Datums
 	 * @return das Datum innerhalb dieses Puffers, das den übergebenen
 	 *         Zeitstempel besitzt oder <code>null</code>, wenn kein Datum
 	 *         diesen Zeitstempel besitzt
@@ -280,7 +282,7 @@ public class FSDatenPuffer {
 		KZDatum ergebnis = null;
 
 		for (int i = 0; i < PUFFER_KAPAZITAET; i++) {
-			KZDatum dummy = this.ringPuffer[i];
+			final KZDatum dummy = ringPuffer[i];
 			if (dummy != null) {
 				if (dummy.getDatum().getDataTime() == zeitStempel1) {
 					ergebnis = dummy;
@@ -295,17 +297,17 @@ public class FSDatenPuffer {
 	/**
 	 * Ersetzt ein in diesem Puffer gespeichertes Datum durch ein
 	 * messwertersetztes Datum.
-	 * 
+	 *
 	 * @param mweDatum
 	 *            das neue Datum
 	 */
-	public final void ersetzeDatum(KZDatum mweDatum) {
+	public final void ersetzeDatum(final KZDatum mweDatum) {
 		for (int i = 0; i < PUFFER_KAPAZITAET; i++) {
-			KZDatum dummy = this.ringPuffer[i];
+			final KZDatum dummy = ringPuffer[i];
 			if (dummy != null) {
 				if (dummy.getDatum().getDataTime() == mweDatum.getDatum()
 						.getDataTime()) {
-					this.ringPuffer[i] = mweDatum;
+					ringPuffer[i] = mweDatum;
 					break;
 				}
 			}
@@ -317,18 +319,18 @@ public class FSDatenPuffer {
 	 */
 	@Override
 	public String toString() {
-		String s = this.fs.toString();
+		String s = fs.toString();
 
 		int t = 0;
-		for (int i = (this.ringPufferIndex + PUFFER_KAPAZITAET - 1)
-				% PUFFER_KAPAZITAET; i != this.ringPufferIndex; i = (i + 1)
+		for (int i = ((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
+				% PUFFER_KAPAZITAET; i != ringPufferIndex; i = (i + 1)
 				% PUFFER_KAPAZITAET) {
 			t++;
-			s += "\nPuffer[T-" + t + "]:\n" + (this.ringPuffer[i] == null ? "<<null>>" : this.ringPuffer[i]); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			s += "\nPuffer[T-" + t + "]:\n" + (ringPuffer[i] == null ? "<<null>>" : ringPuffer[i]); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		}
 		s += "\nAttributfortschreibung:"; //$NON-NLS-1$
-		for (MweAttribut attribut : MweAttribut.getInstanzen()) {
-			s += "\n" + attribut.toString() + ": " + this.messWertFortschreibung.get(attribut); //$NON-NLS-1$//$NON-NLS-2$
+		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
+			s += "\n" + attribut.toString() + ": " + messWertFortschreibung.get(attribut); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
 		return s;

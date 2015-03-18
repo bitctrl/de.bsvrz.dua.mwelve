@@ -33,13 +33,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.MesswertMarkierung;
 
 /**
  * Korrespondiert mit einem Attributwert eines KZ- oder LZ-Datums.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class MweAttributWert extends MesswertMarkierung implements
-		Comparable<MweAttributWert> {
+Comparable<MweAttributWert> {
 
 	/**
 	 * das Attribut.
@@ -58,7 +58,7 @@ public class MweAttributWert extends MesswertMarkierung implements
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param attr
 	 *            das Attribut
 	 * @param datenSatz
@@ -72,109 +72,110 @@ public class MweAttributWert extends MesswertMarkierung implements
 			throw new NullPointerException("Datensatz ist <<null>>"); //$NON-NLS-1$
 		}
 		this.attr = attr;
-		this.wert = datenSatz.getItem(attr.getName())
+		wert = datenSatz.getItem(attr.getName())
 				.getUnscaledValue("Wert").longValue(); //$NON-NLS-1$
-		this.nichtErfasst = datenSatz.getItem(attr.getName())
+		nichtErfasst = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("Erfassung").//$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("NichtErfasst").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		this.implausibel = datenSatz.getItem(attr.getName())
+		implausibel = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("Implausibel").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		this.interpoliert = datenSatz.getItem(attr.getName())
+		interpoliert = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("Interpoliert").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		this.formalMax = datenSatz.getItem(attr.getName())
+		formalMax = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMax").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		this.formalMin = datenSatz.getItem(attr.getName())
+		formalMin = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMin").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		this.logischMax = datenSatz.getItem(attr.getName())
+		logischMax = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMaxLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		this.logischMin = datenSatz.getItem(attr.getName())
+		logischMin = datenSatz.getItem(attr.getName())
 				.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMinLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		this.guete = new GWert(datenSatz, attr.getName());
+		guete = new GWert(datenSatz, attr.getName());
 	}
 
 	/**
 	 * Kopierkonstruktor. Das Datum, das durch diesen Konstruktor erzeugt wird,
 	 * ist als <code>veraendert</code> markiert
-	 * 
+	 *
 	 * @param vorlage
 	 *            das zu kopierende Datum
 	 */
-	public MweAttributWert(MweAttributWert vorlage) {
-		this.veraendert = true;
-		this.attr = vorlage.attr;
-		this.wert = vorlage.wert;
-		this.nichtErfasst = vorlage.nichtErfasst;
-		this.implausibel = vorlage.implausibel;
-		this.interpoliert = vorlage.interpoliert;
-		this.formalMax = vorlage.formalMax;
-		this.formalMin = vorlage.formalMin;
-		this.logischMax = vorlage.logischMax;
-		this.logischMin = vorlage.logischMin;
-		this.guete = new GWert(vorlage.guete);
+	public MweAttributWert(final MweAttributWert vorlage) {
+		veraendert = true;
+		attr = vorlage.attr;
+		wert = vorlage.wert;
+		nichtErfasst = vorlage.nichtErfasst;
+		implausibel = vorlage.implausibel;
+		interpoliert = vorlage.interpoliert;
+		formalMax = vorlage.formalMax;
+		formalMin = vorlage.formalMin;
+		logischMax = vorlage.logischMax;
+		logischMin = vorlage.logischMin;
+		guete = new GWert(vorlage.guete);
 	}
 
 	/**
 	 * Erfragt das Attribut.
-	 * 
+	 *
 	 * @return das Attribut
 	 */
 	public final MweAttribut getAttribut() {
-		return this.attr;
+		return attr;
 	}
 
 	/**
 	 * Setzt den Wert dieses Attributs.
-	 * 
+	 *
 	 * @param wert
 	 *            der Wert dieses Attributs
 	 */
 	public final void setWert(final long wert) {
-		this.veraendert = true;
+		veraendert = true;
 		this.wert = wert;
 	}
 
 	/**
 	 * Erfragt den Wert dieses Attributs.
-	 * 
+	 *
 	 * @return der Wert dieses Attributs
 	 */
 	public final long getWert() {
-		return this.wert;
+		return wert;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public int compareTo(MweAttributWert that) {
-		return new Long(this.getWert()).compareTo(that.getWert());
+	@Override
+	public int compareTo(final MweAttributWert that) {
+		return new Long(getWert()).compareTo(that.getWert());
 	}
 
 	/**
 	 * Erfragt die Guete dieses Attributwertes.
-	 * 
+	 *
 	 * @return die Guete dieses Attributwertes
 	 */
 	public final GWert getGuete() {
-		return this.guete;
+		return guete;
 	}
 
 	/**
 	 * Setzte die Guete dieses Attributwertes.
-	 * 
+	 *
 	 * @param guete
 	 *            die Guete dieses Attributwertes
 	 */
 	public final void setGuete(final GWert guete) {
-		this.veraendert = true;
+		veraendert = true;
 		this.guete = guete;
 	}
 
@@ -182,17 +183,17 @@ public class MweAttributWert extends MesswertMarkierung implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		boolean ergebnis = false;
 
-		if (obj != null && obj instanceof MweAttributWert) {
-			MweAttributWert that = (MweAttributWert) obj;
-			ergebnis = this.getAttribut().equals(that.getAttribut())
-					&& this.getWert() == that.getWert()
-					&& this.isNichtErfasst() == that.isNichtErfasst()
-					&& this.isImplausibel() == that.isImplausibel()
-					&& this.getGuete().equals(that.getGuete())
-					&& this.isInterpoliert() == that.isInterpoliert();
+		if ((obj != null) && (obj instanceof MweAttributWert)) {
+			final MweAttributWert that = (MweAttributWert) obj;
+			ergebnis = getAttribut().equals(that.getAttribut())
+					&& (getWert() == that.getWert())
+					&& (isNichtErfasst() == that.isNichtErfasst())
+					&& (isImplausibel() == that.isImplausibel())
+					&& getGuete().equals(that.getGuete())
+					&& (isInterpoliert() == that.isInterpoliert());
 		}
 
 		return ergebnis;
@@ -203,9 +204,9 @@ public class MweAttributWert extends MesswertMarkierung implements
 	 */
 	@Override
 	public String toString() {
-		return "Attribut: " + this.attr + "\nWert: " + this.wert + //$NON-NLS-1$ //$NON-NLS-2$
-				"\nGuete: " + this.guete + //$NON-NLS-1$
-				"\nVeraendert: " + (this.veraendert ? "Ja" : "Nein") + //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+		return "Attribut: " + attr + "\nWert: " + wert + //$NON-NLS-1$ //$NON-NLS-2$
+				"\nGuete: " + guete + //$NON-NLS-1$
+				"\nVeraendert: " + (veraendert ? "Ja" : "Nein") + //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 				"\n" + super.toString(); //$NON-NLS-1$
 	}
 

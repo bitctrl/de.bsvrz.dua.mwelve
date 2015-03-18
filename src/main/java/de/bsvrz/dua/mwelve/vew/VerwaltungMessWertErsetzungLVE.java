@@ -65,13 +65,16 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  * Aktualisierungsmechanismus weitergeleitet werden. Weiterhin stellt die
  * Verwaltung die Verkettung der Module PL-Prüfung formal, PL-Prüfung logisch
  * LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge her.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: VerwaltungMessWertErsetzungLVE.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
 public class VerwaltungMessWertErsetzungLVE extends
-		AbstraktVerwaltungsAdapterMitGuete {
+AbstraktVerwaltungsAdapterMitGuete {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Der statische Umsetzer fuer die Betriebsmeldungs-Id.
@@ -117,6 +120,7 @@ public class VerwaltungMessWertErsetzungLVE extends
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 	}
@@ -128,31 +132,31 @@ public class VerwaltungMessWertErsetzungLVE extends
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
-		DuaVerkehrsNetz.initialisiere(this.verbindung);
+		DuaVerkehrsNetz.initialisiere(verbindung);
 		MessageSender.getInstance()
-				.setApplicationLabel("Messwertersetzung LVE");
+		.setApplicationLabel("Messwertersetzung LVE");
 
-		Collection<SystemObject> alleFsObjImKB = DUAUtensilien
+		final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(
-						this.verbindung.getDataModel().getType(
-								DUAKonstanten.TYP_FAHRSTREIFEN),
-						this.verbindung, this.getKonfigurationsBereiche());
-		this.objekte = alleFsObjImKB.toArray(new SystemObject[0]);
+						verbindung.getDataModel().getType(
+								DUAKonstanten.TYP_FAHRSTREIFEN), verbindung,
+						getKonfigurationsBereiche());
+		objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
 		String infoStr = Constants.EMPTY_STRING;
-		for (SystemObject obj : this.objekte) {
+		for (final SystemObject obj : objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		Debug.getLogger().config(
+		LOGGER.config(
 				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		this.plForm1 = new PlPruefungFormal(
+		plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
-						.getStandardPubInfos());
-		this.plLog1 = new PlPruefungLogischLVE(
+				.getStandardPubInfos());
+		plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this)
-						.getStandardPubInfos());
-		this.mwe = new MessWertErsetzungLVE();
+				.getStandardPubInfos());
+		mwe = new MessWertErsetzungLVE();
 
 		/**
 		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
@@ -163,19 +167,20 @@ public class VerwaltungMessWertErsetzungLVE extends
 		// PlFormMweLveStandardAspekteVersorger(this).getStandardPubInfos());
 		// this.plLog2 = new PlPruefungLogischLVE(
 		// new PlLogMweLveStandardAspekteVersorger(this).getStandardPubInfos());
-		this.pub = new PublikationsModul(new MweLveStandardAspekteVersorger(
-				this).getStandardPubInfos(), ModulTyp.MESSWERTERSETZUNG_LVE);
+		pub = new PublikationsModul(
+				new MweLveStandardAspekteVersorger(this).getStandardPubInfos(),
+				ModulTyp.MESSWERTERSETZUNG_LVE);
 
-		this.plForm1.setNaechstenBearbeitungsKnoten(this.plLog1);
-		this.plForm1.setPublikation(true);
-		this.plForm1.initialisiere(this);
+		plForm1.setNaechstenBearbeitungsKnoten(plLog1);
+		plForm1.setPublikation(true);
+		plForm1.initialisiere(this);
 
-		this.plLog1.setNaechstenBearbeitungsKnoten(this.mwe);
-		this.plLog1.setPublikation(true);
-		this.plLog1.initialisiere(this);
+		plLog1.setNaechstenBearbeitungsKnoten(mwe);
+		plLog1.setPublikation(true);
+		plLog1.initialisiere(this);
 
-		this.mwe.setNaechstenBearbeitungsKnoten(this.pub);
-		this.mwe.initialisiere(this);
+		mwe.setNaechstenBearbeitungsKnoten(pub);
+		mwe.initialisiere(this);
 
 		/**
 		 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
@@ -187,42 +192,42 @@ public class VerwaltungMessWertErsetzungLVE extends
 		// this.plLog2.setNaechstenBearbeitungsKnoten(this.pub);
 		// this.plLog2.initialisiere(this);
 
-		this.pub.initialisiere(this);
+		pub.initialisiere(this);
 
 		/**
 		 * Auf Daten anmelden und Start
 		 */
-		DataDescription anmeldungsBeschreibungKZD = new DataDescription(
-				this.verbindung.getDataModel().getAttributeGroup(
-						DUAKonstanten.ATG_KZD), this.verbindung.getDataModel()
+		final DataDescription anmeldungsBeschreibungKZD = new DataDescription(
+				verbindung.getDataModel().getAttributeGroup(
+						DUAKonstanten.ATG_KZD), verbindung.getDataModel()
 						.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
-		this.verbindung.subscribeReceiver(this, this.objekte,
-				anmeldungsBeschreibungKZD, ReceiveOptions.normal(),
-				ReceiverRole.receiver());
+		verbindung.subscribeReceiver(this, objekte, anmeldungsBeschreibungKZD,
+				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
-		this.plForm1.aktualisiereDaten(resultate);
+	@Override
+	public void update(final ResultData[] resultate) {
+		plForm1.aktualisiereDaten(resultate);
 	}
 
 	/**
 	 * Startet diese Applikation.
-	 * 
+	 *
 	 * @param argumente
 	 *            Argumente der Kommandozeile
 	 */
-	public static void main(String[] argumente) {
+	public static void main(final String[] argumente) {
 		StandardApplicationRunner.run(new VerwaltungMessWertErsetzungLVE(),
 				argumente);
 	}
 
 	/**
 	 * {@inheritDoc}.<br>
-	 * 
+	 *
 	 * Standard-Gütefaktor für Ersetzungen (90%)<br>
 	 * Wenn das Modul Messwertersetzung LVE einen Messwert ersetzt, so
 	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn kein
@@ -235,7 +240,7 @@ public class VerwaltungMessWertErsetzungLVE extends
 
 	/**
 	 * Erfragt den statischen Umsetzer fuer die Betriebsmeldungs-Id.
-	 * 
+	 *
 	 * @return der statischen Umsetzer fuer die Betriebsmeldungs-Id.
 	 */
 	public static final BetriebsmeldungIdKonverter getStaticBmvIdKonverter() {

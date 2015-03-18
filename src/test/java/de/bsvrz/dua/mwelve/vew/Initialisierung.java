@@ -48,32 +48,33 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Statischer Speicher fuer die Initialisierungsdaten.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public final class Initialisierung {
-	
+
+	private static final Debug LOGGER = Debug.getLogger();
+
 	/**
 	 * Standardkonstruktor.
 	 */
 	private Initialisierung() {
-		
+
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////
 
-	/***************************************************************************.
-	 * ANPASSEN:
-	 * 
+	/***************************************************************************
+	 * . ANPASSEN:
+	 *
 	 * Wurzelverzeichnis der Testdaten
-	 * 
+	 *
 	 */
-	
-//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
 
-	
+	//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
+
 	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
 			File.separator + "V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
 	// public static final String WURZEL = ".." + File.separator + "testDaten" +
@@ -119,17 +120,17 @@ public final class Initialisierung {
 
 	/**
 	 * ANPASSEN:.
-	 * 
+	 *
 	 * Verbindungsdaten
-	 * 
+	 *
 	 */
 	private static final String[] CON_DATA = new String[] {
-			"-datenverteiler=localhost:8083", //$NON-NLS-1$
-			"-benutzer=Tester", //$NON-NLS-1$
-			"-authentifizierung=passwd", //$NON-NLS-1$
-			"-debugLevelStdErrText=WARNING", //$NON-NLS-1$
-			"-debugLevelFileText=WARNING", //$NON-NLS-1$
-			"-KonfigurationsBereichsPid=kb.duaMweTest" }; //$NON-NLS-1$
+		"-datenverteiler=localhost:8083", //$NON-NLS-1$
+		"-benutzer=Tester", //$NON-NLS-1$
+		"-authentifizierung=passwd", //$NON-NLS-1$
+		"-debugLevelStdErrText=WARNING", //$NON-NLS-1$
+		"-debugLevelFileText=WARNING", //$NON-NLS-1$
+	"-KonfigurationsBereichsPid=kb.duaMweTest" }; //$NON-NLS-1$
 
 	// ///////////////////////////////////////////////////////////////////////////////////
 
@@ -146,7 +147,7 @@ public final class Initialisierung {
 	/**
 	 * Erfragt bzw. initialisiert eine statische Instanz eines Moduls
 	 * Messwertersetzung LVE.
-	 * 
+	 *
 	 * @return eine statische Instanz eines Moduls Messwertersetzung LVE
 	 * @throws Exception
 	 *             falls die Verbindung nicht hergestellt werden konnte
@@ -162,45 +163,47 @@ public final class Initialisierung {
 								throws DUAInitialisierungsException {
 							super.initialisiere();
 
-							DuaVerkehrsNetz.initialisiere(this.verbindung);
+							DuaVerkehrsNetz.initialisiere(verbindung);
 
-							Collection<SystemObject> alleFsObjImKB = DUAUtensilien
+							final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 									.getBasisInstanzen(
-											this.verbindung
-													.getDataModel()
-													.getType(
-															DUAKonstanten.TYP_FAHRSTREIFEN),
-											this.verbindung,
-											this.getKonfigurationsBereiche());
-							this.objekte = alleFsObjImKB
+											verbindung
+											.getDataModel()
+											.getType(
+													DUAKonstanten.TYP_FAHRSTREIFEN),
+													verbindung,
+													getKonfigurationsBereiche());
+							objekte = alleFsObjImKB
 									.toArray(new SystemObject[0]);
 
 							String infoStr = Constants.EMPTY_STRING;
-							for (SystemObject obj : this.objekte) {
+							for (final SystemObject obj : objekte) {
 								infoStr += obj + "\n"; //$NON-NLS-1$
 							}
-							Debug.getLogger()
-									.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+							LOGGER
+							.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 							messwertersetzungLVE = new MessWertErsetzungLVE();
-							PublikationsModul pub = new PublikationsModul(
+							final PublikationsModul pub = new PublikationsModul(
 									new TestMweLveStandardAspekteVersorger(this)
-											.getStandardPubInfos(),
+									.getStandardPubInfos(),
 									ModulTyp.MESSWERTERSETZUNG_LVE);
 
 							messwertersetzungLVE
-									.setNaechstenBearbeitungsKnoten(pub);
+							.setNaechstenBearbeitungsKnoten(pub);
 							messwertersetzungLVE.initialisiere(this);
 
 							pub.initialisiere(this);
 							pub.setPublikation(true);
 						}
 
+						@Override
 						public SWETyp getSWETyp() {
 							return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 						}
 
-						public void update(ResultData[] results) {
+						@Override
+						public void update(final ResultData[] results) {
 							// wird hier nicht benutzt
 						}
 
@@ -217,7 +220,7 @@ public final class Initialisierung {
 
 	/**
 	 * Erfragt bzw. initialisiert eine Verbindung zum Verwaltungsmodul
-	 * 
+	 *
 	 * @return die Datenverteiler-Verbindung
 	 * @throws Exception
 	 *             falls die Verbindung nicht hergestellt werden konnte

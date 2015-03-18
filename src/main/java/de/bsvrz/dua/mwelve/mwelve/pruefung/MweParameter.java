@@ -41,9 +41,9 @@ import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 /**
  * Korrespondiert mit
  * <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public final class MweParameter implements ClientReceiverInterface {
@@ -59,20 +59,20 @@ public final class MweParameter implements ClientReceiverInterface {
 	private long maxErsetzungsDauer = -1;
 
 	/**
-	 * Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem Ersatzwert.
-	 * nicht interpoliert werden kann
+	 * Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
+	 * Ersatzwert. nicht interpoliert werden kann
 	 */
 	private long maxWiederholungsZeit = -1;
 
 	/**
-	 * Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung, wenn wegen.
-	 * fehlendem Ersatzswert nicht interpoliert werden kann.
+	 * Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung, wenn
+	 * wegen. fehlendem Ersatzswert nicht interpoliert werden kann.
 	 */
 	private long maxWiederholungAnzahl = -1;
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param dav
 	 *            Datenverteiler-Verbindung
 	 * @param objekt
@@ -80,17 +80,17 @@ public final class MweParameter implements ClientReceiverInterface {
 	 *            werden soll
 	 */
 	private MweParameter(final ClientDavInterface dav, final SystemObject objekt) {
-		DataDescription datenBeschreibung = new DataDescription(
-				dav.getDataModel().getAttributeGroup(
+		final DataDescription datenBeschreibung = new DataDescription(dav
+				.getDataModel().getAttributeGroup(
 						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
-		dav.subscribeReceiver(this, objekt, datenBeschreibung, ReceiveOptions
-				.normal(), ReceiverRole.receiver());
+						dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+		dav.subscribeReceiver(this, objekt, datenBeschreibung,
+				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
 	/**
 	 * Initialisiert alle Parameteranmeldungen.
-	 * 
+	 *
 	 * @param dav
 	 *            Datenverteiler-Verbindung
 	 * @param objekte
@@ -99,14 +99,14 @@ public final class MweParameter implements ClientReceiverInterface {
 	 */
 	public static void initialisiere(final ClientDavInterface dav,
 			final SystemObject[] objekte) {
-		for (SystemObject objekt : objekte) {
+		for (final SystemObject objekt : objekte) {
 			parameterMap.put(objekt, new MweParameter(dav, objekt));
 		}
 	}
 
 	/**
 	 * Erfragt die aktuellen MWE-Parameter eines Fahrstreifens.
-	 * 
+	 *
 	 * @param fsObj
 	 *            ein Systemobjekt eines Fahrstreifens
 	 * @return die aktuellen MWE-Parameter eines Fahrstreifens oder
@@ -118,20 +118,20 @@ public final class MweParameter implements ClientReceiverInterface {
 
 	/**
 	 * Erfragt, ob für einen Fahrstreifen gültige Parameter vorhanden sind.
-	 * 
+	 *
 	 * @param fsObj
 	 *            ein Systemobjekt eines Fahrstreifens
 	 * @return ob für einen Fahrstreifen gültige Parameter vorhanden sind
 	 */
 	public static boolean isParameterValide(final SystemObject fsObj) {
-		MweParameter parameter = parameterMap.get(fsObj);
-		return parameter != null && parameter.getMaxErsetzungsDauer() != -1;
+		final MweParameter parameter = parameterMap.get(fsObj);
+		return (parameter != null) && (parameter.getMaxErsetzungsDauer() != -1);
 	}
 
 	/**
 	 * Erfragt die Maximale Zeitdauer, über die implausible Messwerte ersetzt
 	 * werden.
-	 * 
+	 *
 	 * @return Maximale Zeitdauer, über die implausible Messwerte ersetzt werden
 	 */
 	public synchronized long getMaxErsetzungsDauer() {
@@ -141,7 +141,7 @@ public final class MweParameter implements ClientReceiverInterface {
 	/**
 	 * Erfragt Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
 	 * Ersatzwert nicht interpoliert werden kann.
-	 * 
+	 *
 	 * @return Maximale Zeitdauer bis zur Fehlermeldung, wenn wegem fehlendem
 	 *         Ersatzwert nicht interpoliert werden kann
 	 */
@@ -152,7 +152,7 @@ public final class MweParameter implements ClientReceiverInterface {
 	/**
 	 * Erfragt Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung,
 	 * wenn wegen fehlendem Ersatzswert nicht interpoliert werden kann.
-	 * 
+	 *
 	 * @return Maximale Anzahl von Ersetzungsversuchen bis zur Fehlermeldung,
 	 *         wenn wegen fehlendem Ersatzswert nicht interpoliert werden kann
 	 */
@@ -163,17 +163,18 @@ public final class MweParameter implements ClientReceiverInterface {
 	/**
 	 * {@inheritDoc}.
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
-						this.maxErsetzungsDauer = resultat.getData()
+						maxErsetzungsDauer = resultat.getData()
 								.getTimeValue("MaxErsetzungsDauer").getMillis(); //$NON-NLS-1$
-						this.maxWiederholungsZeit = resultat
+						maxWiederholungsZeit = resultat
 								.getData()
 								.getTimeValue("MaxWiederholungsZeit").getMillis(); //$NON-NLS-1$
-						this.maxWiederholungAnzahl = resultat
+						maxWiederholungAnzahl = resultat
 								.getData()
 								.getUnscaledValue("MaxWiederholungAnzahl").longValue(); //$NON-NLS-1$
 					}

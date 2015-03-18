@@ -45,9 +45,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltungMitGuete;
  * Ersetzung werden die Daten je nach Parametrierung unter dem Aspekt
  * asp.messWertErsetzung publiziert und an den nächsten Bearbeitungsknoten
  * weitergereicht
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
@@ -66,9 +66,9 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
-		
+
 		if (dieVerwaltung instanceof IVerwaltungMitGuete) {
 			guete = ((IVerwaltungMitGuete) dieVerwaltung).getGueteFaktor();
 		} else {
@@ -79,24 +79,26 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 		/**
 		 * Auf Parameter aller betrachteten Fahrstreifen anmelden
 		 */
-		MweParameter.initialisiere(dieVerwaltung.getVerbindung(), dieVerwaltung
-				.getSystemObjekte());
+		MweParameter.initialisiere(dieVerwaltung.getVerbindung(),
+				dieVerwaltung.getSystemObjekte());
 
-		this.pruefung = new LVEPruefungUndMWE();
-		this.pruefung.setNaechstenBearbeitungsKnoten(this.knoten);
-		this.pruefung.initialisiere(dieVerwaltung);
+		pruefung = new LVEPruefungUndMWE();
+		pruefung.setNaechstenBearbeitungsKnoten(knoten);
+		pruefung.initialisiere(dieVerwaltung);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
-		this.pruefung.aktualisiereDaten(resultate);
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
+		pruefung.aktualisiereDaten(resultate);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
@@ -104,7 +106,8 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
 

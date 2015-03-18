@@ -36,10 +36,11 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.CSVImporter;
 
 /**
  * Liest die Ausgangsdaten eines Fahrstreifens ein.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: TestFahrstreifenImporter.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
 public class TestFahrstreifenImporter extends CSVImporter {
 
@@ -60,7 +61,7 @@ public class TestFahrstreifenImporter extends CSVImporter {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param dav
 	 *            Datenverteier-Verbindung
 	 * @param csvQuelle
@@ -79,12 +80,12 @@ public class TestFahrstreifenImporter extends CSVImporter {
 		/**
 		 * Tabellenkopf überspringen
 		 */
-		this.next();
+		next();
 	}
 
 	/**
 	 * Setzt Datenintervall.
-	 * 
+	 *
 	 * @param t
 	 *            Datenintervall
 	 */
@@ -94,12 +95,12 @@ public class TestFahrstreifenImporter extends CSVImporter {
 
 	/**
 	 * Springt zur naechsten Zeile innerhalb der CSV-Datei.
-	 * 
+	 *
 	 * @return ob weiter aus der Datei gelesen werden kann
 	 */
 	public final boolean next() {
-		this.aktuelleZeile = this.getNaechsteZeile();
-		if (this.aktuelleZeile == null) {
+		aktuelleZeile = getNaechsteZeile();
+		if (aktuelleZeile == null) {
 			return false;
 		}
 		return true;
@@ -107,17 +108,17 @@ public class TestFahrstreifenImporter extends CSVImporter {
 
 	/**
 	 * Erfragt, ob der Dateizeiger am Ende steht.
-	 * 
+	 *
 	 * @return ob der Dateizeiger am Ende steht
 	 */
 	public final boolean isEnde() {
-		return this.aktuelleZeile == null;
+		return aktuelleZeile == null;
 	}
 
 	/**
 	 * Erfragt einen KZ-Datensatz aus der aktuellen Zeile der importierten
 	 * Tabelle fuer den Fahrstreifen mit dem uebergebenen Index.
-	 * 
+	 *
 	 * @param index
 	 *            der Index des Fahrstreifens, dessen Daten gelesen werden
 	 *            sollen (1 fuer Fahrstreifen 1, 2 fuer Fahrstreifen 2 und 3
@@ -125,65 +126,65 @@ public class TestFahrstreifenImporter extends CSVImporter {
 	 * @return einen KZ-Datensatz aus der aktuellen Zeile der importierten
 	 *         Tabelle fuer den Fahrstreifen mit dem uebergebenen Index
 	 */
-	public final Data getDatensatz(int index) {
+	public final Data getDatensatz(final int index) {
 		Data datensatz = sDav.createData(sDav.getDataModel().getAttributeGroup(
 				DUAKonstanten.ATG_KZD));
 
 		if (datensatz != null) {
 
-			if (this.aktuelleZeile != null) {
+			if (aktuelleZeile != null) {
 				try {
 					datensatz.getTimeValue("T").setMillis(intervall); //$NON-NLS-1$
 					datensatz.getUnscaledValue("ArtMittelwertbildung").set(1); //$NON-NLS-1$
 					modifyAttribut(
 							"sKfz", DUAKonstanten.NICHT_ERMITTELBAR, Constants.EMPTY_STRING, datensatz); //$NON-NLS-1$
 
-					long qKfz = Integer
-							.parseInt(this.aktuelleZeile[0 + (index) * 2]);
-					String qKfzStatus = this.aktuelleZeile[1 + 0 + (index) * 2];
+					final long qKfz = Integer
+							.parseInt(aktuelleZeile[0 + ((index) * 2)]);
+					final String qKfzStatus = aktuelleZeile[1 + 0 + ((index) * 2)];
 					modifyAttribut("qKfz", qKfz, qKfzStatus, datensatz); //$NON-NLS-1$
 
-					long qPkw = Integer
-							.parseInt(this.aktuelleZeile[6 + (index) * 2]);
-					String qPkwStatus = this.aktuelleZeile[1 + 6 + (index) * 2];
+					final long qPkw = Integer
+							.parseInt(aktuelleZeile[6 + ((index) * 2)]);
+					final String qPkwStatus = aktuelleZeile[1 + 6 + ((index) * 2)];
 					modifyAttribut("qPkw", qPkw, qPkwStatus, datensatz); //$NON-NLS-1$
 
-					long qLkw = Integer
-							.parseInt(this.aktuelleZeile[12 + (index) * 2]);
-					String qLkwStatus = this.aktuelleZeile[1 + 12 + (index) * 2];
+					final long qLkw = Integer
+							.parseInt(aktuelleZeile[12 + ((index) * 2)]);
+					final String qLkwStatus = aktuelleZeile[1 + 12 + ((index) * 2)];
 					modifyAttribut("qLkw", qLkw, qLkwStatus, datensatz); //$NON-NLS-1$
 
-					long vKfz = Integer
-							.parseInt(this.aktuelleZeile[18 + (index) * 2]);
-					String vKfzStatus = this.aktuelleZeile[1 + 18 + (index) * 2];
+					final long vKfz = Integer
+							.parseInt(aktuelleZeile[18 + ((index) * 2)]);
+					final String vKfzStatus = aktuelleZeile[1 + 18 + ((index) * 2)];
 					modifyAttribut("vKfz", vKfz, vKfzStatus, datensatz); //$NON-NLS-1$
 
-					long vPkw = Integer
-							.parseInt(this.aktuelleZeile[24 + (index) * 2]);
-					String vPkwStatus = this.aktuelleZeile[1 + 24 + (index) * 2];
+					final long vPkw = Integer
+							.parseInt(aktuelleZeile[24 + ((index) * 2)]);
+					final String vPkwStatus = aktuelleZeile[1 + 24 + ((index) * 2)];
 					modifyAttribut("vPkw", vPkw, vPkwStatus, datensatz); //$NON-NLS-1$
 
-					long vLkw = Integer
-							.parseInt(this.aktuelleZeile[30 + (index) * 2]);
-					String vLkwStatus = this.aktuelleZeile[1 + 30 + (index) * 2];
+					final long vLkw = Integer
+							.parseInt(aktuelleZeile[30 + ((index) * 2)]);
+					final String vLkwStatus = aktuelleZeile[1 + 30 + ((index) * 2)];
 					modifyAttribut("vLkw", vLkw, vLkwStatus, datensatz); //$NON-NLS-1$
 
-					long vgKfz = Integer
-							.parseInt(this.aktuelleZeile[36 + (index) * 2]);
-					String vgKfzStatus = this.aktuelleZeile[1 + 36 + (index) * 2];
+					final long vgKfz = Integer
+							.parseInt(aktuelleZeile[36 + ((index) * 2)]);
+					final String vgKfzStatus = aktuelleZeile[1 + 36 + ((index) * 2)];
 					modifyAttribut("vgKfz", vgKfz, vgKfzStatus, datensatz); //$NON-NLS-1$
 
-					long b = Integer
-							.parseInt(this.aktuelleZeile[42 + (index) * 2]);
-					String bStatus = this.aktuelleZeile[1 + 42 + (index) * 2];
+					final long b = Integer
+							.parseInt(aktuelleZeile[42 + ((index) * 2)]);
+					final String bStatus = aktuelleZeile[1 + 42 + ((index) * 2)];
 					modifyAttribut("b", b, bStatus, datensatz); //$NON-NLS-1$
 
-					long tNetto = Integer
-							.parseInt(this.aktuelleZeile[48 + (index) * 2]);
-					String tStatus = this.aktuelleZeile[1 + 48 + (index) * 2];
+					final long tNetto = Integer
+							.parseInt(aktuelleZeile[48 + ((index) * 2)]);
+					final String tStatus = aktuelleZeile[1 + 48 + ((index) * 2)];
 					modifyAttribut("tNetto", tNetto, tStatus, datensatz); //$NON-NLS-1$
 
-				} catch (ArrayIndexOutOfBoundsException ex) {
+				} catch (final ArrayIndexOutOfBoundsException ex) {
 					datensatz = null;
 				}
 			} else {
@@ -196,18 +197,18 @@ public class TestFahrstreifenImporter extends CSVImporter {
 
 	/**
 	 * Modifiziert ein Attribut in einem Datensatz.
-	 * 
+	 *
 	 * @param attributName
 	 *            Name des Attributs
 	 * @param wert
 	 *            Wert des Attributs
 	 * @param status
-	 *            Status des Attributs           
+	 *            Status des Attributs
 	 * @param datensatz
 	 *            der Datensatz
 	 */
-	private void modifyAttribut(final String attributName,
-			final long wert, final String status, Data datensatz) {
+	private void modifyAttribut(final String attributName, final long wert,
+			final String status, final Data datensatz) {
 		int nErf = DUAKonstanten.NEIN;
 		int wMax = DUAKonstanten.NEIN;
 		int wMin = DUAKonstanten.NEIN;
@@ -220,80 +221,80 @@ public class TestFahrstreifenImporter extends CSVImporter {
 		int errCode = 0;
 
 		if (status != null) {
-			String[] splitStatus = status.trim().split(" "); //$NON-NLS-1$
+			final String[] splitStatus = status.trim().split(" "); //$NON-NLS-1$
 
-			for (int i = 0; i < splitStatus.length; i++) {
-				if (splitStatus[i].equalsIgnoreCase("Fehl")) { //$NON-NLS-1$
+			for (final String splitStatu : splitStatus) {
+				if (splitStatu.equalsIgnoreCase("Fehl")) { //$NON-NLS-1$
 					errCode = errCode - 2;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("nErm")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("nErm")) { //$NON-NLS-1$
 					errCode = errCode - 1;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("Impl")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("Impl")) { //$NON-NLS-1$
 					impl = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("Intp")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("Intp")) { //$NON-NLS-1$
 					intp = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("nErf")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("nErf")) { //$NON-NLS-1$
 					nErf = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("wMaL")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("wMaL")) { //$NON-NLS-1$
 					wMaL = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("wMax")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("wMax")) { //$NON-NLS-1$
 					wMax = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("wMiL")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("wMiL")) { //$NON-NLS-1$
 					wMiL = DUAKonstanten.JA;
 				}
 
-				if (splitStatus[i].equalsIgnoreCase("wMin")) { //$NON-NLS-1$
+				if (splitStatu.equalsIgnoreCase("wMin")) { //$NON-NLS-1$
 					wMin = DUAKonstanten.JA;
 				}
 
 				try {
-					guete = Float.parseFloat(splitStatus[i].replace(",", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (Exception e) {
+					guete = Float.parseFloat(splitStatu.replace(",", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+				} catch (final Exception e) {
 					// kein float Wert
 				}
 			}
 		}
 
 		DUAUtensilien
-				.getAttributDatum(attributName + ".Wert", datensatz).asUnscaledValue().set(errCode < 0 ? errCode : wert); //$NON-NLS-1$
+		.getAttributDatum(attributName + ".Wert", datensatz).asUnscaledValue().set(errCode < 0 ? errCode : wert); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.Erfassung.NichtErfasst", datensatz).asUnscaledValue().set(nErf); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.Erfassung.NichtErfasst", datensatz).asUnscaledValue().set(nErf); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.PlFormal.WertMax", datensatz).asUnscaledValue().set(wMax); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.PlFormal.WertMax", datensatz).asUnscaledValue().set(wMax); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.PlFormal.WertMin", datensatz).asUnscaledValue().set(wMin); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.PlFormal.WertMin", datensatz).asUnscaledValue().set(wMin); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.PlLogisch.WertMaxLogisch", datensatz).asUnscaledValue().set(wMaL); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.PlLogisch.WertMaxLogisch", datensatz).asUnscaledValue().set(wMaL); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.PlLogisch.WertMinLogisch", datensatz).asUnscaledValue().set(wMiL); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.PlLogisch.WertMinLogisch", datensatz).asUnscaledValue().set(wMiL); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.MessWertErsetzung.Implausibel", datensatz).asUnscaledValue().set(impl); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.MessWertErsetzung.Implausibel", datensatz).asUnscaledValue().set(impl); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(
-						attributName + ".Status.MessWertErsetzung.Interpoliert", datensatz).asUnscaledValue().set(intp); //$NON-NLS-1$
+		.getAttributDatum(
+				attributName + ".Status.MessWertErsetzung.Interpoliert", datensatz).asUnscaledValue().set(intp); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(attributName + ".Güte.Index", datensatz).asScaledValue().set(guete); //$NON-NLS-1$
+		.getAttributDatum(attributName + ".Güte.Index", datensatz).asScaledValue().set(guete); //$NON-NLS-1$
 		DUAUtensilien
-				.getAttributDatum(attributName + ".Güte.Verfahren", datensatz).asUnscaledValue().set(0); //$NON-NLS-1$
+		.getAttributDatum(attributName + ".Güte.Verfahren", datensatz).asUnscaledValue().set(0); //$NON-NLS-1$
 	}
 
 }

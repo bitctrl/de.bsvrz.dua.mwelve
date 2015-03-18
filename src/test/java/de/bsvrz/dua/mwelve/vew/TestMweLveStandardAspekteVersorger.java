@@ -36,22 +36,24 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * (innerhalb des Tests des Moduls Messwertersetzung LVE) mit
  * Standard-Publikationsinformationen (Zuordnung von
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: TestMweLveStandardAspekteVersorger.java 53825 2015-03-18
+ *          09:36:42Z peuker $
  */
 public class TestMweLveStandardAspekteVersorger extends
-		StandardAspekteVersorger {
+StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
-	public TestMweLveStandardAspekteVersorger(IVerwaltung verwaltung)
+	public TestMweLveStandardAspekteVersorger(final IVerwaltung verwaltung)
 			throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
@@ -62,7 +64,7 @@ public class TestMweLveStandardAspekteVersorger extends
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
-		this.standardAspekte = new StandardAspekteAdapter(
+		standardAspekte = new StandardAspekteAdapter(
 				new StandardPublikationsZuordnung[] { new StandardPublikationsZuordnung(
 						DUAKonstanten.TYP_FAHRSTREIFEN, DUAKonstanten.ATG_KZD,
 						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH,
