@@ -72,19 +72,19 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  *          peuker $
  */
 public class VerwaltungMessWertErsetzungLVE extends
-AbstraktVerwaltungsAdapterMitGuete {
+		AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Der statische Umsetzer fuer die Betriebsmeldungs-Id.
 	 */
-	private static final BetriebsmeldungIdKonverter konverter = new DefaultBetriebsMeldungsIdKonverter();
+	private static final BetriebsmeldungIdKonverter KONVERTER = new DefaultBetriebsMeldungsIdKonverter();
 
 	/**
 	 * Instanz des Moduls PL-Prüfung formal (1).
 	 */
-	private PlPruefungFormal plForm1 = null;
+	private PlPruefungFormal plForm1;
 
 	/**
 	 * Laut Afo 5.2 faellt die Plausibilitaetspruefung NACH der
@@ -134,28 +134,27 @@ AbstraktVerwaltungsAdapterMitGuete {
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(verbindung);
 		MessageSender.getInstance()
-		.setApplicationLabel("Messwertersetzung LVE");
+				.setApplicationLabel("Messwertersetzung LVE");
 
 		final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(
 						verbindung.getDataModel().getType(
 								DUAKonstanten.TYP_FAHRSTREIFEN), verbindung,
-						getKonfigurationsBereiche());
+								getKonfigurationsBereiche());
 		objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
 		String infoStr = Constants.EMPTY_STRING;
 		for (final SystemObject obj : objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		LOGGER.config(
-				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
-				.getStandardPubInfos());
+						.getStandardPubInfos());
 		plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this)
-				.getStandardPubInfos());
+						.getStandardPubInfos());
 		mwe = new MessWertErsetzungLVE();
 
 		/**
@@ -244,7 +243,7 @@ AbstraktVerwaltungsAdapterMitGuete {
 	 * @return der statischen Umsetzer fuer die Betriebsmeldungs-Id.
 	 */
 	public static final BetriebsmeldungIdKonverter getStaticBmvIdKonverter() {
-		return konverter;
+		return KONVERTER;
 	}
 
 }
