@@ -50,8 +50,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Statischer Speicher fuer die Initialisierungsdaten.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public final class Initialisierung {
 
@@ -73,7 +71,8 @@ public final class Initialisierung {
 	 *
 	 */
 
-	//	public static final String WURZEL = ".\\res\\testDaten\\V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
+	// public static final String WURZEL =
+	// ".\\res\\testDaten\\V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
 
 	public static final String WURZEL = ".." + File.separator + "testDaten" + //$NON-NLS-1$ //$NON-NLS-2$
 			File.separator + "V_2.7.9(05.04.08)" + File.separator; //$NON-NLS-1$
@@ -103,7 +102,7 @@ public final class Initialisierung {
 	 * Datei aus der die Eingabedaten fuer den Test ausgelesen werden.
 	 */
 	public static final TestDatei INPUT_CSV = new TestDatei(
-			"PL_Pruef_LVE_Grenz.csv", ".xls)PL-Pruef LVE Grenz"); //$NON-NLS-1$   //$NON-NLS-2$
+			"PL_Pruef_LVE_Grenz.csv", ".xls)PL-Pruef LVE Grenz"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * Datei aus der die erwarteten Ergebnisdaten fuer den Test ausgelesen
@@ -111,7 +110,7 @@ public final class Initialisierung {
 	 * <code>.xls)Messwerters. LVE</code>
 	 */
 	public static final TestDatei OUTPUT_CSV = new TestDatei(
-			"Messwerters_LVE.csv", ".xls)Messwerters. LVE"); //$NON-NLS-1$   //$NON-NLS-2$
+			"Messwerters_LVE.csv", ".xls)Messwerters. LVE"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * Erfassungsintervall der Kurzzeitdaten in ms.
@@ -125,12 +124,12 @@ public final class Initialisierung {
 	 *
 	 */
 	private static final String[] CON_DATA = new String[] {
-		"-datenverteiler=localhost:8083", //$NON-NLS-1$
-		"-benutzer=Tester", //$NON-NLS-1$
-		"-authentifizierung=passwd", //$NON-NLS-1$
-		"-debugLevelStdErrText=WARNING", //$NON-NLS-1$
-		"-debugLevelFileText=WARNING", //$NON-NLS-1$
-	"-KonfigurationsBereichsPid=kb.duaMweTest" }; //$NON-NLS-1$
+			"-datenverteiler=localhost:8083", //$NON-NLS-1$
+			"-benutzer=Tester", //$NON-NLS-1$
+			"-authentifizierung=passwd", //$NON-NLS-1$
+			"-debugLevelStdErrText=WARNING", //$NON-NLS-1$
+			"-debugLevelFileText=WARNING", //$NON-NLS-1$
+			"-KonfigurationsBereichsPid=kb.duaMweTest" }; //$NON-NLS-1$
 
 	// ///////////////////////////////////////////////////////////////////////////////////
 
@@ -155,8 +154,8 @@ public final class Initialisierung {
 	public static MessWertErsetzungLVE getMWE() throws Exception {
 
 		if (verwaltung == null) {
-			StandardApplicationRunner.run(
-					verwaltung = new AbstraktVerwaltungsAdapterMitGuete() {
+			StandardApplicationRunner
+					.run(verwaltung = new AbstraktVerwaltungsAdapterMitGuete() {
 
 						@Override
 						protected void initialisiere()
@@ -167,12 +166,10 @@ public final class Initialisierung {
 
 							final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 									.getBasisInstanzen(
-											verbindung
-											.getDataModel()
-											.getType(
+											verbindung.getDataModel().getType(
 													DUAKonstanten.TYP_FAHRSTREIFEN),
-													verbindung,
-													getKonfigurationsBereiche());
+											verbindung,
+											getKonfigurationsBereiche());
 							objekte = alleFsObjImKB
 									.toArray(new SystemObject[0]);
 
@@ -180,17 +177,17 @@ public final class Initialisierung {
 							for (final SystemObject obj : objekte) {
 								infoStr += obj + "\n"; //$NON-NLS-1$
 							}
-							LOGGER
-							.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+							LOGGER.config("---\nBetrachtete Objekte:\n" //$NON-NLS-1$
+									+ infoStr + "---\n"); //$NON-NLS-1$
 
 							messwertersetzungLVE = new MessWertErsetzungLVE();
 							final PublikationsModul pub = new PublikationsModul(
 									new TestMweLveStandardAspekteVersorger(this)
-									.getStandardPubInfos(),
+											.getStandardPubInfos(),
 									ModulTyp.MESSWERTERSETZUNG_LVE);
 
 							messwertersetzungLVE
-							.setNaechstenBearbeitungsKnoten(pub);
+									.setNaechstenBearbeitungsKnoten(pub);
 							messwertersetzungLVE.initialisiere(this);
 
 							pub.initialisiere(this);

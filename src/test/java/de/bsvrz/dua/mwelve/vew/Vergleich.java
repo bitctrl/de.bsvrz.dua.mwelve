@@ -40,8 +40,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * Vergleicht die Ergebnisse.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class Vergleich {
 
@@ -119,13 +117,16 @@ public class Vergleich {
 				Initialisierung.WURZEL + inputCsv.getDateiName());
 		outputImporter = new TestFahrstreifenImporter(dav,
 				Initialisierung.WURZEL + outputCsv.getDateiName());
-		dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" + outputCsv.getAlias() + "\""; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		ddPlLog = new DataDescription(dav.getDataModel().getAttributeGroup(
-				DUAKonstanten.ATG_KZD), dav.getDataModel().getAspect(
-				DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
-		ddPlMwe = new DataDescription(dav.getDataModel().getAttributeGroup(
-				DUAKonstanten.ATG_KZD), dav.getDataModel().getAspect(
-				DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		dateiInfo = "Eingabe: \"" + inputCsv.getAlias() + "\", Soll-Werte: \"" //$NON-NLS-1$//$NON-NLS-2$
+				+ outputCsv.getAlias() + "\""; //$NON-NLS-1$
+		ddPlLog = new DataDescription(
+				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
+				dav.getDataModel()
+						.getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
+		ddPlMwe = new DataDescription(
+				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
+				dav.getDataModel()
+						.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 	}
 
 	/**
@@ -153,8 +154,8 @@ public class Vergleich {
 				erwarteteErgebnisse[i] = new ResultData(fahrstreifen[i],
 						ddPlMwe, zeitStempel, outputImporter.getDatensatz(i));
 
-				frage[i] = new ResultData(fahrstreifen[i], ddPlLog,
-						zeitStempel, inputImporter.getDatensatz(i));
+				frage[i] = new ResultData(fahrstreifen[i], ddPlLog, zeitStempel,
+						inputImporter.getDatensatz(i));
 			}
 		}
 
@@ -229,11 +230,14 @@ public class Vergleich {
 						passt = (soll.getDataTime() == ist.getDataTime())
 								&& kzdSoll.equals(kzdIst);
 
-						info = "Zeile: " + zeilenNummer + " (" + dateiInfo + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						info = "Zeile: " + zeilenNummer + " (" + dateiInfo //$NON-NLS-1$ //$NON-NLS-2$
+								+ ")"; //$NON-NLS-1$
 						if (!passt) {
 							info += "\nSoll != Ist\n" + kzdSoll.compare(kzdIst); //$NON-NLS-1$
-							info += "\nSoll-Zeit: " + dateFormat.format(new Date(soll.getDataTime())); //$NON-NLS-1$
-							info += "\nIst-Zeit:  " + dateFormat.format(new Date(ist.getDataTime())); //$NON-NLS-1$
+							info += "\nSoll-Zeit: " + dateFormat //$NON-NLS-1$
+									.format(new Date(soll.getDataTime()));
+							info += "\nIst-Zeit:  " + dateFormat //$NON-NLS-1$
+									.format(new Date(ist.getDataTime()));
 						}
 						break;
 					}

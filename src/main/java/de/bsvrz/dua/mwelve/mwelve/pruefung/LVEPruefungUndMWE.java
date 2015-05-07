@@ -53,8 +53,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Intervalls)
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -73,21 +71,21 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 * <code>vPkw</code>
 	 */
 	private static final MweAttribut[] Q_V_PKW_KFZ_LKW = new MweAttribut[] {
-		MweAttribut.Q_KFZ, MweAttribut.Q_PKW, MweAttribut.V_KFZ,
-		MweAttribut.V_PKW, MweAttribut.Q_LKW, MweAttribut.V_LKW };
+			MweAttribut.Q_KFZ, MweAttribut.Q_PKW, MweAttribut.V_KFZ,
+			MweAttribut.V_PKW, MweAttribut.Q_LKW, MweAttribut.V_LKW };
 
 	/**
 	 * Menge aller Fahrstreifen, die sowohl einen Nachbar- wie auch einen
 	 * Ersatzfahrstreifen besitzen und somit hier plausibilisiert werden.
 	 */
-	private final Set<FahrStreifen> pruefungsFahrstreifen = new HashSet<FahrStreifen>();
+	private final Set<FahrStreifen> pruefungsFahrstreifen = new HashSet<>();
 
 	/**
 	 * Mapt alle (hier relevanten) Objekte vom Typ <code>FahrStreifen</code> auf
 	 * deren Puffer-Objekte. Relevant sind sowohl die Objekte, die hier direkt
 	 * plausibilisiert werden, wie auch deren Nachbar- bzw. Ersatzfahrstreifen
 	 */
-	private final Map<FahrStreifen, FSDatenPuffer> fsAufDatenPuffer = new HashMap<FahrStreifen, FSDatenPuffer>();
+	private final Map<FahrStreifen, FSDatenPuffer> fsAufDatenPuffer = new HashMap<>();
 
 	/**
 	 * Assoziiert einen Fahrstreifen <code>a</code> mit den Fahrstreifen
@@ -114,10 +112,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			final FahrStreifen fs = FahrStreifen.getInstanz(fsObjekt);
 			if (fs != null) {
 				if (fs.getErsatzFahrStreifen() != null /**
-				 * &&
-				 * fs.getNachbarFahrStreifen() != null
-				 */
-						) {
+														 * && fs.
+														 * getNachbarFahrStreifen
+														 * () != null
+														 */
+				) {
 					pruefungsFahrstreifen.add(fs);
 					fsAufDatenPuffer.put(fs, new FSDatenPuffer(fs));
 					/**
@@ -130,7 +129,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			} else {
 				throw new DUAInitialisierungsException(
 						"Fahrstreifenkonfiguration von " + fsObjekt + //$NON-NLS-1$
-						" konnte nicht ausgelesen werden"); //$NON-NLS-1$
+								" konnte nicht ausgelesen werden"); //$NON-NLS-1$
 			}
 		}
 
@@ -149,7 +148,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			 */
 			Collection<FahrStreifen> triggerFuerFS = triggerListe.get(fs);
 			if (triggerFuerFS == null) {
-				triggerFuerFS = new HashSet<FahrStreifen>();
+				triggerFuerFS = new HashSet<>();
 				triggerFuerFS.add(fs);
 				triggerListe.put(fs, triggerFuerFS);
 			} else {
@@ -181,7 +180,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			Collection<FahrStreifen> triggerFuerErsatz = triggerListe
 					.get(ersatz);
 			if (triggerFuerErsatz == null) {
-				triggerFuerErsatz = new HashSet<FahrStreifen>();
+				triggerFuerErsatz = new HashSet<>();
 				triggerFuerErsatz.add(fs);
 				triggerListe.put(ersatz, triggerFuerErsatz);
 			} else {
@@ -200,12 +199,12 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			 * die weiterzuleitenden Resultate müssen die selbe
 			 * Datenidentifikation haben wie die eingetroffenen Resultate
 			 */
-			final List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final List<ResultData> weiterzuleitendeResultate = new ArrayList<>();
 
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
-					final FahrStreifen fs = FahrStreifen.getInstanz(resultat
-							.getObject());
+					final FahrStreifen fs = FahrStreifen
+							.getInstanz(resultat.getObject());
 					if (fs != null) {
 
 						/**
@@ -239,7 +238,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 							for (final FahrStreifen triggerFS : triggerListe
 									.get(fs)) {
 								pufferFS = fsAufDatenPuffer.get(triggerFS);
-								final ResultData plausibilisiertesDatum = plausibilisiere(pufferFS);
+								final ResultData plausibilisiertesDatum = plausibilisiere(
+										pufferFS);
 								if (plausibilisiertesDatum != null) {
 									/**
 									 * baue Datum mit alter Datenidentifikation
@@ -249,10 +249,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 											triggerFS.getSystemObject(),
 											resultat.getDataDescription(),
 											plausibilisiertesDatum
-											.getDataTime(),
+													.getDataTime(),
 											plausibilisiertesDatum.getData());
 									weiterzuleitendeResultate
-									.add(weiterzuleitendesResultat);
+											.add(weiterzuleitendesResultat);
 								}
 							}
 						} else {
@@ -276,8 +276,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			 * weiterleiten
 			 */
 			if ((knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+				knoten.aktualisiereDaten(
+						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}
@@ -313,8 +313,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 				 */
 				// FahrStreifen nachbar =
 				// fahrStreifenPuffer.getFahrStreifen().getNachbarFahrStreifen();
-				final FahrStreifen ersatz = fahrStreifenPuffer
-						.getFahrStreifen().getErsatzFahrStreifen();
+				final FahrStreifen ersatz = fahrStreifenPuffer.getFahrStreifen()
+						.getErsatzFahrStreifen();
 				// FSDatenPuffer nachbarPuffer =
 				// this.fsAufDatenPuffer.get(nachbar);
 				final FSDatenPuffer ersatzPuffer = fsAufDatenPuffer.get(ersatz);
@@ -365,8 +365,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 		if (zielDatum != null) {
 			KZDatum ersatzZielDatum = null;
 			if ((ersatzPuffer != null) && (zielDatum.getDatum() != null)) {
-				ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(zielDatum
-						.getDatum().getDataTime());
+				ersatzZielDatum = ersatzPuffer.getDatumMitZeitStempel(
+						zielDatum.getDatum().getDataTime());
 			}
 			if (ersatzZielDatum != null) {
 				/**
@@ -517,15 +517,14 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			/**
 			 * ggf. Intervallanpassung
 			 */
-			if (attribut.isQWert()
-					&& (ergebnisDatum.getDatum().getData()
-							.getTimeValue("T").getMillis() != //$NON-NLS-1$
-							ersetzungsDatum.getDatum().getData()
-							.getTimeValue("T").getMillis())) { //$NON-NLS-1$
+			if (attribut.isQWert() && (ergebnisDatum.getDatum().getData()
+					.getTimeValue("T").getMillis() != //$NON-NLS-1$
+					ersetzungsDatum.getDatum().getData().getTimeValue("T") //$NON-NLS-1$
+							.getMillis())) {
 				final double faktor = ergebnisDatum.getDatum().getData()
 						.getTimeValue("T").getMillis() / //$NON-NLS-1$
-						ersetzungsDatum.getDatum().getData()
-						.getTimeValue("T").getMillis(); //$NON-NLS-1$
+						ersetzungsDatum.getDatum().getData().getTimeValue("T") //$NON-NLS-1$
+								.getMillis();
 				wertErsetzung = wertErsetzung * faktor;
 			}
 
@@ -542,8 +541,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			/**
 			 * Wert verändern
 			 */
-			ergebnisDatum.getAttributWert(attribut).setWert(
-					Math.round(neuerWert));
+			ergebnisDatum.getAttributWert(attribut)
+					.setWert(Math.round(neuerWert));
 			ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
 			ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
 			ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
@@ -551,8 +550,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			ergebnisDatum.getAttributWert(attribut).setFormalMin(false);
 			ergebnisDatum.getAttributWert(attribut).setLogischMax(false);
 			ergebnisDatum.getAttributWert(attribut).setLogischMin(false);
-			ergebnisDatum.getAttributWert(attribut).setNichtErfasst(
-					attributWertErsetzung.isNichtErfasst());
+			ergebnisDatum.getAttributWert(attribut)
+					.setNichtErfasst(attributWertErsetzung.isNichtErfasst());
 		}
 
 		return ergebnisDatum;

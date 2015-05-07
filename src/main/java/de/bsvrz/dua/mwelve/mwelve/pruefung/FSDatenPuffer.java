@@ -39,8 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
  * Historie seiner Fortschreibung gespeichert
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class FSDatenPuffer {
 
@@ -63,7 +61,7 @@ public class FSDatenPuffer {
 	 * Mappt alle innerhalb der MWE betrachteten Attribute auf ihre
 	 * Eigenschaften bezüglich der Fortschreibung von Messwerten.
 	 */
-	private final Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung = new HashMap<MweAttribut, MweFortschreibungsAttribut>();
+	private final Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung = new HashMap<>();
 
 	/**
 	 * aktueller Index auf den Ringpuffer.
@@ -83,9 +81,8 @@ public class FSDatenPuffer {
 		}
 		this.fs = fs;
 		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
-			messWertFortschreibung.put(attribut,
-					new MweFortschreibungsAttribut(fs.getSystemObject(),
-							attribut));
+			messWertFortschreibung.put(attribut, new MweFortschreibungsAttribut(
+					fs.getSystemObject(), attribut));
 		}
 	}
 
@@ -120,10 +117,10 @@ public class FSDatenPuffer {
 
 		for (int i = 0; i < PUFFER_KAPAZITAET; i++) {
 			if (ringPuffer[i] != null) {
-				if (ringPuffer[i].getDatum().getDataTime() == kzDatum
-						.getDatum().getDataTime()) {
+				if (ringPuffer[i].getDatum().getDataTime() == kzDatum.getDatum()
+						.getDataTime()) {
 					ergebnis = ringPuffer[((i + PUFFER_KAPAZITAET) - 1)
-					                      % PUFFER_KAPAZITAET];
+							% PUFFER_KAPAZITAET];
 					break;
 				}
 			}
@@ -265,7 +262,7 @@ public class FSDatenPuffer {
 	 */
 	public final KZDatum getDatumAktuell() {
 		return ringPuffer[((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
-		                  % PUFFER_KAPAZITAET];
+				% PUFFER_KAPAZITAET];
 	}
 
 	/**
@@ -324,13 +321,15 @@ public class FSDatenPuffer {
 		int t = 0;
 		for (int i = ((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
 				% PUFFER_KAPAZITAET; i != ringPufferIndex; i = (i + 1)
-				% PUFFER_KAPAZITAET) {
+						% PUFFER_KAPAZITAET) {
 			t++;
-			s += "\nPuffer[T-" + t + "]:\n" + (ringPuffer[i] == null ? "<<null>>" : ringPuffer[i]); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			s += "\nPuffer[T-" + t + "]:\n" //$NON-NLS-1$//$NON-NLS-2$
+					+ (ringPuffer[i] == null ? "<<null>>" : ringPuffer[i]); //$NON-NLS-1$
 		}
 		s += "\nAttributfortschreibung:"; //$NON-NLS-1$
 		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
-			s += "\n" + attribut.toString() + ": " + messWertFortschreibung.get(attribut); //$NON-NLS-1$//$NON-NLS-2$
+			s += "\n" + attribut.toString() + ": " //$NON-NLS-1$//$NON-NLS-2$
+					+ messWertFortschreibung.get(attribut);
 		}
 
 		return s;

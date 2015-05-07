@@ -28,10 +28,8 @@ package de.bsvrz.dua.mwelve.vew;
 
 /**
  * CSV-Eingabe-Datei mit Alias.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class TestDatei {
 
@@ -47,7 +45,7 @@ public class TestDatei {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param dateiName
 	 *            der Dateiname
 	 * @param alias
@@ -62,20 +60,20 @@ public class TestDatei {
 
 	/**
 	 * Erfragt den Dateiname.
-	 * 
+	 *
 	 * @return der Dateiname
 	 */
 	public final String getDateiName() {
-		return this.dateiName;
+		return dateiName;
 	}
 
 	/**
 	 * Erfragt den Alias der Datei (z.B. Tabellenname).
-	 * 
+	 *
 	 * @return der Alias der Datei (z.B. Tabellenname)
 	 */
 	public final String getAlias() {
-		return this.alias;
+		return alias;
 	}
 
 }

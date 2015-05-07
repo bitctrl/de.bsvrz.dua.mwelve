@@ -39,8 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.MesswertUnskaliert;
  * Repraesentation eines Kurzzeitdatums fuer Testzwecke.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class KurzZeitDatum {
 
@@ -148,15 +146,16 @@ public class KurzZeitDatum {
 		String info = Constants.EMPTY_STRING;
 
 		if (!original.getObject().equals(that.original.getObject())) {
-			info += original.getObject()
-					+ " != " + that.original.getObject() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			info += original.getObject() + " != " + that.original.getObject() //$NON-NLS-1$
+					+ "\n"; //$NON-NLS-1$
 			gleich = false;
 		}
 		if (original.getDataTime() != that.original.getDataTime()) {
 			final SimpleDateFormat dateFormat = new SimpleDateFormat(
 					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
-			info += dateFormat.format(new Date(original.getDataTime()))
-					+ " != " + dateFormat.format(new Date(that.original.getDataTime())) + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			info += dateFormat.format(new Date(original.getDataTime())) + " != " //$NON-NLS-1$
+					+ dateFormat.format(new Date(that.original.getDataTime()))
+					+ "\n"; //$NON-NLS-1$
 			gleich = false;
 		}
 		if (t != that.t) {
@@ -164,7 +163,8 @@ public class KurzZeitDatum {
 			gleich = false;
 		}
 		if (artMittelwertbildung != that.artMittelwertbildung) {
-			info += "ArtMittelwertbildung: " + artMittelwertbildung + " != " + that.artMittelwertbildung + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			info += "ArtMittelwertbildung: " + artMittelwertbildung + " != " //$NON-NLS-1$ //$NON-NLS-2$
+					+ that.artMittelwertbildung + "\n"; //$NON-NLS-1$
 			gleich = false;
 		}
 		if (!qKfz.equals(that.qKfz)) {

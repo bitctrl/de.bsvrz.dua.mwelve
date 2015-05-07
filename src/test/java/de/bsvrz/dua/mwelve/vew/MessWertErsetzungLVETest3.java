@@ -45,9 +45,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * Test nach PrSpez.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: MessWertErsetzungLVETest3.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public class MessWertErsetzungLVETest3 {
 
@@ -86,11 +83,12 @@ public class MessWertErsetzungLVETest3 {
 		/**
 		 * Anmeldung
 		 */
-		final SystemObject fahrstreifen1 = dav.getDataModel().getObject(
-				"Fahrstreifen3"); //$NON-NLS-1$
-		final DataDescription ddAntwort = new DataDescription(dav
-				.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD), dav
-				.getDataModel().getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+		final SystemObject fahrstreifen1 = dav.getDataModel()
+				.getObject("Fahrstreifen3"); //$NON-NLS-1$
+		final DataDescription ddAntwort = new DataDescription(
+				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
+				dav.getDataModel()
+						.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 		dav.subscribeReceiver(new ClientReceiverInterface() {
 
 			@Override
@@ -108,18 +106,18 @@ public class MessWertErsetzungLVETest3 {
 			}
 
 		}, new SystemObject[] { fahrstreifen1 }, ddAntwort,
-				ReceiveOptions.normal(), ReceiverRole.receiver());
+		ReceiveOptions.normal(), ReceiverRole.receiver());
 
 		/**
 		 * Hole Daten
 		 */
-		final Vergleich vergleich = new Vergleich(dav,
-				Initialisierung.INPUT_CSV, Initialisierung.OUTPUT_CSV);
+				final Vergleich vergleich = new Vergleich(dav,
+						Initialisierung.INPUT_CSV, Initialisierung.OUTPUT_CSV);
 
 		/**
 		 * eigentlicher Test
 		 */
-		final GregorianCalendar cal = new GregorianCalendar();
+						final GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(0);
 		ResultData[] frage = null;
 
@@ -152,7 +150,8 @@ public class MessWertErsetzungLVETest3 {
 					.getErgebnis(new ResultData[] { antwort });
 
 			if (USE_ASSERTION) {
-				Assert.assertTrue(ergebnis.toString(), ergebnis.passtZusammen());
+				Assert.assertTrue(ergebnis.toString(),
+						ergebnis.passtZusammen());
 			} else {
 				if (ergebnis.passtZusammen()) {
 					System.out.println(ergebnis.toString() + ": OK"); //$NON-NLS-1$

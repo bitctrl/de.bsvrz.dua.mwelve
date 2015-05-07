@@ -39,8 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
  * und hält alle innerhalb der MWE betrachteten Attribute (veränderbar) bereit.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class KZDatum {
 
@@ -52,7 +50,7 @@ public class KZDatum {
 	/**
 	 * alle zur MWE vorgesehenen Werte.
 	 */
-	private final Map<MweAttribut, MweAttributWert> attributWerte = new HashMap<MweAttribut, MweAttributWert>();
+	private final Map<MweAttribut, MweAttributWert> attributWerte = new HashMap<>();
 
 	/**
 	 * Zeigt für dieses Datum an, dass es ein bestimmtes Modul verlassen hat und
@@ -68,14 +66,15 @@ public class KZDatum {
 	 */
 	public KZDatum(final ResultData resultat) {
 		if (resultat == null) {
-			throw new NullPointerException("Uebergebenes KZ-Datum ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException(
+					"Uebergebenes KZ-Datum ist <<null>>"); //$NON-NLS-1$
 		}
 
 		originalDatum = resultat;
 		if (resultat.getData() != null) {
 			for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
-				attributWerte.put(attribut, new MweAttributWert(attribut,
-						resultat.getData()));
+				attributWerte.put(attribut,
+						new MweAttributWert(attribut, resultat.getData()));
 			}
 		}
 	}
@@ -222,64 +221,64 @@ public class KZDatum {
 			final Data datenSatz) {
 		if (attr.isVeraendert()) {
 
-			if (DUAUtensilien.isWertInWerteBereich(
-					datenSatz.getItem(attr.getAttribut().getName()).getItem(
-							"Wert"), attr.getWert())) { //$NON-NLS-1$
+			if (DUAUtensilien.isWertInWerteBereich(datenSatz
+					.getItem(attr.getAttribut().getName()).getItem("Wert"), //$NON-NLS-1$
+					attr.getWert())) {
 				datenSatz.getItem(attr.getAttribut().getName())
-				.getUnscaledValue("Wert").set(attr.getWert()); //$NON-NLS-1$
-				datenSatz.getItem(attr.getAttribut().getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Implausibel").set(attr.isImplausibel() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-				datenSatz.getItem(attr.getAttribut().getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Interpoliert").set(attr.isInterpoliert() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-				datenSatz.getItem(attr.getAttribut().getName())
-				.getItem("Güte").//$NON-NLS-1$
-				getUnscaledValue("Index").set(attr.getGuete().getIndexUnskaliert()); //$NON-NLS-1$
-				datenSatz
-				.getItem(attr.getAttribut().getName())
-				.getItem("Güte").//$NON-NLS-1$
-				getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
-			} else {
-				datenSatz
-				.getItem(attr.getAttribut().getName())
-				.getUnscaledValue("Wert").set(DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT); //$NON-NLS-1$
+						.getUnscaledValue("Wert").set(attr.getWert()); //$NON-NLS-1$
 				datenSatz.getItem(attr.getAttribut().getName())
 						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-						getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$
-				datenSatz
-						.getItem(attr.getAttribut().getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+						getUnscaledValue("Implausibel").set(attr.isImplausibel() //$NON-NLS-1$
+								? DUAKonstanten.JA : DUAKonstanten.NEIN);
 				datenSatz.getItem(attr.getAttribut().getName())
-				.getItem("Güte").//$NON-NLS-1$
-				getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
-				datenSatz
-				.getItem(attr.getAttribut().getName())
-				.getItem("Güte").//$NON-NLS-1$
-				getUnscaledValue("Verfahren").set(attr.getGuete().getVerfahren().getCode()); //$NON-NLS-1$
+						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+						getUnscaledValue("Interpoliert") //$NON-NLS-1$
+						.set(attr.isInterpoliert() ? DUAKonstanten.JA
+								: DUAKonstanten.NEIN);
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+						getUnscaledValue("Index") //$NON-NLS-1$
+						.set(attr.getGuete().getIndexUnskaliert());
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+						getUnscaledValue("Verfahren") //$NON-NLS-1$
+						.set(attr.getGuete().getVerfahren().getCode());
+			} else {
+				datenSatz.getItem(attr.getAttribut().getName())
+						.getUnscaledValue("Wert") //$NON-NLS-1$
+						.set(DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT);
+				datenSatz.getItem(attr.getAttribut().getName())
+				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+				getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName())
+						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+						getUnscaledValue("Interpoliert") //$NON-NLS-1$
+						.set(DUAKonstanten.NEIN);
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+						getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+						getUnscaledValue("Verfahren") //$NON-NLS-1$
+						.set(attr.getGuete().getVerfahren().getCode());
 			}
 
-			datenSatz
-					.getItem(attr.getAttribut().getName())
-			.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-			getUnscaledValue("WertMax").set(attr.isFormalMax() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz
-					.getItem(attr.getAttribut().getName())
-			.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-			getUnscaledValue("WertMin").set(attr.isFormalMin() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz
-					.getItem(attr.getAttribut().getName())
-			.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
-			getUnscaledValue("WertMaxLogisch").set(attr.isLogischMax() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz
-					.getItem(attr.getAttribut().getName())
-			.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
-			getUnscaledValue("WertMinLogisch").set(attr.isLogischMin() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
-			datenSatz
-					.getItem(attr.getAttribut().getName())
-			.getItem("Status").getItem("Erfassung").//$NON-NLS-1$//$NON-NLS-2$
-			getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst() ? DUAKonstanten.JA : DUAKonstanten.NEIN); //$NON-NLS-1$
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
+					.getItem("PlFormal").//$NON-NLS-1$
+					getUnscaledValue("WertMax").set(attr.isFormalMax() //$NON-NLS-1$
+							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
+					.getItem("PlFormal").//$NON-NLS-1$
+					getUnscaledValue("WertMin").set(attr.isFormalMin() //$NON-NLS-1$
+							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
+					.getItem("PlLogisch").//$NON-NLS-1$
+					getUnscaledValue("WertMaxLogisch").set(attr.isLogischMax() //$NON-NLS-1$
+							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
+					.getItem("PlLogisch").//$NON-NLS-1$
+					getUnscaledValue("WertMinLogisch").set(attr.isLogischMin() //$NON-NLS-1$
+							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
+					.getItem("Erfassung").//$NON-NLS-1$
+					getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst() //$NON-NLS-1$
+							? DUAKonstanten.JA : DUAKonstanten.NEIN);
 		}
 	}
 
@@ -291,9 +290,11 @@ public class KZDatum {
 		String s = "Original: " + originalDatum; //$NON-NLS-1$
 
 		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
-			s += "\n" + attribut.toString() + ": " + attributWerte.get(attribut); //$NON-NLS-1$ //$NON-NLS-2$
+			s += "\n" + attribut.toString() + ": " //$NON-NLS-1$ //$NON-NLS-2$
+					+ attributWerte.get(attribut);
 		}
-		s += "\n" + (bereitsWiederFreigegeben ? "freigegeben" : "nicht freigegeben"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		s += "\n" + (bereitsWiederFreigegeben ? "freigegeben" //$NON-NLS-1$ //$NON-NLS-2$
+				: "nicht freigegeben"); //$NON-NLS-1$
 
 		return s;
 	}

@@ -43,15 +43,13 @@ import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
  * <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public final class MweParameter implements ClientReceiverInterface {
 
 	/**
 	 * Statischer Speicher aller Fahrstreifenparameter der MWE.
 	 */
-	private static Map<SystemObject, MweParameter> parameterMap = new HashMap<SystemObject, MweParameter>();
+	private static Map<SystemObject, MweParameter> parameterMap = new HashMap<>();
 
 	/**
 	 * Maximale Zeitdauer, über die implausible Messwerte ersetzt werden.
@@ -79,11 +77,12 @@ public final class MweParameter implements ClientReceiverInterface {
 	 *            das Fahrstreifenobjekt auf dessen Parameter sich angemeldet
 	 *            werden soll
 	 */
-	private MweParameter(final ClientDavInterface dav, final SystemObject objekt) {
-		final DataDescription datenBeschreibung = new DataDescription(dav
-				.getDataModel().getAttributeGroup(
+	private MweParameter(final ClientDavInterface dav,
+			final SystemObject objekt) {
+		final DataDescription datenBeschreibung = new DataDescription(
+				dav.getDataModel().getAttributeGroup(
 						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-						dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dav.subscribeReceiver(this, objekt, datenBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
@@ -171,12 +170,12 @@ public final class MweParameter implements ClientReceiverInterface {
 					synchronized (this) {
 						maxErsetzungsDauer = resultat.getData()
 								.getTimeValue("MaxErsetzungsDauer").getMillis(); //$NON-NLS-1$
-						maxWiederholungsZeit = resultat
-								.getData()
-								.getTimeValue("MaxWiederholungsZeit").getMillis(); //$NON-NLS-1$
-						maxWiederholungAnzahl = resultat
-								.getData()
-								.getUnscaledValue("MaxWiederholungAnzahl").longValue(); //$NON-NLS-1$
+						maxWiederholungsZeit = resultat.getData()
+								.getTimeValue("MaxWiederholungsZeit") //$NON-NLS-1$
+								.getMillis();
+						maxWiederholungAnzahl = resultat.getData()
+								.getUnscaledValue("MaxWiederholungAnzahl") //$NON-NLS-1$
+								.longValue();
 					}
 				}
 			}

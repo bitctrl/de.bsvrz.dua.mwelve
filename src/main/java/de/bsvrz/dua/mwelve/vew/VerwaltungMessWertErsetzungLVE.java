@@ -67,12 +67,9 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  * LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge her.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: VerwaltungMessWertErsetzungLVE.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
-public class VerwaltungMessWertErsetzungLVE extends
-		AbstraktVerwaltungsAdapterMitGuete {
+public class VerwaltungMessWertErsetzungLVE
+		extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -134,13 +131,13 @@ public class VerwaltungMessWertErsetzungLVE extends
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(verbindung);
 		MessageSender.getInstance()
-				.setApplicationLabel("Messwertersetzung LVE");
+		.setApplicationLabel("Messwertersetzung LVE");
 
 		final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(
-						verbindung.getDataModel().getType(
-								DUAKonstanten.TYP_FAHRSTREIFEN), verbindung,
-								getKonfigurationsBereiche());
+						verbindung.getDataModel()
+								.getType(DUAKonstanten.TYP_FAHRSTREIFEN),
+						verbindung, getKonfigurationsBereiche());
 		objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
 		String infoStr = Constants.EMPTY_STRING;
@@ -151,10 +148,10 @@ public class VerwaltungMessWertErsetzungLVE extends
 
 		plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
-						.getStandardPubInfos());
+				.getStandardPubInfos());
 		plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this)
-						.getStandardPubInfos());
+				.getStandardPubInfos());
 		mwe = new MessWertErsetzungLVE();
 
 		/**
@@ -197,8 +194,9 @@ public class VerwaltungMessWertErsetzungLVE extends
 		 * Auf Daten anmelden und Start
 		 */
 		final DataDescription anmeldungsBeschreibungKZD = new DataDescription(
-				verbindung.getDataModel().getAttributeGroup(
-						DUAKonstanten.ATG_KZD), verbindung.getDataModel()
+				verbindung.getDataModel()
+						.getAttributeGroup(DUAKonstanten.ATG_KZD),
+				verbindung.getDataModel()
 						.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
 		verbindung.subscribeReceiver(this, objekte, anmeldungsBeschreibungKZD,

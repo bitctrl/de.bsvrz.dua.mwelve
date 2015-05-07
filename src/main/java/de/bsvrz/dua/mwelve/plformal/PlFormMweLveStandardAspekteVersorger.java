@@ -38,12 +38,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: PlFormMweLveStandardAspekteVersorger.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
-public class PlFormMweLveStandardAspekteVersorger extends
-StandardAspekteVersorger {
+public class PlFormMweLveStandardAspekteVersorger
+		extends StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
@@ -71,11 +68,11 @@ StandardAspekteVersorger {
 								DUAKonstanten.ATG_KZD,
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL),
-								new StandardPublikationsZuordnung(
-										DUAKonstanten.TYP_FAHRSTREIFEN,
-										DUAKonstanten.ATG_LZD,
-										DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-										DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL) });
+						new StandardPublikationsZuordnung(
+								DUAKonstanten.TYP_FAHRSTREIFEN,
+								DUAKonstanten.ATG_LZD,
+								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL) });
 	}
 
 }

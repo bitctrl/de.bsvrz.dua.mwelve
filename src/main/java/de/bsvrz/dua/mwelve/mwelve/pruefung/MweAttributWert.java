@@ -35,11 +35,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.MesswertMarkierung;
  * Korrespondiert mit einem Attributwert eines KZ- oder LZ-Datums.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
-public class MweAttributWert extends MesswertMarkierung implements
-Comparable<MweAttributWert> {
+public class MweAttributWert extends MesswertMarkierung
+		implements Comparable<MweAttributWert> {
 
 	/**
 	 * das Attribut.
@@ -72,31 +70,33 @@ Comparable<MweAttributWert> {
 			throw new NullPointerException("Datensatz ist <<null>>"); //$NON-NLS-1$
 		}
 		this.attr = attr;
-		wert = datenSatz.getItem(attr.getName())
-				.getUnscaledValue("Wert").longValue(); //$NON-NLS-1$
-		nichtErfasst = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("Erfassung").//$NON-NLS-1$//$NON-NLS-2$
+		wert = datenSatz.getItem(attr.getName()).getUnscaledValue("Wert") //$NON-NLS-1$
+				.longValue();
+		nichtErfasst = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("Erfassung").//$NON-NLS-1$
 				getUnscaledValue("NichtErfasst").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		implausibel = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+		implausibel = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("MessWertErsetzung").//$NON-NLS-1$
 				getUnscaledValue("Implausibel").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		interpoliert = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+		interpoliert = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("MessWertErsetzung").//$NON-NLS-1$
 				getUnscaledValue("Interpoliert").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		formalMax = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
+		formalMax = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("PlFormal").//$NON-NLS-1$
 				getUnscaledValue("WertMax").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		formalMin = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
+		formalMin = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("PlFormal").//$NON-NLS-1$
 				getUnscaledValue("WertMin").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
 
-		logischMax = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMaxLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		logischMin = datenSatz.getItem(attr.getName())
-				.getItem("Status").getItem("PlLogisch").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMinLogisch").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+		logischMax = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("PlLogisch").//$NON-NLS-1$
+				getUnscaledValue("WertMaxLogisch") //$NON-NLS-1$
+				.intValue() == DUAKonstanten.JA;
+		logischMin = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.getItem("PlLogisch").//$NON-NLS-1$
+				getUnscaledValue("WertMinLogisch") //$NON-NLS-1$
+				.intValue() == DUAKonstanten.JA;
 
 		guete = new GWert(datenSatz, attr.getName());
 	}

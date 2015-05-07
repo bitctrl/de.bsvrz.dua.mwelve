@@ -44,9 +44,6 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageType;
  * Attributwertes bzgl. eines Fahrstreifens in Verbindung stehen.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: MweFortschreibungsAttribut.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public class MweFortschreibungsAttribut {
 
@@ -137,36 +134,30 @@ public class MweFortschreibungsAttribut {
 			fortschreibungMale++;
 
 			final MweParameter parameter = MweParameter.getParameter(objekt);
-			if (parameter.getMaxErsetzungsDauer() >= (ersetztesDatum
-					.getDatenZeit() - fortschreibungSeit)) {
-				ersetztesDatum.getAttributWert(attribut).setWert(
-						letzterPlausiblerWert.getWert());
+			if (parameter
+					.getMaxErsetzungsDauer() >= (ersetztesDatum.getDatenZeit()
+							- fortschreibungSeit)) {
+				ersetztesDatum.getAttributWert(attribut)
+						.setWert(letzterPlausiblerWert.getWert());
 				ersetztesDatum.getAttributWert(attribut).setInterpoliert(true);
 				ersetztesDatum.getAttributWert(attribut).setImplausibel(false);
-				ersetztesDatum.getAttributWert(attribut).setGuete(
-						letzterPlausiblerWert.getGuete());
+				ersetztesDatum.getAttributWert(attribut)
+						.setGuete(letzterPlausiblerWert.getGuete());
 			}
 
 			if ((parameter.getMaxWiederholungAnzahl() < fortschreibungMale)
 					|| (parameter.getMaxWiederholungsZeit() < (ersetztesDatum
 							.getDatenZeit() - fortschreibungSeit))) {
 
-				MessageSender
-				.getInstance()
-				.sendMessage(
-						VerwaltungMessWertErsetzungLVE
-						.getStaticBmvIdKonverter()
-										.konvertiere(
-								new BetriebsmeldungDaten(objekt),
-												null, new Object[0]),
-										MessageType.APPLICATION_DOMAIN,
-										null,
-										MessageGrade.WARNING,
-								objekt,
-								MessageState.MESSAGE,
-										new MessageCauser(
-												LVEPruefungUndMWE.sDav.getLocalUser(),
-												"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessageSender.getInstance().sendMessage(
+						VerwaltungMessWertErsetzungLVE.getStaticBmvIdKonverter()
+								.konvertiere(new BetriebsmeldungDaten(objekt),
+										null, new Object[0]),
+						MessageType.APPLICATION_DOMAIN, null,
+						MessageGrade.WARNING, objekt, MessageState.MESSAGE,
+						new MessageCauser(LVEPruefungUndMWE.sDav.getLocalUser(),
+								"keine Messwertersetzung moeglich", //$NON-NLS-1$
+								"Applikation Messwertersetzung LVE"), //$NON-NLS-1$
 						"keine Messwertersetzung möglich"); //$NON-NLS-1$
 
 				// MessageSender
@@ -174,12 +165,13 @@ public class MweFortschreibungsAttribut {
 				// .sendMessage(
 				// MessageType.APPLICATION_DOMAIN,
 				// null,
-				//								MessageGrade.WARNING, //$NON-NLS-1$
+				// MessageGrade.WARNING, //$NON-NLS-1$
 				// this.objekt,
 				// new MessageCauser(
 				// LVEPruefungUndMWE.sDav.getLocalUser(),
-				//										"keine Messwertersetzung moeglich", "Applikation Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
-				//								"keine Messwertersetzung möglich"); //$NON-NLS-1$
+				// "keine Messwertersetzung moeglich", "Applikation
+				// Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
+				// "keine Messwertersetzung möglich"); //$NON-NLS-1$
 			}
 		} else {
 			fortschreibungSeit = -1;
@@ -197,7 +189,8 @@ public class MweFortschreibungsAttribut {
 		String s = "Fortschreibung fuer (" + objekt + "): " + attribut; //$NON-NLS-1$ //$NON-NLS-2$
 
 		s += "\nletzter plausibler Wert: " + letzterPlausiblerWert; //$NON-NLS-1$
-		s += "\nfortgeschrieben seit: " + dateFormat.format(new Date(fortschreibungSeit)); //$NON-NLS-1$
+		s += "\nfortgeschrieben seit: " //$NON-NLS-1$
+				+ dateFormat.format(new Date(fortschreibungSeit));
 		s += "\nfortgeschrieben zum " + fortschreibungMale + ". mal"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		return s;

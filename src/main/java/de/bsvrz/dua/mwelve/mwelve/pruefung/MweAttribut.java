@@ -38,17 +38,15 @@ import java.util.Map;
  * <code>vKfz</code>,<br>
  * <code>vLkw</code> und<br>
  * <code>vPkw</code>.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public final class MweAttribut {
 
 	/**
 	 * Wertebereich.
 	 */
-	private static Map<String, MweAttribut> werteBereich = new HashMap<String, MweAttribut>();
+	private static Map<String, MweAttribut> werteBereich = new HashMap<>();
 
 	/**
 	 * Attribut <code>qKfz</code>.
@@ -87,7 +85,7 @@ public final class MweAttribut {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param name
 	 *            der Name des Attributs
 	 */
@@ -99,7 +97,7 @@ public final class MweAttribut {
 	/**
 	 * Erfragt eine mit dem übergebenen Namen korrespondierende statische
 	 * Instanz dieser Klasse.
-	 * 
+	 *
 	 * @param name
 	 *            ein Attribut-Name
 	 * @return eine mit dem übergebenen Namen korrespondierende statische
@@ -118,17 +116,17 @@ public final class MweAttribut {
 	/**
 	 * Erfragt, ob es sich bei diesem Attribut um die Verkehrsstärke einer
 	 * Fahrzeuggruppe handelt.
-	 * 
+	 *
 	 * @return ob es sich bei diesem Attribut um die Verkehrsstärke einer
 	 *         Fahrzeuggruppe handelt
 	 */
 	public boolean isQWert() {
-		return this.equals(Q_KFZ) || this.equals(Q_LKW) || this.equals(Q_PKW);
+		return equals(Q_KFZ) || equals(Q_LKW) || equals(Q_PKW);
 	}
 
 	/**
 	 * Erfragt alle statischen Instanzen dieser Klasse.
-	 * 
+	 *
 	 * @return alle statischen Instanzen dieser Klasse
 	 */
 	public static Collection<MweAttribut> getInstanzen() {
@@ -137,11 +135,11 @@ public final class MweAttribut {
 
 	/**
 	 * Erfragt den Namen dieses Attributs.
-	 * 
+	 *
 	 * @return der Name dieses Attributs
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
@@ -149,6 +147,6 @@ public final class MweAttribut {
 	 */
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 }

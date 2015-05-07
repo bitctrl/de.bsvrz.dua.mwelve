@@ -47,8 +47,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltungMitGuete;
  * weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 

@@ -40,10 +40,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * (innerhalb der SWE Messwertersetzung LVE) mit
  * Standard-Publikationsinformationen (Zuordnung von
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
@@ -51,7 +49,7 @@ public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @throws DUAInitialisierungsException
@@ -64,7 +62,7 @@ public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
 	@Override
 	protected void init() throws DUAInitialisierungsException {
-		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<StandardAspekteVersorger.StandardPublikationsZuordnung>();
+		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<>();
 		zuordnungen.add(new StandardPublikationsZuordnung(
 				DUAKonstanten.TYP_FAHRSTREIFEN, DUAKonstanten.ATG_KZD,
 				DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
