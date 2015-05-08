@@ -71,8 +71,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 * <code>vPkw</code>
 	 */
 	private static final MweAttribut[] Q_V_PKW_KFZ_LKW = new MweAttribut[] {
-			MweAttribut.Q_KFZ, MweAttribut.Q_PKW, MweAttribut.V_KFZ,
-			MweAttribut.V_PKW, MweAttribut.Q_LKW, MweAttribut.V_LKW };
+		MweAttribut.Q_KFZ, MweAttribut.Q_PKW, MweAttribut.V_KFZ,
+		MweAttribut.V_PKW, MweAttribut.Q_LKW, MweAttribut.V_LKW };
 
 	/**
 	 * Menge aller Fahrstreifen, die sowohl einen Nachbar- wie auch einen
@@ -95,9 +95,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 */
 	private final Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -112,11 +109,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			final FahrStreifen fs = FahrStreifen.getInstanz(fsObjekt);
 			if (fs != null) {
 				if (fs.getErsatzFahrStreifen() != null /**
-														 * && fs.
-														 * getNachbarFahrStreifen
-														 * () != null
-														 */
-				) {
+				 * && fs.
+				 * getNachbarFahrStreifen
+				 * () != null
+				 */
+						) {
 					pruefungsFahrstreifen.add(fs);
 					fsAufDatenPuffer.put(fs, new FSDatenPuffer(fs));
 					/**
@@ -129,7 +126,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			} else {
 				throw new DUAInitialisierungsException(
 						"Fahrstreifenkonfiguration von " + fsObjekt + //$NON-NLS-1$
-								" konnte nicht ausgelesen werden"); //$NON-NLS-1$
+						" konnte nicht ausgelesen werden"); //$NON-NLS-1$
 			}
 		}
 
@@ -189,9 +186,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -249,10 +243,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 											triggerFS.getSystemObject(),
 											resultat.getDataDescription(),
 											plausibilisiertesDatum
-													.getDataTime(),
+											.getDataTime(),
 											plausibilisiertesDatum.getData());
 									weiterzuleitendeResultate
-											.add(weiterzuleitendesResultat);
+									.add(weiterzuleitendesResultat);
 								}
 							}
 						} else {
@@ -520,11 +514,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			if (attribut.isQWert() && (ergebnisDatum.getDatum().getData()
 					.getTimeValue("T").getMillis() != //$NON-NLS-1$
 					ersetzungsDatum.getDatum().getData().getTimeValue("T") //$NON-NLS-1$
-							.getMillis())) {
+					.getMillis())) {
 				final double faktor = ergebnisDatum.getDatum().getData()
 						.getTimeValue("T").getMillis() / //$NON-NLS-1$
 						ersetzungsDatum.getDatum().getData().getTimeValue("T") //$NON-NLS-1$
-								.getMillis();
+						.getMillis();
 				wertErsetzung = wertErsetzung * faktor;
 			}
 
@@ -542,7 +536,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			 * Wert verändern
 			 */
 			ergebnisDatum.getAttributWert(attribut)
-					.setWert(Math.round(neuerWert));
+			.setWert(Math.round(neuerWert));
 			ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
 			ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
 			ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
@@ -551,7 +545,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			ergebnisDatum.getAttributWert(attribut).setLogischMax(false);
 			ergebnisDatum.getAttributWert(attribut).setLogischMin(false);
 			ergebnisDatum.getAttributWert(attribut)
-					.setNichtErfasst(attributWertErsetzung.isNichtErfasst());
+			.setNichtErfasst(attributWertErsetzung.isNichtErfasst());
 		}
 
 		return ergebnisDatum;
@@ -733,17 +727,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// return ergebnisDatum;
 	// }
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier findet keine Publikation statt

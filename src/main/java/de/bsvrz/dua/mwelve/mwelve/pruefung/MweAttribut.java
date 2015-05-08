@@ -142,9 +142,6 @@ public final class MweAttribut {
 		return name;
 	}
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	public String toString() {
 		return name;

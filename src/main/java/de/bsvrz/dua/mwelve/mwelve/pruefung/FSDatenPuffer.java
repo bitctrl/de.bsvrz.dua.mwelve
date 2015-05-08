@@ -120,7 +120,7 @@ public class FSDatenPuffer {
 				if (ringPuffer[i].getDatum().getDataTime() == kzDatum.getDatum()
 						.getDataTime()) {
 					ergebnis = ringPuffer[((i + PUFFER_KAPAZITAET) - 1)
-							% PUFFER_KAPAZITAET];
+					                      % PUFFER_KAPAZITAET];
 					break;
 				}
 			}
@@ -262,7 +262,7 @@ public class FSDatenPuffer {
 	 */
 	public final KZDatum getDatumAktuell() {
 		return ringPuffer[((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
-				% PUFFER_KAPAZITAET];
+		                  % PUFFER_KAPAZITAET];
 	}
 
 	/**
@@ -311,9 +311,6 @@ public class FSDatenPuffer {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		String s = fs.toString();
@@ -321,7 +318,7 @@ public class FSDatenPuffer {
 		int t = 0;
 		for (int i = ((ringPufferIndex + PUFFER_KAPAZITAET) - 1)
 				% PUFFER_KAPAZITAET; i != ringPufferIndex; i = (i + 1)
-						% PUFFER_KAPAZITAET) {
+				% PUFFER_KAPAZITAET) {
 			t++;
 			s += "\nPuffer[T-" + t + "]:\n" //$NON-NLS-1$//$NON-NLS-2$
 					+ (ringPuffer[i] == null ? "<<null>>" : ringPuffer[i]); //$NON-NLS-1$

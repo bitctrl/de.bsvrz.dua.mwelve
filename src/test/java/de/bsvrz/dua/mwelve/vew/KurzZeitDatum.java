@@ -125,9 +125,6 @@ public class KurzZeitDatum {
 		tNetto = new MesswertUnskaliert("tNetto", resultat.getData()); //$NON-NLS-1$
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(final Object obj) {
 		return compare((KurzZeitDatum) obj) == null;
@@ -208,9 +205,6 @@ public class KurzZeitDatum {
 		return gleich ? null : info;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return original.getData().toString();

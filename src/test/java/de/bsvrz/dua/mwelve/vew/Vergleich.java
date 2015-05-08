@@ -122,11 +122,11 @@ public class Vergleich {
 		ddPlLog = new DataDescription(
 				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
 				dav.getDataModel()
-						.getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
+				.getAspect(DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH));
 		ddPlMwe = new DataDescription(
 				dav.getDataModel().getAttributeGroup(DUAKonstanten.ATG_KZD),
 				dav.getDataModel()
-						.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
+				.getAspect(DUAKonstanten.ASP_MESSWERTERSETZUNG));
 	}
 
 	/**
@@ -254,9 +254,6 @@ public class Vergleich {
 			return passt;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public String toString() {
 			return info;

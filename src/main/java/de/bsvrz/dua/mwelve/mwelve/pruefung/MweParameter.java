@@ -82,7 +82,7 @@ public final class MweParameter implements ClientReceiverInterface {
 		final DataDescription datenBeschreibung = new DataDescription(
 				dav.getDataModel().getAttributeGroup(
 						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+						dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dav.subscribeReceiver(this, objekt, datenBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
@@ -159,9 +159,6 @@ public final class MweParameter implements ClientReceiverInterface {
 		return maxWiederholungAnzahl;
 	}
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {

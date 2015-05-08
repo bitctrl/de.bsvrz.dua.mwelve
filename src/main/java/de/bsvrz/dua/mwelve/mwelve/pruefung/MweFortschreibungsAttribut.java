@@ -138,11 +138,11 @@ public class MweFortschreibungsAttribut {
 					.getMaxErsetzungsDauer() >= (ersetztesDatum.getDatenZeit()
 							- fortschreibungSeit)) {
 				ersetztesDatum.getAttributWert(attribut)
-						.setWert(letzterPlausiblerWert.getWert());
+				.setWert(letzterPlausiblerWert.getWert());
 				ersetztesDatum.getAttributWert(attribut).setInterpoliert(true);
 				ersetztesDatum.getAttributWert(attribut).setImplausibel(false);
 				ersetztesDatum.getAttributWert(attribut)
-						.setGuete(letzterPlausiblerWert.getGuete());
+				.setGuete(letzterPlausiblerWert.getGuete());
 			}
 
 			if ((parameter.getMaxWiederholungAnzahl() < fortschreibungMale)
@@ -151,13 +151,13 @@ public class MweFortschreibungsAttribut {
 
 				MessageSender.getInstance().sendMessage(
 						VerwaltungMessWertErsetzungLVE.getStaticBmvIdKonverter()
-								.konvertiere(new BetriebsmeldungDaten(objekt),
-										null, new Object[0]),
-						MessageType.APPLICATION_DOMAIN, null,
-						MessageGrade.WARNING, objekt, MessageState.MESSAGE,
-						new MessageCauser(LVEPruefungUndMWE.sDav.getLocalUser(),
-								"keine Messwertersetzung moeglich", //$NON-NLS-1$
-								"Applikation Messwertersetzung LVE"), //$NON-NLS-1$
+						.konvertiere(new BetriebsmeldungDaten(objekt),
+								null, new Object[0]),
+								MessageType.APPLICATION_DOMAIN, null,
+								MessageGrade.WARNING, objekt, MessageState.MESSAGE,
+								new MessageCauser(LVEPruefungUndMWE.sDav.getLocalUser(),
+										"keine Messwertersetzung moeglich", //$NON-NLS-1$
+										"Applikation Messwertersetzung LVE"), //$NON-NLS-1$
 						"keine Messwertersetzung möglich"); //$NON-NLS-1$
 
 				// MessageSender
@@ -179,9 +179,6 @@ public class MweFortschreibungsAttribut {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat(

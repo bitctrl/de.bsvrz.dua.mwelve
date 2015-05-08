@@ -60,9 +60,6 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	 */
 	private LVEPruefungUndMWE pruefung = null;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -85,25 +82,16 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 		pruefung.initialisiere(dieVerwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		pruefung.aktualisiereDaten(resultate);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

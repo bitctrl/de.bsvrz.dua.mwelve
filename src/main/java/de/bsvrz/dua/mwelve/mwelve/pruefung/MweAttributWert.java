@@ -151,9 +151,6 @@ public class MweAttributWert extends MesswertMarkierung
 		return wert;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int compareTo(final MweAttributWert that) {
 		return new Long(getWert()).compareTo(that.getWert());
@@ -179,9 +176,6 @@ public class MweAttributWert extends MesswertMarkierung
 		this.guete = guete;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(final Object obj) {
 		boolean ergebnis = false;
@@ -199,9 +193,6 @@ public class MweAttributWert extends MesswertMarkierung
 		return ergebnis;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "Attribut: " + attr + "\nWert: " + wert + //$NON-NLS-1$ //$NON-NLS-2$

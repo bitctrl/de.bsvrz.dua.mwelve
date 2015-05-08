@@ -221,70 +221,68 @@ public class KZDatum {
 			final Data datenSatz) {
 		if (attr.isVeraendert()) {
 
-			if (DUAUtensilien.isWertInWerteBereich(datenSatz
-					.getItem(attr.getAttribut().getName()).getItem("Wert"), //$NON-NLS-1$
+			if (DUAUtensilien.isWertInWerteBereich(
+					datenSatz.getItem(attr.getAttribut().getName())
+							.getItem("Wert"), //$NON-NLS-1$
 					attr.getWert())) {
 				datenSatz.getItem(attr.getAttribut().getName())
-						.getUnscaledValue("Wert").set(attr.getWert()); //$NON-NLS-1$
-				datenSatz.getItem(attr.getAttribut().getName())
-						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-						getUnscaledValue("Implausibel").set(attr.isImplausibel() //$NON-NLS-1$
-								? DUAKonstanten.JA : DUAKonstanten.NEIN);
-				datenSatz.getItem(attr.getAttribut().getName())
-						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-						getUnscaledValue("Interpoliert") //$NON-NLS-1$
-						.set(attr.isInterpoliert() ? DUAKonstanten.JA
-								: DUAKonstanten.NEIN);
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
-						getUnscaledValue("Index") //$NON-NLS-1$
-						.set(attr.getGuete().getIndexUnskaliert());
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
-						getUnscaledValue("Verfahren") //$NON-NLS-1$
-						.set(attr.getGuete().getVerfahren().getCode());
-			} else {
-				datenSatz.getItem(attr.getAttribut().getName())
-						.getUnscaledValue("Wert") //$NON-NLS-1$
-						.set(DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT);
+				.getUnscaledValue("Wert").set(attr.getWert()); //$NON-NLS-1$
 				datenSatz.getItem(attr.getAttribut().getName())
 				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-				getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$
+				getUnscaledValue("Implausibel").set(attr.isImplausibel() //$NON-NLS-1$
+						? DUAKonstanten.JA : DUAKonstanten.NEIN);
+				datenSatz.getItem(attr.getAttribut().getName())
+				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+				getUnscaledValue("Interpoliert") //$NON-NLS-1$
+				.set(attr.isInterpoliert() ? DUAKonstanten.JA
+						: DUAKonstanten.NEIN);
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				getUnscaledValue("Index") //$NON-NLS-1$
+				.set(attr.getGuete().getIndexUnskaliert());
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				getUnscaledValue("Verfahren") //$NON-NLS-1$
+				.set(attr.getGuete().getVerfahren().getCode());
+			} else {
+				datenSatz.getItem(attr.getAttribut().getName())
+				.getUnscaledValue("Wert") //$NON-NLS-1$
+				.set(DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT);
 				datenSatz.getItem(attr.getAttribut().getName())
 						.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
-						getUnscaledValue("Interpoliert") //$NON-NLS-1$
-						.set(DUAKonstanten.NEIN);
+						getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName())
+				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
+				getUnscaledValue("Interpoliert") //$NON-NLS-1$
+				.set(DUAKonstanten.NEIN);
 				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
-						getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
+				getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
 				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
-						getUnscaledValue("Verfahren") //$NON-NLS-1$
-						.set(attr.getGuete().getVerfahren().getCode());
+				getUnscaledValue("Verfahren") //$NON-NLS-1$
+				.set(attr.getGuete().getVerfahren().getCode());
 			}
 
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
-					.getItem("PlFormal").//$NON-NLS-1$
-					getUnscaledValue("WertMax").set(attr.isFormalMax() //$NON-NLS-1$
-							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			.getItem("PlFormal").//$NON-NLS-1$
+			getUnscaledValue("WertMax").set(attr.isFormalMax() //$NON-NLS-1$
+					? DUAKonstanten.JA : DUAKonstanten.NEIN);
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
-					.getItem("PlFormal").//$NON-NLS-1$
-					getUnscaledValue("WertMin").set(attr.isFormalMin() //$NON-NLS-1$
-							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			.getItem("PlFormal").//$NON-NLS-1$
+			getUnscaledValue("WertMin").set(attr.isFormalMin() //$NON-NLS-1$
+					? DUAKonstanten.JA : DUAKonstanten.NEIN);
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
-					.getItem("PlLogisch").//$NON-NLS-1$
-					getUnscaledValue("WertMaxLogisch").set(attr.isLogischMax() //$NON-NLS-1$
-							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			.getItem("PlLogisch").//$NON-NLS-1$
+			getUnscaledValue("WertMaxLogisch").set(attr.isLogischMax() //$NON-NLS-1$
+					? DUAKonstanten.JA : DUAKonstanten.NEIN);
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
-					.getItem("PlLogisch").//$NON-NLS-1$
-					getUnscaledValue("WertMinLogisch").set(attr.isLogischMin() //$NON-NLS-1$
-							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			.getItem("PlLogisch").//$NON-NLS-1$
+			getUnscaledValue("WertMinLogisch").set(attr.isLogischMin() //$NON-NLS-1$
+					? DUAKonstanten.JA : DUAKonstanten.NEIN);
 			datenSatz.getItem(attr.getAttribut().getName()).getItem("Status") //$NON-NLS-1$
-					.getItem("Erfassung").//$NON-NLS-1$
-					getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst() //$NON-NLS-1$
-							? DUAKonstanten.JA : DUAKonstanten.NEIN);
+			.getItem("Erfassung").//$NON-NLS-1$
+			getUnscaledValue("NichtErfasst").set(attr.isNichtErfasst() //$NON-NLS-1$
+					? DUAKonstanten.JA : DUAKonstanten.NEIN);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		String s = "Original: " + originalDatum; //$NON-NLS-1$

@@ -69,7 +69,7 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class VerwaltungMessWertErsetzungLVE
-		extends AbstraktVerwaltungsAdapterMitGuete {
+extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -114,29 +114,23 @@ public class VerwaltungMessWertErsetzungLVE
 	 */
 	private PublikationsModul pub = null;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
 		DuaVerkehrsNetz.initialisiere(verbindung);
 		MessageSender.getInstance()
-		.setApplicationLabel("Messwertersetzung LVE");
+				.setApplicationLabel("Messwertersetzung LVE");
 
 		final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(
 						verbindung.getDataModel()
-								.getType(DUAKonstanten.TYP_FAHRSTREIFEN),
+						.getType(DUAKonstanten.TYP_FAHRSTREIFEN),
 						verbindung, getKonfigurationsBereiche());
 		objekte = alleFsObjImKB.toArray(new SystemObject[0]);
 
@@ -148,10 +142,10 @@ public class VerwaltungMessWertErsetzungLVE
 
 		plForm1 = new PlPruefungFormal(
 				new PlFormMweLveStandardAspekteVersorger(this)
-				.getStandardPubInfos());
+						.getStandardPubInfos());
 		plLog1 = new PlPruefungLogischLVE(
 				new PlLogMweLveStandardAspekteVersorger(this)
-				.getStandardPubInfos());
+						.getStandardPubInfos());
 		mwe = new MessWertErsetzungLVE();
 
 		/**
@@ -195,17 +189,14 @@ public class VerwaltungMessWertErsetzungLVE
 		 */
 		final DataDescription anmeldungsBeschreibungKZD = new DataDescription(
 				verbindung.getDataModel()
-						.getAttributeGroup(DUAKonstanten.ATG_KZD),
+				.getAttributeGroup(DUAKonstanten.ATG_KZD),
 				verbindung.getDataModel()
-						.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
+				.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
 		verbindung.subscribeReceiver(this, objekte, anmeldungsBeschreibungKZD,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		plForm1.aktualisiereDaten(resultate);
@@ -223,8 +214,6 @@ public class VerwaltungMessWertErsetzungLVE
 	}
 
 	/**
-	 * {@inheritDoc}.<br>
-	 *
 	 * Standard-Gütefaktor für Ersetzungen (90%)<br>
 	 * Wenn das Modul Messwertersetzung LVE einen Messwert ersetzt, so
 	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn kein

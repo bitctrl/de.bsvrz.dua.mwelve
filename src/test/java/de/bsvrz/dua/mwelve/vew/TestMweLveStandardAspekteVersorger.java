@@ -40,7 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class TestMweLveStandardAspekteVersorger
-		extends StandardAspekteVersorger {
+extends StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
@@ -55,9 +55,6 @@ public class TestMweLveStandardAspekteVersorger
 		super(verwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
