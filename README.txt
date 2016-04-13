@@ -18,6 +18,9 @@ asp.messWertErsetzung publiziert.
 Versionsgeschichte
 ==================
 
+1.4.0
+- Umstellung auf Funclib-Bitctrl-Dua
+
 1.3.0
 - Umstellung auf Maven-Build
 

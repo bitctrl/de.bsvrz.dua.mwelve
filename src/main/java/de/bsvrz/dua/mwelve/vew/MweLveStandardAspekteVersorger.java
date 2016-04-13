@@ -76,12 +76,13 @@ public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 		} else {
 			LOGGER.config("Langzeitdaten werden ignoriert.");
 		}
-		standardAspekte = new StandardAspekteAdapter(
-				zuordnungen.toArray(new StandardPublikationsZuordnung[0]));
+		setStandardAspekte(new StandardAspekteAdapter(
+				zuordnungen.toArray(new StandardPublikationsZuordnung[0])));
 	}
 
 	private boolean isVerarbeiteLangzeitdaten() {
-		final String arg = verwaltung.getArgument("ignoriereLangzeitdaten");
+		final String arg = getVerwaltung()
+				.getArgument("ignoriereLangzeitdaten");
 		if (arg == null) {
 			return true;
 		}

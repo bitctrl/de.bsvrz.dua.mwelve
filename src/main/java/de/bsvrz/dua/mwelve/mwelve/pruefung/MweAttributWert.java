@@ -72,31 +72,33 @@ public class MweAttributWert extends MesswertMarkierung
 		this.attr = attr;
 		wert = datenSatz.getItem(attr.getName()).getUnscaledValue("Wert") //$NON-NLS-1$
 				.longValue();
-		nichtErfasst = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+		setNichtErfasst(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("Erfassung").//$NON-NLS-1$
-				getUnscaledValue("NichtErfasst").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		implausibel = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				getUnscaledValue("NichtErfasst") //$NON-NLS-1$
+				.intValue() == DUAKonstanten.JA);
+		setImplausibel(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("MessWertErsetzung").//$NON-NLS-1$
-				getUnscaledValue("Implausibel").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		interpoliert = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				getUnscaledValue("Implausibel").intValue() == DUAKonstanten.JA); //$NON-NLS-1$
+		setInterpoliert(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("MessWertErsetzung").//$NON-NLS-1$
-				getUnscaledValue("Interpoliert").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+				getUnscaledValue("Interpoliert") //$NON-NLS-1$
+				.intValue() == DUAKonstanten.JA);
 
-		formalMax = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+		setFormalMax(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("PlFormal").//$NON-NLS-1$
-				getUnscaledValue("WertMax").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
-		formalMin = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				getUnscaledValue("WertMax").intValue() == DUAKonstanten.JA); //$NON-NLS-1$
+		setFormalMin(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("PlFormal").//$NON-NLS-1$
-				getUnscaledValue("WertMin").intValue() == DUAKonstanten.JA; //$NON-NLS-1$
+				getUnscaledValue("WertMin").intValue() == DUAKonstanten.JA); //$NON-NLS-1$
 
-		logischMax = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+		setLogischMax(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("PlLogisch").//$NON-NLS-1$
 				getUnscaledValue("WertMaxLogisch") //$NON-NLS-1$
-				.intValue() == DUAKonstanten.JA;
-		logischMin = datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
+				.intValue() == DUAKonstanten.JA);
+		setLogischMin(datenSatz.getItem(attr.getName()).getItem("Status") //$NON-NLS-1$
 				.getItem("PlLogisch").//$NON-NLS-1$
 				getUnscaledValue("WertMinLogisch") //$NON-NLS-1$
-				.intValue() == DUAKonstanten.JA;
+				.intValue() == DUAKonstanten.JA);
 
 		guete = new GWert(datenSatz, attr.getName());
 	}
@@ -109,16 +111,16 @@ public class MweAttributWert extends MesswertMarkierung
 	 *            das zu kopierende Datum
 	 */
 	public MweAttributWert(final MweAttributWert vorlage) {
-		veraendert = true;
+		setVeraendert(true);
 		attr = vorlage.attr;
 		wert = vorlage.wert;
-		nichtErfasst = vorlage.nichtErfasst;
-		implausibel = vorlage.implausibel;
-		interpoliert = vorlage.interpoliert;
-		formalMax = vorlage.formalMax;
-		formalMin = vorlage.formalMin;
-		logischMax = vorlage.logischMax;
-		logischMin = vorlage.logischMin;
+		setNichtErfasst(vorlage.isNichtErfasst());
+		setImplausibel(vorlage.isImplausibel());
+		setInterpoliert(vorlage.isInterpoliert());
+		setFormalMax(vorlage.isFormalMax());
+		setFormalMin(vorlage.isFormalMin());
+		setLogischMax(vorlage.isLogischMax());
+		setLogischMin(vorlage.isLogischMin());
 		guete = new GWert(vorlage.guete);
 	}
 
@@ -138,7 +140,7 @@ public class MweAttributWert extends MesswertMarkierung
 	 *            der Wert dieses Attributs
 	 */
 	public final void setWert(final long wert) {
-		veraendert = true;
+		setVeraendert(true);
 		this.wert = wert;
 	}
 
@@ -172,7 +174,7 @@ public class MweAttributWert extends MesswertMarkierung
 	 *            die Guete dieses Attributwertes
 	 */
 	public final void setGuete(final GWert guete) {
-		veraendert = true;
+		setVeraendert(true);
 		this.guete = guete;
 	}
 
@@ -197,7 +199,7 @@ public class MweAttributWert extends MesswertMarkierung
 	public String toString() {
 		return "Attribut: " + attr + "\nWert: " + wert + //$NON-NLS-1$ //$NON-NLS-2$
 				"\nGuete: " + guete + //$NON-NLS-1$
-				"\nVeraendert: " + (veraendert ? "Ja" : "Nein") + //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+				"\nVeraendert: " + (isVeraendert() ? "Ja" : "Nein") + //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 				"\n" + super.toString(); //$NON-NLS-1$
 	}
 

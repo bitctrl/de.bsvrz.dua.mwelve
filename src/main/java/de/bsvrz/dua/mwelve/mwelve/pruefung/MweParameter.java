@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public final class MweParameter implements ClientReceiverInterface {
 		final DataDescription datenBeschreibung = new DataDescription(
 				dav.getDataModel().getAttributeGroup(
 						"atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung"), //$NON-NLS-1$
-						dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+				dav.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dav.subscribeReceiver(this, objekt, datenBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
@@ -97,7 +98,7 @@ public final class MweParameter implements ClientReceiverInterface {
 	 *            werden soll
 	 */
 	public static void initialisiere(final ClientDavInterface dav,
-			final SystemObject[] objekte) {
+			final Collection<SystemObject> objekte) {
 		for (final SystemObject objekt : objekte) {
 			parameterMap.put(objekt, new MweParameter(dav, objekt));
 		}

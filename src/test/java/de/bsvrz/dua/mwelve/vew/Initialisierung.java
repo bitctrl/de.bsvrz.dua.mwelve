@@ -162,19 +162,19 @@ public final class Initialisierung {
 								throws DUAInitialisierungsException {
 							super.initialisiere();
 
-							DuaVerkehrsNetz.initialisiere(verbindung);
+							DuaVerkehrsNetz.initialisiere(getVerbindung());
 
 							final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 									.getBasisInstanzen(
-											verbindung.getDataModel().getType(
-													DUAKonstanten.TYP_FAHRSTREIFEN),
-											verbindung,
+											getVerbindung().getDataModel()
+													.getType(
+															DUAKonstanten.TYP_FAHRSTREIFEN),
+											getVerbindung(),
 											getKonfigurationsBereiche());
-							objekte = alleFsObjImKB
-									.toArray(new SystemObject[0]);
+							setSystemObjekte(alleFsObjImKB);
 
 							String infoStr = Constants.EMPTY_STRING;
-							for (final SystemObject obj : objekte) {
+							for (final SystemObject obj : getSystemObjekte()) {
 								infoStr += obj + "\n"; //$NON-NLS-1$
 							}
 							LOGGER.config("---\nBetrachtete Objekte:\n" //$NON-NLS-1$

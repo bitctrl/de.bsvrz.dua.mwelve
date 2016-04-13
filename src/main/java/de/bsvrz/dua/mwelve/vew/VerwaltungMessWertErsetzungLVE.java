@@ -69,7 +69,7 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class VerwaltungMessWertErsetzungLVE
-extends AbstraktVerwaltungsAdapterMitGuete {
+		extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -123,19 +123,19 @@ extends AbstraktVerwaltungsAdapterMitGuete {
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
-		DuaVerkehrsNetz.initialisiere(verbindung);
+		DuaVerkehrsNetz.initialisiere(getVerbindung());
 		MessageSender.getInstance()
 				.setApplicationLabel("Messwertersetzung LVE");
 
 		final Collection<SystemObject> alleFsObjImKB = DUAUtensilien
 				.getBasisInstanzen(
-						verbindung.getDataModel()
-						.getType(DUAKonstanten.TYP_FAHRSTREIFEN),
-						verbindung, getKonfigurationsBereiche());
-		objekte = alleFsObjImKB.toArray(new SystemObject[0]);
+						getVerbindung().getDataModel()
+								.getType(DUAKonstanten.TYP_FAHRSTREIFEN),
+						getVerbindung(), getKonfigurationsBereiche());
+		setSystemObjekte(alleFsObjImKB);
 
 		String infoStr = Constants.EMPTY_STRING;
-		for (final SystemObject obj : objekte) {
+		for (final SystemObject obj : getSystemObjekte()) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
 		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -188,13 +188,14 @@ extends AbstraktVerwaltungsAdapterMitGuete {
 		 * Auf Daten anmelden und Start
 		 */
 		final DataDescription anmeldungsBeschreibungKZD = new DataDescription(
-				verbindung.getDataModel()
-				.getAttributeGroup(DUAKonstanten.ATG_KZD),
-				verbindung.getDataModel()
-				.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
+				getVerbindung().getDataModel()
+						.getAttributeGroup(DUAKonstanten.ATG_KZD),
+				getVerbindung().getDataModel()
+						.getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
-		verbindung.subscribeReceiver(this, objekte, anmeldungsBeschreibungKZD,
-				ReceiveOptions.normal(), ReceiverRole.receiver());
+		getVerbindung().subscribeReceiver(this, getSystemObjekte(),
+				anmeldungsBeschreibungKZD, ReceiveOptions.normal(),
+				ReceiverRole.receiver());
 	}
 
 	@Override

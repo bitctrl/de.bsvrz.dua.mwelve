@@ -40,7 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class PlFormMweLveStandardAspekteVersorger
-extends StandardAspekteVersorger {
+		extends StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
@@ -58,18 +58,18 @@ extends StandardAspekteVersorger {
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
-		standardAspekte = new StandardAspekteAdapter(
-				new StandardPublikationsZuordnung[] {
+		setStandardAspekte(
+				new StandardAspekteAdapter(new StandardPublikationsZuordnung[] {
 						new StandardPublikationsZuordnung(
 								DUAKonstanten.TYP_FAHRSTREIFEN,
 								DUAKonstanten.ATG_KZD,
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL),
-								new StandardPublikationsZuordnung(
-										DUAKonstanten.TYP_FAHRSTREIFEN,
-										DUAKonstanten.ATG_LZD,
-										DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-										DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL) });
+						new StandardPublikationsZuordnung(
+								DUAKonstanten.TYP_FAHRSTREIFEN,
+								DUAKonstanten.ATG_LZD,
+								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL) }));
 	}
 
 }

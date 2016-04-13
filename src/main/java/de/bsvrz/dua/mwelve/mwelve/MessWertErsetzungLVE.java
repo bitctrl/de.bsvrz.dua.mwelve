@@ -78,7 +78,7 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 				dieVerwaltung.getSystemObjekte());
 
 		pruefung = new LVEPruefungUndMWE();
-		pruefung.setNaechstenBearbeitungsKnoten(knoten);
+		pruefung.setNaechstenBearbeitungsKnoten(getKnoten());
 		pruefung.initialisiere(dieVerwaltung);
 	}
 
