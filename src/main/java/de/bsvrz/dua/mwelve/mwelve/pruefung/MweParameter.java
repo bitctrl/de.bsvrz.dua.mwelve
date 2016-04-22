@@ -26,7 +26,6 @@
 
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +97,7 @@ public final class MweParameter implements ClientReceiverInterface {
 	 *            werden soll
 	 */
 	public static void initialisiere(final ClientDavInterface dav,
-			final Collection<SystemObject> objekte) {
+			final SystemObject[] objekte) {
 		for (final SystemObject objekt : objekte) {
 			parameterMap.put(objekt, new MweParameter(dav, objekt));
 		}
