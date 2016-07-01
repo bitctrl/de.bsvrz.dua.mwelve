@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -89,8 +89,8 @@ public class MweFortschreibungsAttribut {
 	}
 
 	/**
-	 * Dieser Methode muss <b>jedes</b> für den assoziierten Fahrstreifen
-	 * empfangene Datum übergeben werden, damit der jeweils letzte plausible
+	 * Dieser Methode muss <b>jedes</b> fÃ¼r den assoziierten Fahrstreifen
+	 * empfangene Datum Ã¼bergeben werden, damit der jeweils letzte plausible
 	 * Wert pro Fahrstreifen ermittelt werden kann.
 	 *
 	 * @param datum
@@ -109,8 +109,8 @@ public class MweFortschreibungsAttribut {
 	/**
 	 * Manipuliert ein bereits messwertersetztes Datum so, dass alle Werte, die
 	 * implausibel und nicht interpoliert sind fortgeschrieben werden so lange
-	 * dies nach den Parametern der MWE möglich ist.<br>
-	 * Die Fortschreibung erfolgt mit dem letzten Wert für diesen Fahrstreifen,
+	 * dies nach den Parametern der MWE mÃ¶glich ist.<br>
+	 * Die Fortschreibung erfolgt mit dem letzten Wert fÃ¼r diesen Fahrstreifen,
 	 * der nicht implausibel war.
 	 *
 	 * @param ersetztesDatum
@@ -124,7 +124,7 @@ public class MweFortschreibungsAttribut {
 				&& (letzterPlausiblerWert != null)
 				&& MweParameter.isParameterValide(objekt)) {
 			/**
-			 * Es wird versucht, ein Datum zu veröffentlichen, das noch
+			 * Es wird versucht, ein Datum zu verÃ¶ffentlichen, das noch
 			 * implausible Attributewerte besitzt, die noch nicht interpoliert
 			 * wurden
 			 */
@@ -158,7 +158,7 @@ public class MweFortschreibungsAttribut {
 								new MessageCauser(LVEPruefungUndMWE.sDav.getLocalUser(),
 										"keine Messwertersetzung moeglich", //$NON-NLS-1$
 										"Applikation Messwertersetzung LVE"), //$NON-NLS-1$
-						"keine Messwertersetzung möglich"); //$NON-NLS-1$
+						"keine Messwertersetzung mÃ¶glich"); //$NON-NLS-1$
 
 				// MessageSender
 				// .getInstance()
@@ -171,7 +171,7 @@ public class MweFortschreibungsAttribut {
 				// LVEPruefungUndMWE.sDav.getLocalUser(),
 				// "keine Messwertersetzung moeglich", "Applikation
 				// Messwertersetzung LVE"), //$NON-NLS-1$ //$NON-NLS-2$
-				// "keine Messwertersetzung möglich"); //$NON-NLS-1$
+				// "keine Messwertersetzung mÃ¶glich"); //$NON-NLS-1$
 			}
 		} else {
 			fortschreibungSeit = -1;

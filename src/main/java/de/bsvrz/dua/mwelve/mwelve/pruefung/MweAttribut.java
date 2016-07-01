@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Container für KDZ-Attribute:<br>
+ * Container fÃ¼r KDZ-Attribute:<br>
  * <code>qKfz</code>,<br>
  * <code>qLkw</code>,<br>
  * <code>qPkw</code>,<br>
@@ -95,12 +95,12 @@ public final class MweAttribut {
 	}
 
 	/**
-	 * Erfragt eine mit dem übergebenen Namen korrespondierende statische
+	 * Erfragt eine mit dem Ã¼bergebenen Namen korrespondierende statische
 	 * Instanz dieser Klasse.
 	 *
 	 * @param name
 	 *            ein Attribut-Name
-	 * @return eine mit dem übergebenen Namen korrespondierende statische
+	 * @return eine mit dem Ã¼bergebenen Namen korrespondierende statische
 	 *         Instanz dieser Klasse, oder <code>null</code>
 	 */
 	public static MweAttribut getInstanz(final String name) {
@@ -114,10 +114,10 @@ public final class MweAttribut {
 	}
 
 	/**
-	 * Erfragt, ob es sich bei diesem Attribut um die Verkehrsstärke einer
+	 * Erfragt, ob es sich bei diesem Attribut um die VerkehrsstÃ¤rke einer
 	 * Fahrzeuggruppe handelt.
 	 *
-	 * @return ob es sich bei diesem Attribut um die Verkehrsstärke einer
+	 * @return ob es sich bei diesem Attribut um die VerkehrsstÃ¤rke einer
 	 *         Fahrzeuggruppe handelt
 	 */
 	public boolean isQWert() {

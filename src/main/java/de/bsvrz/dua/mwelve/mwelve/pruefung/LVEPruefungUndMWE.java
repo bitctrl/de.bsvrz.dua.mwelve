@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -49,7 +49,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Hier findet die eigentliche Messwertersetzung statt. Die Daten werden hier
  * zwei Intervalle zwischengespeichert und messwertersetzt, sobald alle Daten
- * zur Messwertersetzung vorliegen (spätestens aber zum Beginn des nächsten
+ * zur Messwertersetzung vorliegen (spÃ¤testens aber zum Beginn des nÃ¤chsten
  * Intervalls)
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -89,7 +89,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Assoziiert einen Fahrstreifen <code>a</code> mit den Fahrstreifen
-	 * <code>x</code>, an die er über die Relationen
+	 * <code>x</code>, an die er Ã¼ber die Relationen
 	 * <code>a = istNachbarVon(x)</code>, <code>a = istErsatzVon(x)</code> und
 	 * <code>Identitaet</code> gebunden ist.
 	 */
@@ -132,10 +132,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
 		/**
 		 * Erstelle die Trigger-Liste mit Verweisen von einem Fahrstreifen a auf
-		 * eine Menge von Fahrstreifen x, die bei der Ankunft eines Datums für a
-		 * unter Umständen alle Daten zur Berechung dieses Intervalls haben<br>
+		 * eine Menge von Fahrstreifen x, die bei der Ankunft eines Datums fÃ¼r a
+		 * unter UmstÃ¤nden alle Daten zur Berechung dieses Intervalls haben<br>
 		 * Insbesondere triggert jeder Fahrstreifen sich selbst und die
-		 * Fahrstreifen, für die er entweder Nachbar- oder Ersatzfahrstreifen
+		 * Fahrstreifen, fÃ¼r die er entweder Nachbar- oder Ersatzfahrstreifen
 		 * ist
 		 */
 		for (final FahrStreifen fs : pruefungsFahrstreifen) {
@@ -153,7 +153,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			}
 
 			// /**
-			// * jeder Fahrstreifen triggert die Fahrstreifen, für die er
+			// * jeder Fahrstreifen triggert die Fahrstreifen, fÃ¼r die er
 			// Nachbar ist
 			// */
 			// FahrStreifen nachbar = fs.getNachbarFahrStreifen();
@@ -169,7 +169,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			// }
 
 			/**
-			 * jeder Fahrstreifen trigger die Fahrstreifen, für die er
+			 * jeder Fahrstreifen trigger die Fahrstreifen, fÃ¼r die er
 			 * Ersatzfahrstreifen ist
 			 */
 			final FahrStreifen ersatz = fs.getErsatzFahrStreifen();
@@ -190,7 +190,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
 			/**
-			 * die weiterzuleitenden Resultate müssen die selbe
+			 * die weiterzuleitenden Resultate mÃ¼ssen die selbe
 			 * Datenidentifikation haben wie die eingetroffenen Resultate
 			 */
 			final List<ResultData> weiterzuleitendeResultate = new ArrayList<>();
@@ -213,12 +213,12 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 									|| kzDatum.isDefekt()
 									|| kzDatum.isVollstaendigPlausibel()) {
 								/**
-								 * Wenn das Datum zu einem Fahrstreifen gehört,
+								 * Wenn das Datum zu einem Fahrstreifen gehÃ¶rt,
 								 * der hier nur gespeichert wird, weil er
 								 * Ersatz- oder Nachbarfahrstreifen eines hier
 								 * plausibilisierten Fahrstreifens ist (er hier
 								 * aber nicht plausibilisiert wird), oder der
-								 * Datensatz keine Nutzdaten enhält, kann er
+								 * Datensatz keine Nutzdaten enhÃ¤lt, kann er
 								 * einfach so wieder freigegeben werden
 								 */
 								weiterzuleitendeResultate.add(resultat);
@@ -266,7 +266,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			}
 
 			/**
-			 * Daten und ggf. Ergebnisse an den nächsten Bearbeitungsknoten
+			 * Daten und ggf. Ergebnisse an den nÃ¤chsten Bearbeitungsknoten
 			 * weiterleiten
 			 */
 			if ((getKnoten() != null) && !weiterzuleitendeResultate.isEmpty()) {
@@ -277,9 +277,9 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	}
 
 	/**
-	 * Hier findet die MWE für einen Fahrstreifen in Bezug auf die aktuell im
-	 * Datenpuffer enthaltenen Daten statt. Diese Methode muss gewährleisten,
-	 * dass die eintreffenden Daten entweder sofort oder innerhalb des nächsten
+	 * Hier findet die MWE fÃ¼r einen Fahrstreifen in Bezug auf die aktuell im
+	 * Datenpuffer enthaltenen Daten statt. Diese Methode muss gewÃ¤hrleisten,
+	 * dass die eintreffenden Daten entweder sofort oder innerhalb des nÃ¤chsten
 	 * Intervalls wieder freigegeben werden.
 	 *
 	 * @param fahrStreifenPuffer
@@ -291,8 +291,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
 		if (fahrStreifenPuffer.habeNochNichtFreigegebenesDatum()) {
 			/**
-			 * Betrachte nur Puffer, die empfangene Datensätze gespeichert
-			 * haben, für die noch keine assoziierten Datensätze unter dem
+			 * Betrachte nur Puffer, die empfangene DatensÃ¤tze gespeichert
+			 * haben, fÃ¼r die noch keine assoziierten DatensÃ¤tze unter dem
 			 * Aspekt MWE publiziert wurden
 			 */
 			if (fahrStreifenPuffer.isIntervallAbgelaufen()) {
@@ -338,7 +338,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	}
 
 	/**
-	 * Führt eine MWE durch für den Fall, dass der Ersatzfahrstreifen nicht
+	 * FÃ¼hrt eine MWE durch fÃ¼r den Fall, dass der Ersatzfahrstreifen nicht
 	 * defekt ist.
 	 *
 	 * @param fahrStreifenPuffer
@@ -413,7 +413,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 				// double neuerWert = qKfz * qLkwErsatz / qKfzErsatz;
 				//
 				// /**
-				// * Güteberechnung des Wertes
+				// * GÃ¼teberechnung des Wertes
 				// */
 				// GWert neueGuete =
 				// GWert.getNichtErmittelbareGuete(attributWert.getGuete().getVerfahren());
@@ -429,7 +429,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 				// }
 				//
 				// /**
-				// * Wert verändern
+				// * Wert verÃ¤ndern
 				// */
 				// ergebnisDatum.getAttributWert(MweAttribut.Q_LKW).setWert((long)(neuerWert
 				// + 0.5));
@@ -466,11 +466,11 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	}
 
 	/**
-	 * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
+	 * FÃ¼hrt eine Messwertersetzung nach Vorschrift Nr. 1 fÃ¼r ein bestimmtes
 	 * Attribut innerhalb eines KZ-Datensatzes durch (Stand: 05.03.2008)
 	 *
 	 * @param attribut
-	 *            das Attribut, für das die MWE durchgeführt werden soll
+	 *            das Attribut, fÃ¼r das die MWE durchgefÃ¼hrt werden soll
 	 * @param ergebnisDatum
 	 *            das Datum, innerhalb dem der Attributwert mit dem zu
 	 *            ersetzenden Datum steht
@@ -481,8 +481,8 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 *            der Datenpuffer des Fahrstreifens, der MW-ersetzt werden soll
 	 * @param ersetzungsPuffer
 	 *            der Datenpuffer des Fahrstreifens, durch den die Ersetzung
-	 *            durchgeführt werden soll
-	 * @return eine veränderte Version von <code>ergebnisDatum</code>, für die
+	 *            durchgefÃ¼hrt werden soll
+	 * @return eine verÃ¤nderte Version von <code>ergebnisDatum</code>, fÃ¼r die
 	 *         ggf. der Wert des Attributs <code>attribut</code> ersetzt und
 	 *         gekennzeichnet wurde
 	 */
@@ -528,12 +528,12 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			final double neuerWert = wertErsetzung;
 
 			/**
-			 * Güteberechnung des Wertes
+			 * GÃ¼teberechnung des Wertes
 			 */
 			final GWert neueGuete = gueteErsetzung;
 
 			/**
-			 * Wert verändern
+			 * Wert verÃ¤ndern
 			 */
 			ergebnisDatum.getAttributWert(attribut)
 					.setWert(Math.round(neuerWert));
@@ -554,10 +554,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// Implementierung von veralteten Anforderungen
 	//
 	// /**
-	// * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
+	// * FÃ¼hrt eine Messwertersetzung nach Vorschrift Nr. 1 fÃ¼r ein bestimmtes
 	// * Attribut innerhalb eines KZ-Datensatzes durch
 	// *
-	// * @param attribut das Attribut, für das die MWE durchgeführt werden soll
+	// * @param attribut das Attribut, fÃ¼r das die MWE durchgefÃ¼hrt werden soll
 	// * @param ergebnisDatum das Datum, innerhalb dem der Attributwert mit dem
 	// zu ersetzenden
 	// * Datum steht
@@ -566,9 +566,9 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// * @param fahrStreifenPuffer der Datenpuffer des Fahrstreifens, der
 	// MW-ersetzt werden soll
 	// * @param ersetzungsPuffer der Datenpuffer des Fahrstreifens, durch den
-	// die Ersetzung durchgeführt
+	// die Ersetzung durchgefÃ¼hrt
 	// * werden soll
-	// * @return eine veränderte Version von <code>ergebnisDatum</code>, für die
+	// * @return eine verÃ¤nderte Version von <code>ergebnisDatum</code>, fÃ¼r die
 	// * ggf. der Wert des Attributs <code>attribut</code> ersetzt und
 	// gekennzeichnet
 	// * wurde
@@ -648,7 +648,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// double neuerWert = (alterWert * wertErsetzung) / alterWertErsetzung;
 	//
 	// /**
-	// * Güteberechnung des Wertes
+	// * GÃ¼teberechnung des Wertes
 	// */
 	// GWert neueGuete =
 	// GWert.getNichtErmittelbareGuete(GueteVerfahren.STANDARD);
@@ -664,7 +664,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// }
 	//
 	// /**
-	// * Wert verändern
+	// * Wert verÃ¤ndern
 	// */
 	// ergebnisDatum.getAttributWert(attribut).setWert(Math.round(neuerWert));
 	// ergebnisDatum.getAttributWert(attribut).setGuete(neueGuete);
@@ -676,7 +676,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// }
 
 	// /**
-	// * Führt eine MWE durch für den Fall, dass der Sensor des
+	// * FÃ¼hrt eine MWE durch fÃ¼r den Fall, dass der Sensor des
 	// Nachbarfahrstreifens defekt ist,
 	// * der Sensor des Ersatzfahrstreifen aber nicht defekt ist
 	// *
@@ -697,7 +697,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// if(zielDatum != null &&
 	// !zielDatum.isBereitsWiederFreigegeben()){
 	// /**
-	// * Das heißt, das Zieldatum ist nicht vollständig plausibel und
+	// * Das heiÃŸt, das Zieldatum ist nicht vollstÃ¤ndig plausibel und
 	// * noch nicht interpoliert
 	// */
 	//

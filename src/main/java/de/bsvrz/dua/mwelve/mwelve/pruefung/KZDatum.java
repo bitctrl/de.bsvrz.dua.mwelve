@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -36,7 +36,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 
 /**
  * Korrespondiert mit einer Instanz eines KZD-<code>ResultData</code>-Objektes
- * und hält alle innerhalb der MWE betrachteten Attribute (veränderbar) bereit.
+ * und hÃ¤lt alle innerhalb der MWE betrachteten Attribute (verÃ¤nderbar) bereit.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -53,8 +53,8 @@ public class KZDatum {
 	private final Map<MweAttribut, MweAttributWert> attributWerte = new HashMap<>();
 
 	/**
-	 * Zeigt für dieses Datum an, dass es ein bestimmtes Modul verlassen hat und
-	 * einem anderen Modul zur Verfügung gestellt wurde.
+	 * Zeigt fÃ¼r dieses Datum an, dass es ein bestimmtes Modul verlassen hat und
+	 * einem anderen Modul zur VerfÃ¼gung gestellt wurde.
 	 */
 	private boolean bereitsWiederFreigegeben = false;
 
@@ -92,9 +92,9 @@ public class KZDatum {
 
 	/**
 	 * Erfragt den Defektionszustand des mit diesem Datum assoziierten
-	 * Fahstreifens für den Datenzeitpunkt dieses Datums<br>
+	 * Fahstreifens fÃ¼r den Datenzeitpunkt dieses Datums<br>
 	 * Der Fahrstreifen bzw. dieses Datum ist <code>defekt</code>, wenn:<br>
-	 * 1. der Datensatz keine Nutzdaten enthält<br>
+	 * 1. der Datensatz keine Nutzdaten enthÃ¤lt<br>
 	 * .
 	 *
 	 * @return ob der mit diesem Datum assoziierte Fahstreifen im Moment dieses
@@ -106,10 +106,10 @@ public class KZDatum {
 
 	/**
 	 * Erfragt ob dieses Datum ein bestimmtes Modul verlassen hat und einem
-	 * anderen Modul wieder zur Verfügung gestellt wurde.
+	 * anderen Modul wieder zur VerfÃ¼gung gestellt wurde.
 	 *
 	 * @return ob dieses Datum ein bestimmtes Modul verlassen hat und einem
-	 *         anderen Modul wieder zur Verfügung gestellt wurde
+	 *         anderen Modul wieder zur VerfÃ¼gung gestellt wurde
 	 */
 	public final boolean isBereitsWiederFreigegeben() {
 		return bereitsWiederFreigegeben;
@@ -117,11 +117,11 @@ public class KZDatum {
 
 	/**
 	 * Setzt, ob dieses Datum ein bestimmtes Modul verlassen hat und einem
-	 * anderen Modul wieder zur Verfügung gestellt wurde.
+	 * anderen Modul wieder zur VerfÃ¼gung gestellt wurde.
 	 *
 	 * @param bereitsWiederFreigegeben
 	 *            ob dieses Datum ein bestimmtes Modul verlassen hat und einem
-	 *            anderen Modul wieder zur Verfügung gestellt wurde
+	 *            anderen Modul wieder zur VerfÃ¼gung gestellt wurde
 	 */
 	public final void setBereitsWiederFreigegeben(
 			final boolean bereitsWiederFreigegeben) {
@@ -150,12 +150,12 @@ public class KZDatum {
 	}
 
 	/**
-	 * Erfragt, ob dieses Datum in allen für die MWE relevanten Werten plausibel
+	 * Erfragt, ob dieses Datum in allen fÃ¼r die MWE relevanten Werten plausibel
 	 * ist<br>
-	 * . <b>Achtung:</b> Die Methode gibt auch dann <code>true</code> zurück,
-	 * wenn das mit diesem Objekt assoziierte Datum keine Nutzdaten enthält
+	 * . <b>Achtung:</b> Die Methode gibt auch dann <code>true</code> zurÃ¼ck,
+	 * wenn das mit diesem Objekt assoziierte Datum keine Nutzdaten enthÃ¤lt
 	 *
-	 * @return ob dieses Datum in allen für die MWE relevanten Werten plausibel
+	 * @return ob dieses Datum in allen fÃ¼r die MWE relevanten Werten plausibel
 	 *         ist
 	 */
 	public final boolean isVollstaendigPlausibel() {
@@ -174,9 +174,9 @@ public class KZDatum {
 	}
 
 	/**
-	 * Erfragt das ggf. veränderte KZD-<code>ResultData</code>-Objekt
+	 * Erfragt das ggf. verÃ¤nderte KZD-<code>ResultData</code>-Objekt
 	 *
-	 * @return das ggf. veränderte KZD-<code>ResultData</code>-Objekt
+	 * @return das ggf. verÃ¤nderte KZD-<code>ResultData</code>-Objekt
 	 */
 	public final ResultData getDatum() {
 		ResultData ergebnis = originalDatum;
@@ -208,9 +208,9 @@ public class KZDatum {
 	}
 
 	/**
-	 * Modifiziert den übergebenen DAV-Datensatz ggf. nach dem übergebenen
-	 * Verkehrsdaten-Attributwert (ggf. heißt, nur wenn sich der Attributwert
-	 * verändert hat)
+	 * Modifiziert den Ã¼bergebenen DAV-Datensatz ggf. nach dem Ã¼bergebenen
+	 * Verkehrsdaten-Attributwert (ggf. heiÃŸt, nur wenn sich der Attributwert
+	 * verÃ¤ndert hat)
 	 *
 	 * @param attr
 	 *            der Attributwert
@@ -236,10 +236,10 @@ public class KZDatum {
 				getUnscaledValue("Interpoliert") //$NON-NLS-1$
 				.set(attr.isInterpoliert() ? DUAKonstanten.JA
 						: DUAKonstanten.NEIN);
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("GÃ¼te").//$NON-NLS-1$
 				getUnscaledValue("Index") //$NON-NLS-1$
 				.set(attr.getGuete().getIndexUnskaliert());
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("GÃ¼te").//$NON-NLS-1$
 				getUnscaledValue("Verfahren") //$NON-NLS-1$
 				.set(attr.getGuete().getVerfahren().getCode());
 			} else {
@@ -253,9 +253,9 @@ public class KZDatum {
 				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$//$NON-NLS-2$
 				getUnscaledValue("Interpoliert") //$NON-NLS-1$
 				.set(DUAKonstanten.NEIN);
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("GÃ¼te").//$NON-NLS-1$
 				getUnscaledValue("Index").set(0.0); //$NON-NLS-1$
-				datenSatz.getItem(attr.getAttribut().getName()).getItem("Güte").//$NON-NLS-1$
+				datenSatz.getItem(attr.getAttribut().getName()).getItem("GÃ¼te").//$NON-NLS-1$
 				getUnscaledValue("Verfahren") //$NON-NLS-1$
 				.set(attr.getGuete().getVerfahren().getCode());
 			}

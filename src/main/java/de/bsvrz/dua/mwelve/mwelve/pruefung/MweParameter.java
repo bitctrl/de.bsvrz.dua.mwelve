@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -52,7 +52,7 @@ public final class MweParameter implements ClientReceiverInterface {
 	private static Map<SystemObject, MweParameter> parameterMap = new HashMap<>();
 
 	/**
-	 * Maximale Zeitdauer, über die implausible Messwerte ersetzt werden.
+	 * Maximale Zeitdauer, Ã¼ber die implausible Messwerte ersetzt werden.
 	 */
 	private long maxErsetzungsDauer = -1;
 
@@ -116,11 +116,11 @@ public final class MweParameter implements ClientReceiverInterface {
 	}
 
 	/**
-	 * Erfragt, ob für einen Fahrstreifen gültige Parameter vorhanden sind.
+	 * Erfragt, ob fÃ¼r einen Fahrstreifen gÃ¼ltige Parameter vorhanden sind.
 	 *
 	 * @param fsObj
 	 *            ein Systemobjekt eines Fahrstreifens
-	 * @return ob für einen Fahrstreifen gültige Parameter vorhanden sind
+	 * @return ob fÃ¼r einen Fahrstreifen gÃ¼ltige Parameter vorhanden sind
 	 */
 	public static boolean isParameterValide(final SystemObject fsObj) {
 		final MweParameter parameter = parameterMap.get(fsObj);
@@ -128,10 +128,10 @@ public final class MweParameter implements ClientReceiverInterface {
 	}
 
 	/**
-	 * Erfragt die Maximale Zeitdauer, über die implausible Messwerte ersetzt
+	 * Erfragt die Maximale Zeitdauer, Ã¼ber die implausible Messwerte ersetzt
 	 * werden.
 	 *
-	 * @return Maximale Zeitdauer, über die implausible Messwerte ersetzt werden
+	 * @return Maximale Zeitdauer, Ã¼ber die implausible Messwerte ersetzt werden
 	 */
 	public synchronized long getMaxErsetzungsDauer() {
 		return maxErsetzungsDauer;

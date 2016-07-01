@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -37,13 +37,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltungMitGuete;
 
 /**
- * Das Modul Messwertersetzung LVE meldet sich auf alle benötigten Parameter der
- * vorgesehenen Objekte an. Es führt für die über die Methode
- * <code>aktualisiereDaten(..)</code> übergebenen Kurzzeitdaten ggf. eine
- * attributbezogene Messwertersetzung durch. Bei nicht durchführbarer
+ * Das Modul Messwertersetzung LVE meldet sich auf alle benÃ¶tigten Parameter der
+ * vorgesehenen Objekte an. Es fÃ¼hrt fÃ¼r die Ã¼ber die Methode
+ * <code>aktualisiereDaten(..)</code> Ã¼bergebenen Kurzzeitdaten ggf. eine
+ * attributbezogene Messwertersetzung durch. Bei nicht durchfÃ¼hrbarer
  * Messwertersetzung wird ggf. eine Betriebsmeldung generiert. Nach der
  * Ersetzung werden die Daten je nach Parametrierung unter dem Aspekt
- * asp.messWertErsetzung publiziert und an den nächsten Bearbeitungsknoten
+ * asp.messWertErsetzung publiziert und an den nÃ¤chsten Bearbeitungsknoten
  * weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -56,7 +56,7 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	public static double guete = 0.9;
 
 	/**
-	 * Dieses Submodul führt die eigentliche Prüfung durch.
+	 * Dieses Submodul fÃ¼hrt die eigentliche PrÃ¼fung durch.
 	 */
 	private LVEPruefungUndMWE pruefung = null;
 
@@ -67,7 +67,7 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 		if (dieVerwaltung instanceof IVerwaltungMitGuete) {
 			guete = ((IVerwaltungMitGuete) dieVerwaltung).getGueteFaktor();
 		} else {
-			throw new RuntimeException("Dieses Modul benötigt Informationen" + //$NON-NLS-1$
+			throw new RuntimeException("Dieses Modul benÃ¶tigt Informationen" + //$NON-NLS-1$
 					" zum Guetefaktor der angeschlossenen SWE"); //$NON-NLS-1$
 		}
 

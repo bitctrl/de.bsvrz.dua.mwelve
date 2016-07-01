@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -57,13 +57,13 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 /**
  * Implementierung des Moduls Verwaltung der SWE Messwertersetzung LVE. Seine
  * Aufgabe besteht in der Auswertung der Aufrufparameter, der Anmeldung beim
- * Datenverteiler und der entsprechenden Initialisierung der Module PL-Prüfung
- * formal, PL-Prüfung logisch LVE, Messwertersetzung LVE sowie Publikation.
- * Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden Daten
- * zuständig. Die Verwaltung gibt ein Objekt des Moduls PL-Prüfung formal als
- * Beobachterobjekt an, an das die zu überprüfenden Daten durch den
+ * Datenverteiler und der entsprechenden Initialisierung der Module PL-PrÃ¼fung
+ * formal, PL-PrÃ¼fung logisch LVE, Messwertersetzung LVE sowie Publikation.
+ * Weiter ist das Modul Verwaltung fÃ¼r die Anmeldung der zu prÃ¼fenden Daten
+ * zustÃ¤ndig. Die Verwaltung gibt ein Objekt des Moduls PL-PrÃ¼fung formal als
+ * Beobachterobjekt an, an das die zu Ã¼berprÃ¼fenden Daten durch den
  * Aktualisierungsmechanismus weitergeleitet werden. Weiterhin stellt die
- * Verwaltung die Verkettung der Module PL-Prüfung formal, PL-Prüfung logisch
+ * Verwaltung die Verkettung der Module PL-PrÃ¼fung formal, PL-PrÃ¼fung logisch
  * LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge her.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -79,7 +79,7 @@ public class VerwaltungMessWertErsetzungLVE
 	private static final BetriebsmeldungIdKonverter KONVERTER = new DefaultBetriebsMeldungsIdKonverter();
 
 	/**
-	 * Instanz des Moduls PL-Prüfung formal (1).
+	 * Instanz des Moduls PL-PrÃ¼fung formal (1).
 	 */
 	private PlPruefungFormal plForm1;
 
@@ -88,17 +88,17 @@ public class VerwaltungMessWertErsetzungLVE
 	 * Messwertersetzung weg
 	 */
 	// /**
-	// * Instanz des Moduls PL-Prüfung formal (2)
+	// * Instanz des Moduls PL-PrÃ¼fung formal (2)
 	// */
 	// private PlPruefungFormal plForm2 = null;
 	//
 	// /**
-	// * Instanz des Moduls PL-Prüfung logisch LVE (1)
+	// * Instanz des Moduls PL-PrÃ¼fung logisch LVE (1)
 	// */
 	// private PlPruefungLogischLVE plLog2 = null;
 
 	/**
-	 * Instanz des Moduls PL-Prüfung logisch LVE (2).
+	 * Instanz des Moduls PL-PrÃ¼fung logisch LVE (2).
 	 */
 	private PlPruefungLogischLVE plLog1 = null;
 
@@ -110,7 +110,7 @@ public class VerwaltungMessWertErsetzungLVE
 	/**
 	 * Modul, das nur publiziert (die Publikation kann nicht im Modul MWE selbst
 	 * erfolgen, da die Daten nach diesem Modul noch einmal formal und logisch
-	 * plausibilisiert werden müssen).
+	 * plausibilisiert werden mÃ¼ssen).
 	 */
 	private PublikationsModul pub = null;
 
@@ -215,10 +215,10 @@ public class VerwaltungMessWertErsetzungLVE
 	}
 
 	/**
-	 * Standard-Gütefaktor für Ersetzungen (90%)<br>
+	 * Standard-GÃ¼tefaktor fÃ¼r Ersetzungen (90%)<br>
 	 * Wenn das Modul Messwertersetzung LVE einen Messwert ersetzt, so
-	 * vermindert sich die Güte des Ausgangswertes um diesen Faktor (wenn kein
-	 * anderer Wert über die Kommandozeile übergeben wurde)
+	 * vermindert sich die GÃ¼te des Ausgangswertes um diesen Faktor (wenn kein
+	 * anderer Wert Ã¼ber die Kommandozeile Ã¼bergeben wurde)
 	 */
 	@Override
 	public double getStandardGueteFaktor() {

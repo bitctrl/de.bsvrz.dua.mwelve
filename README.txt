@@ -1,25 +1,29 @@
 ************************************************************************************
-*  Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE  *
+*  Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE  *
 ************************************************************************************
 
 Version: ${version}
 
-Übersicht
+Ãœbersicht
 =========
 
-Aufgabe der SWE Messwertersetzung LVE ist es, alle empfangenen Kurzzeitdatensätze einer
-formalen und logischen Plausibilisierung zuzuführen. Die aus diesen Plausibilisierungsstufen
+Aufgabe der SWE Messwertersetzung LVE ist es, alle empfangenen KurzzeitdatensÃ¤tze einer
+formalen und logischen Plausibilisierung zuzufÃ¼hren. Die aus diesen Plausibilisierungsstufen
 als Implausibel hervorgegangenen Attributwerte werden dann einer Messwertersetzung unterzogen.
-Eine genaue Beschreibung der Ersetzungsmethoden erfolgt in [AFo]. Nach dieser Prüfung bzw.
-Ersetzung werden die Daten nochmals logisch und formal geprüft und unter dem Aspekt
+Eine genaue Beschreibung der Ersetzungsmethoden erfolgt in [AFo]. Nach dieser PrÃ¼fung bzw.
+Ersetzung werden die Daten nochmals logisch und formal geprÃ¼ft und unter dem Aspekt
 asp.messWertErsetzung publiziert.
 
 
 Versionsgeschichte
 ==================
 
+1.5.0
+=====
+- Umstellung auf Java 8 und UTF-8
+
 1.4.1
-- Kompatibilität zu DuA-2.0 hergestellt
+- KompatibilitÃ¤t zu DuA-2.0 hergestellt
 
 1.4.0
 - Umstellung auf Funclib-Bitctrl-Dua
@@ -30,7 +34,7 @@ Versionsgeschichte
 1.2.0
 
   - Neues Kommandozeilenargument -ignoriereLangzeitdaten. Der Defaultwert
-    "false" behält das aktuelle Verhalten bei, bei dem die Langzeitdaten von der
+    "false" behÃ¤lt das aktuelle Verhalten bei, bei dem die Langzeitdaten von der
     SW-Einheit verarbeitet werden
 
 1.1.4
@@ -44,7 +48,7 @@ Versionsgeschichte
 
 1.1.2
 
-  - FIX: Sämtliche Konstruktoren DataDescription(atg, asp, sim) ersetzt durch
+  - FIX: SÃ¤mtliche Konstruktoren DataDescription(atg, asp, sim) ersetzt durch
          DataDescription(atg, asp)
 
 1.1.0
@@ -63,27 +67,27 @@ Versionsgeschichte
 Bemerkungen
 ===========
 
-Diese SWE ist eine eigenständige Datenverteiler-Applikation, welche über die Klasse
+Diese SWE ist eine eigenstÃ¤ndige Datenverteiler-Applikation, welche Ã¼ber die Klasse
 de.bsvrz.dua.mwelve.VerwaltungMessWertErsetzungLVE mit folgenden Parametern gestartet werden kann
 (zusaetzlich zu den normalen Parametern jeder Datenverteiler-Applikation):
 	-KonfigurationsBereichsPid=pid(,pid)
 
 Der Datenfluss durch diese Applikation ist wie folgt:
 externe Erfassung 
-	--> formale Prüfung (Publikation asp.plPrüfungFormal) 
-		-->	logische Prüfung (Publikation unter asp.plPrüfungLogisch)
+	--> formale PrÃ¼fung (Publikation asp.plPrÃ¼fungFormal) 
+		-->	logische PrÃ¼fung (Publikation unter asp.plPrÃ¼fungLogisch)
 			--> Messwertersetzung 
-				--> formale Prüfung 
-					-->	logische Prüfung (Publikation unter asp.messwertErsetzung)
+				--> formale PrÃ¼fung 
+					-->	logische PrÃ¼fung (Publikation unter asp.messwertErsetzung)
 	
 - Tests:
 
-	Die automatischen Tests, die in Zusammenhang mit der Prüfspezifikation durchgeführt
-	werden, sind noch nicht endgültig implementiert.
+	Die automatischen Tests, die in Zusammenhang mit der PrÃ¼fspezifikation durchgefÃ¼hrt
+	werden, sind noch nicht endgÃ¼ltig implementiert.
 	
-	Für die Tests wird eine Verbindung zum Datenverteiler mit einer Konfiguration mit dem
-	Testkonfigurationsbereich "kb.duaTestObjekteSWE4.5" benötigt.
-	Die Verbindung wird über die statische Variable CON_DATA der Klasse
+	FÃ¼r die Tests wird eine Verbindung zum Datenverteiler mit einer Konfiguration mit dem
+	Testkonfigurationsbereich "kb.duaTestObjekteSWE4.5" benÃ¶tigt.
+	Die Verbindung wird Ã¼ber die statische Variable CON_DATA der Klasse
 	de.bsvrz.dua.mwelve.VerwaltungMessWertErsetzungLVETest hergestellt.
 	Die Testdaten befinden sich im Verzeichnis extra.
 
@@ -108,8 +112,8 @@ externe Erfassung
 	- Interne unerwartete Fehler
 	
 	WARNING:
-	- Fehler, die die Funktionalität grundsätzlich nicht
-	  beeinträchtigen, aber zum Datenverlust führen können
+	- Fehler, die die FunktionalitÃ¤t grundsÃ¤tzlich nicht
+	  beeintrÃ¤chtigen, aber zum Datenverlust fÃ¼hren kÃ¶nnen
 	- Nicht identifizierbare Konfigurationsbereiche
 	- Probleme beim Explorieren von Attributpfaden 
 	  (von Plausibilisierungsbeschreibungen)
@@ -117,8 +121,8 @@ externe Erfassung
 	  nur eine Instanz erwartet wird
 	- Wenn Parameter nicht korrekt ausgelesen werden konnten
 	  bzw. nicht interpretierbar sind
-	- Wenn inkompatible Parameter übergeben wurden
-	- Wenn Parameter unvollständig sind
+	- Wenn inkompatible Parameter Ã¼bergeben wurden
+	- Wenn Parameter unvollstÃ¤ndig sind
 	- Wenn ein Wert bzw. Status nicht gesetzt werden konnte
 	
 	INFO:
@@ -128,20 +132,20 @@ externe Erfassung
 	- Allgemeine Ausgaben, welche die Konfiguration betreffen
 	- Benutzte Konfigurationsbereiche der Applikation bzw.
 	  einzelner Funktionen innerhalb der Applikation
-	- Benutzte Objekte für Parametersteuerung von Applikationen
+	- Benutzte Objekte fÃ¼r Parametersteuerung von Applikationen
 	  (z.B. die Instanz der Datenflusssteuerung, die verwendet wird)
 	- An- und Abmeldungen von Daten beim Datenverteiler
 	
 	FINE:
 	- Wenn Daten empfangen wurden, die nicht weiterverarbeitet 
-	  (plausibilisiert) werden können (weil keine Parameter vorliegen)
+	  (plausibilisiert) werden kÃ¶nnen (weil keine Parameter vorliegen)
 	- Informationen, die nur zum Debugging interessant sind 
 	
 
 Disclaimer
 ==========
 
-Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
 Copyright (C) 2007 BitCtrl Systems GmbH 
 
 This program is free software; you can redistribute it and/or modify it under
@@ -163,7 +167,7 @@ Kontakt
 =======
 
 BitCtrl Systems GmbH
-Weißenfelser Straße 67
+WeiÃŸenfelser StraÃŸe 67
 04229 Leipzig
 Phone: +49 341-490670
 mailto: info@bitctrl.de

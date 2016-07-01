@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -64,7 +64,7 @@ public class TestFahrstreifenImporter extends CSVImporter {
 	 * @param csvQuelle
 	 *            Quelle der Daten (CSV-Datei)
 	 * @throws Exception
-	 *             falls dieses Objekt nicht vollständig initialisiert werden
+	 *             falls dieses Objekt nicht vollstÃ¤ndig initialisiert werden
 	 *             konnte
 	 */
 	public TestFahrstreifenImporter(final ClientDavInterface dav,
@@ -75,7 +75,7 @@ public class TestFahrstreifenImporter extends CSVImporter {
 		}
 
 		/**
-		 * Tabellenkopf überspringen
+		 * Tabellenkopf Ã¼berspringen
 		 */
 		next();
 	}
@@ -299,10 +299,10 @@ public class TestFahrstreifenImporter extends CSVImporter {
 		DUAUtensilien.getAttributDatum(
 				attributName + ".Status.MessWertErsetzung.Interpoliert", //$NON-NLS-1$
 				datensatz).asUnscaledValue().set(intp);
-		DUAUtensilien.getAttributDatum(attributName + ".Güte.Index", datensatz) //$NON-NLS-1$
+		DUAUtensilien.getAttributDatum(attributName + ".GÃ¼te.Index", datensatz) //$NON-NLS-1$
 				.asScaledValue().set(guete);
 		DUAUtensilien
-				.getAttributDatum(attributName + ".Güte.Verfahren", datensatz) //$NON-NLS-1$
+				.getAttributDatum(attributName + ".GÃ¼te.Verfahren", datensatz) //$NON-NLS-1$
 				.asUnscaledValue().set(0);
 	}
 

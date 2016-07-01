@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -33,9 +33,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.lve.FahrStreifen;
 
 /**
  * Analogon zu <code>ErsetzungsTabelle</code> aus der Feinspezifikation. Eine
- * Instanz dieser Klasse ist jeweils mit einem Fahrstreifen assoziiert. Für
+ * Instanz dieser Klasse ist jeweils mit einem Fahrstreifen assoziiert. FÃ¼r
  * diesen werden jeweils drei historische Werte in einem Ringpuffer
- * bereitgehalten. Außerdem wird für jedes in der MWE betrachtete Attribut die
+ * bereitgehalten. AuÃŸerdem wird fÃ¼r jedes in der MWE betrachtete Attribut die
  * Historie seiner Fortschreibung gespeichert
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -53,13 +53,13 @@ public class FSDatenPuffer {
 	private FahrStreifen fs = null;
 
 	/**
-	 * die letzten drei emfangenen Datensätze im Ringpuffer.
+	 * die letzten drei emfangenen DatensÃ¤tze im Ringpuffer.
 	 */
 	private final KZDatum[] ringPuffer = new KZDatum[PUFFER_KAPAZITAET];
 
 	/**
 	 * Mappt alle innerhalb der MWE betrachteten Attribute auf ihre
-	 * Eigenschaften bezüglich der Fortschreibung von Messwerten.
+	 * Eigenschaften bezÃ¼glich der Fortschreibung von Messwerten.
 	 */
 	private final Map<MweAttribut, MweFortschreibungsAttribut> messWertFortschreibung = new HashMap<>();
 
@@ -87,13 +87,13 @@ public class FSDatenPuffer {
 	}
 
 	/**
-	 * Dieser Methode sollte alle Datensätze übergeben werden, die so
-	 * veröffentlicht werden sollen. Sie überprüft in allen (innerhalb der MWE)
+	 * Dieser Methode sollte alle DatensÃ¤tze Ã¼bergeben werden, die so
+	 * verÃ¶ffentlicht werden sollen. Sie Ã¼berprÃ¼ft in allen (innerhalb der MWE)
 	 * betrachteten Attributen, ob diese ersetzt wurden und versucht sie ggf.
 	 * fortzuschreiben.
 	 *
 	 * @param kzDatum
-	 *            das zur Veröffentlichung stehende KZ-Datum
+	 *            das zur VerÃ¶ffentlichung stehende KZ-Datum
 	 */
 	public final void schreibeDatenFortWennNotwendig(final KZDatum kzDatum) {
 		for (final MweAttribut attribut : MweAttribut.getInstanzen()) {
@@ -104,12 +104,12 @@ public class FSDatenPuffer {
 	}
 
 	/**
-	 * Erfragt den unmittelbar vor dem übergebenen Datum in diesen Puffer
+	 * Erfragt den unmittelbar vor dem Ã¼bergebenen Datum in diesen Puffer
 	 * eingespeisten Datensatz.
 	 *
 	 * @param kzDatum
 	 *            ein Datensatz
-	 * @return das Vorgängerdatum oder <code>null</code>, wenn dieses nicht
+	 * @return das VorgÃ¤ngerdatum oder <code>null</code>, wenn dieses nicht
 	 *         existiert
 	 */
 	public final KZDatum getVorgaengerVon(final KZDatum kzDatum) {
@@ -139,14 +139,14 @@ public class FSDatenPuffer {
 	}
 
 	/**
-	 * Erfragt, ob in diesem Puffer Daten für mehr als ein Intervall gespeichert
+	 * Erfragt, ob in diesem Puffer Daten fÃ¼r mehr als ein Intervall gespeichert
 	 * sind, die noch nicht wieder freigegeben wurden. Dieser Zustand indiziert,
 	 * dass ein Intervall abgelaufen ist<br>
 	 * Es wird angenommen, dass ein Intervall dann abgelaufen ist, wenn
 	 * innerhalb dieses Puffers nicht freigegebene Daten von mehr als einem
 	 * Intervall stehen
 	 *
-	 * @return ob in diesem Puffer Daten für mehr als ein Intervall gespeichert
+	 * @return ob in diesem Puffer Daten fÃ¼r mehr als ein Intervall gespeichert
 	 *         sind, die noch nicht wieder freigegeben wurden
 	 */
 	public final boolean isIntervallAbgelaufen() {
@@ -188,11 +188,11 @@ public class FSDatenPuffer {
 
 	/**
 	 * Befreit das in diesem Puffer stehende Datum, das zu einem bereits
-	 * abgelaufenen Intervall gehören muss. Dies ist das älteste Datum, das noch
+	 * abgelaufenen Intervall gehÃ¶ren muss. Dies ist das Ã¤lteste Datum, das noch
 	 * nicht wieder freigegeben wurde
 	 *
 	 * @return das in diesem Puffer stehende Datum, das zu einem bereits
-	 *         abgelaufenen Intervall gehören muss
+	 *         abgelaufenen Intervall gehÃ¶ren muss
 	 */
 	public final KZDatum befreieAeltestesAbgelaufenesDatum() {
 		KZDatum abgelaufenesDatum = null;
@@ -216,11 +216,11 @@ public class FSDatenPuffer {
 
 	/**
 	 * Erfragt, ob dieser Fahrstreifen aktuell als <code>defekt</code>
-	 * eingeschätzt wird. Er ist <code>defekt</code>, wenn das letzte Datum
+	 * eingeschÃ¤tzt wird. Er ist <code>defekt</code>, wenn das letzte Datum
 	 * keine Nutzdaten enthielt, oder noch nie ein Datum angekommen ist.
 	 *
 	 * @return ob dieser Fahrstreifen aktuell als <code>defekt</code>
-	 *         eingeschätzt wird
+	 *         eingeschÃ¤tzt wird
 	 */
 	public final boolean isAktuellDefekt() {
 		boolean defekt = true;
@@ -234,7 +234,7 @@ public class FSDatenPuffer {
 	}
 
 	/**
-	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz für den
+	 * Aktualisiert dieses Objekt mit einem aktuellen (Roh-)Datensatz fÃ¼r den
 	 * assoziierten Fahrstreifen<br>
 	 * .
 	 *
@@ -266,12 +266,12 @@ public class FSDatenPuffer {
 	}
 
 	/**
-	 * Erfragt das Datum innerhalb dieses Puffers, das den übergebenen
+	 * Erfragt das Datum innerhalb dieses Puffers, das den Ã¼bergebenen
 	 * Zeitstempel besitzt.
 	 *
 	 * @param zeitStempel1
 	 *            der Zeitstempel des Datums
-	 * @return das Datum innerhalb dieses Puffers, das den übergebenen
+	 * @return das Datum innerhalb dieses Puffers, das den Ã¼bergebenen
 	 *         Zeitstempel besitzt oder <code>null</code>, wenn kein Datum
 	 *         diesen Zeitstempel besitzt
 	 */
