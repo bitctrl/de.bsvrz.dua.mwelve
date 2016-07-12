@@ -1,27 +1,29 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.5 Messwertersetzung LVE
- * Copyright (C) 2007-2015 BitCtrl Systems GmbH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact Information:<br>
- * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
- * 04229 Leipzig<br>
- * Phone: +49 341-490670<br>
- * mailto: info@bitctrl.de
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Messwertersetzung LVE
+ * Copyright (C) 2007 BitCtrl Systems GmbH 
+ * Copyright 2016 by Kappich Systemberatung Aachen
+ * 
+ * This file is part of de.bsvrz.dua.mwelve.
+ * 
+ * de.bsvrz.dua.mwelve is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * de.bsvrz.dua.mwelve is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with de.bsvrz.dua.mwelve.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dua.mwelve.mwelve.pruefung;
@@ -38,15 +40,17 @@ import java.util.Map;
  * <code>vKfz</code>,<br>
  * <code>vLkw</code> und<br>
  * <code>vPkw</code>.
- *
+ * 
  * @author BitCtrl Systems GmbH, Thierfelder
+ * 
+ * @version $Id$
  */
 public final class MweAttribut {
 
 	/**
 	 * Wertebereich.
 	 */
-	private static Map<String, MweAttribut> werteBereich = new HashMap<>();
+	private static Map<String, MweAttribut> werteBereich = new HashMap<String, MweAttribut>();
 
 	/**
 	 * Attribut <code>qKfz</code>.
@@ -85,7 +89,7 @@ public final class MweAttribut {
 
 	/**
 	 * Standardkonstruktor.
-	 *
+	 * 
 	 * @param name
 	 *            der Name des Attributs
 	 */
@@ -97,7 +101,7 @@ public final class MweAttribut {
 	/**
 	 * Erfragt eine mit dem übergebenen Namen korrespondierende statische
 	 * Instanz dieser Klasse.
-	 *
+	 * 
 	 * @param name
 	 *            ein Attribut-Name
 	 * @return eine mit dem übergebenen Namen korrespondierende statische
@@ -116,17 +120,17 @@ public final class MweAttribut {
 	/**
 	 * Erfragt, ob es sich bei diesem Attribut um die Verkehrsstärke einer
 	 * Fahrzeuggruppe handelt.
-	 *
+	 * 
 	 * @return ob es sich bei diesem Attribut um die Verkehrsstärke einer
 	 *         Fahrzeuggruppe handelt
 	 */
 	public boolean isQWert() {
-		return equals(Q_KFZ) || equals(Q_LKW) || equals(Q_PKW);
+		return this.equals(Q_KFZ) || this.equals(Q_LKW) || this.equals(Q_PKW);
 	}
 
 	/**
 	 * Erfragt alle statischen Instanzen dieser Klasse.
-	 *
+	 * 
 	 * @return alle statischen Instanzen dieser Klasse
 	 */
 	public static Collection<MweAttribut> getInstanzen() {
@@ -135,15 +139,18 @@ public final class MweAttribut {
 
 	/**
 	 * Erfragt den Namen dieses Attributs.
-	 *
+	 * 
 	 * @return der Name dieses Attributs
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
+	/**
+	 * {@inheritDoc}.
+	 */
 	@Override
 	public String toString() {
-		return name;
+		return this.name;
 	}
 }

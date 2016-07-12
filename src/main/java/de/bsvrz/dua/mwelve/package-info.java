@@ -1,6 +1,5 @@
 /*
  * Segment Datenübernahme und Aufbereitung (DUA), SWE Messwertersetzung LVE
- * Copyright (C) 2007 BitCtrl Systems GmbH 
  * Copyright 2016 by Kappich Systemberatung Aachen
  * 
  * This file is part of de.bsvrz.dua.mwelve.
@@ -27,9 +26,8 @@
  */
 
 /**
- * Klassen für Submodul Ausfallüberwachung des Moduls Messwertersetzung LVE
- * innerhalb der SWE Messwertersetzung LVE
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Messwertersetzung LVE
+ *
+ * @author Kappich Systemberatung
  */
-
-package de.bsvrz.dua.mwelve.mwelve.pruefung;
-
+package de.bsvrz.dua.mwelve;
