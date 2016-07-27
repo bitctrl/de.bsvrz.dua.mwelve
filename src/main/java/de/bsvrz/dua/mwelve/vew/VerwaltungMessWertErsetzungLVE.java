@@ -48,7 +48,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 
 import java.util.Collection;
 
@@ -107,9 +106,6 @@ public class VerwaltungMessWertErsetzungLVE extends
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
-		
-		MessageSender.getInstance().setApplicationLabel("Messwertersetzung LVE :: PL-Logisch LVE");
-		
 		DuaVerkehrsNetz.initialisiere(this.verbindung);
 
 		Collection<SystemObject> alleFsObjImKB = DUAUtensilien

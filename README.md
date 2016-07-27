@@ -17,6 +17,12 @@ asp.messWertErsetzung publiziert.
 
 ## Versionsgeschichte
 
+### 2.0.1
+
+Release-Datum: 22.07.2016
+
+- Umpacketierung gemäß NERZ-Konvention
+
 ### 2.0.0
 
 Release-Datum: 31.05.2016
