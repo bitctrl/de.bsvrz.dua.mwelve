@@ -48,8 +48,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * weitergereicht
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	
@@ -58,9 +56,6 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 	 */
 	private LVEPruefungUndMWE pruefung = null;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -76,23 +71,14 @@ public class MessWertErsetzungLVE extends AbstraktBearbeitungsKnotenAdapter {
 		this.pruefung.initialisiere(dieVerwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
 		this.pruefung.aktualisiereDaten(resultate);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}

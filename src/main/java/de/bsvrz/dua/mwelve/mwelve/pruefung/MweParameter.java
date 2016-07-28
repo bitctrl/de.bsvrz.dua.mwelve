@@ -40,8 +40,6 @@ import java.util.Map;
  * <code>atg.verkehrsDatenKurzZeitIntervallMessWertErsetzung</code>.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public final class MweParameter implements ClientReceiverInterface {
 
@@ -123,9 +121,6 @@ public final class MweParameter implements ClientReceiverInterface {
 		return maxErsetzungsDauer;
 	}
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	public void update(ResultData[] resultate) {
 		if (resultate != null) {
 			for (ResultData resultat : resultate) {

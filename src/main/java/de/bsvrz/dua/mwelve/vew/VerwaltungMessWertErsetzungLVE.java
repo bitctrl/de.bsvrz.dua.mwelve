@@ -64,8 +64,6 @@ import java.util.Collection;
  * LVE, Messwertersetzung LVE sowie Publikation in dieser Reihenfolge her.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class VerwaltungMessWertErsetzungLVE extends
 		AbstraktVerwaltungsAdapterMitGuete {
@@ -92,16 +90,10 @@ public class VerwaltungMessWertErsetzungLVE extends
 	 */
 	private PublikationsModul pub = null;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
@@ -159,9 +151,6 @@ public class VerwaltungMessWertErsetzungLVE extends
 				ReceiverRole.receiver());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void update(ResultData[] resultate) {
 		this.plForm1.aktualisiereDaten(resultate);
 	}

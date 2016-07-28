@@ -40,7 +40,7 @@ import org.junit.Before;
  * @author Kappich Systemberatung
  */
 public class DuAMweLveTestBase extends DuATestBase {
-	protected static VerwaltungMessWertErsetzungLVE _messWertErsetzungLVE;
+	protected VerwaltungMessWertErsetzungLVE _messWertErsetzungLVE;
 
 	protected static String[] getLveArgs() {
 		return new String[]{"-KonfigurationsBereichsPid=kb.duaTestFs"};

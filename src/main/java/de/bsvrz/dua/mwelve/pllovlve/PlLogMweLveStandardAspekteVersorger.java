@@ -40,8 +40,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class PlLogMweLveStandardAspekteVersorger extends
 		StandardAspekteVersorger {
@@ -58,9 +56,6 @@ public class PlLogMweLveStandardAspekteVersorger extends
 		super(verwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 

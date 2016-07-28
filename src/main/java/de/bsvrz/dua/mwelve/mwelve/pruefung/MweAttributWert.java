@@ -37,8 +37,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.MesswertMarkierung;
  * Korrespondiert mit einem Attributwert eines KZ- oder LZ-Datums.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class MweAttributWert extends MesswertMarkierung implements
 		Comparable<MweAttributWert> {
@@ -153,9 +151,6 @@ public class MweAttributWert extends MesswertMarkierung implements
 		return this.wert;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public int compareTo(MweAttributWert that) {
 		return new Long(this.getWert()).compareTo(that.getWert());
 	}
@@ -180,9 +175,6 @@ public class MweAttributWert extends MesswertMarkierung implements
 		this.guete = guete;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		boolean ergebnis = false;
@@ -200,9 +192,6 @@ public class MweAttributWert extends MesswertMarkierung implements
 		return ergebnis;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "Attribut: " + this.attr + "\nWert: " + this.wert + //$NON-NLS-1$ //$NON-NLS-2$

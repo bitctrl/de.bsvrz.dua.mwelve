@@ -44,8 +44,6 @@ import java.util.List;
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class MweLveStandardAspekteVersorger extends StandardAspekteVersorger {
 
