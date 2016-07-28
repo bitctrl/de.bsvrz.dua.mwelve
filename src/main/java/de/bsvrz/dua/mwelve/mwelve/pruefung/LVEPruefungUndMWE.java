@@ -54,8 +54,6 @@ import static de.bsvrz.dua.guete.GueteVerfahren.produkt;
  * Intervalls)
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -88,9 +86,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
 	private static final Debug _debug = Debug.getLogger();
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -175,9 +170,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
 		if (resultate != null) {
 			/**
@@ -664,16 +656,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// return ergebnisDatum;
 	// }
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
 		// hier findet keine Publikation statt
 	}

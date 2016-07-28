@@ -45,8 +45,6 @@ import static de.bsvrz.dua.guete.GueteVerfahren.produkt;
  * Historie seiner Fortschreibung gespeichert
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class FSDatenPuffer {
 
@@ -326,9 +324,6 @@ public class FSDatenPuffer {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		String s = this.fs.toString();
