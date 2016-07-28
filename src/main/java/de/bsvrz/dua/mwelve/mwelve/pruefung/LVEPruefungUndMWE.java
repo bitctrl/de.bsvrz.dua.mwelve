@@ -57,6 +57,8 @@ import static de.bsvrz.dua.guete.GueteVerfahren.produkt;
  */
 public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 
+	private static final Debug LOGGER = Debug.getLogger();
+
 	/**
 	 * statische Verbindung zum Datenverteiler.
 	 */
@@ -84,12 +86,15 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 */
 	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 
-	private static final Debug _debug = Debug.getLogger();
+	private static final Debug _debug = LOGGER;
 	
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
+		if( sDav != null) {
+			LOGGER.error("SWE wurde bereits initialisiert");
+		}
 		sDav = dieVerwaltung.getVerbindung();
 
 		/**
@@ -239,7 +244,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 						}
 
 					} else {
-						Debug.getLogger()
+						LOGGER
 								.warning("Fahrstreifen zu Datensatz konnte nicht identifiziert werden: " + resultat.getObject());
 						weiterzuleitendeResultate.add(resultat);
 					}
