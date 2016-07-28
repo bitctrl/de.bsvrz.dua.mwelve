@@ -41,8 +41,6 @@ import java.util.Map;
  * und hält alle innerhalb der MWE betrachteten Attribute (veränderbar) bereit.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public class KZDatum {
 
@@ -310,9 +308,6 @@ public class KZDatum {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		String s = "Original: " + this.originalDatum; //$NON-NLS-1$

@@ -17,6 +17,16 @@ asp.messWertErsetzung publiziert.
 
 ## Versionsgeschichte
 
+### 2.0.2
+
+Release-Datum: 28.07.2016
+
+de.bsvrz.dua.mwelve.tests.DuAMweLveTestBase
+- der Member "_messWertErsetzungLVE" sollte nicht statisch sein, der er bei jedem Test neu initialisiert wird
+
+ - Obsolete SVN-Tags aus Kommentaren entfernt
+- Obsolete inheritDoc-Kommentare entfernt
+
 ### 2.0.1
 
 Release-Datum: 22.07.2016

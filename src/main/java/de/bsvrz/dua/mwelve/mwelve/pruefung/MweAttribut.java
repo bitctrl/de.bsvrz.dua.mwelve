@@ -42,8 +42,6 @@ import java.util.Map;
  * <code>vPkw</code>.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
  */
 public final class MweAttribut {
 
@@ -146,9 +144,6 @@ public final class MweAttribut {
 		return this.name;
 	}
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	public String toString() {
 		return this.name;
