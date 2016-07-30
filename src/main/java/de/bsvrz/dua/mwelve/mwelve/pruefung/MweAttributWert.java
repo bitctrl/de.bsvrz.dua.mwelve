@@ -176,23 +176,6 @@ public class MweAttributWert extends MesswertMarkierung implements
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		boolean ergebnis = false;
-
-		if (obj != null && obj instanceof MweAttributWert) {
-			MweAttributWert that = (MweAttributWert) obj;
-			ergebnis = this.getAttribut().equals(that.getAttribut())
-					&& this.getWert() == that.getWert()
-					&& this.isNichtErfasst() == that.isNichtErfasst()
-					&& this.isImplausibel() == that.isImplausibel()
-					&& this.getGuete().equals(that.getGuete())
-					&& this.isInterpoliert() == that.isInterpoliert();
-		}
-
-		return ergebnis;
-	}
-
-	@Override
 	public String toString() {
 		return "Attribut: " + this.attr + "\nWert: " + this.wert + //$NON-NLS-1$ //$NON-NLS-2$
 				"\nGuete: " + this.guete + //$NON-NLS-1$

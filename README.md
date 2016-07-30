@@ -21,6 +21,11 @@ asp.messWertErsetzung publiziert.
 
 Release-Datum: 28.07.2016
 
+de.bsvrz.dua.mwelve.mwelve.pruefung.MweAttributWert:
+
+- unnötige equals-Funktion entfernt, da hashCode gefehlt hat und Daten der Klasse von
+  außen geändert werden können
+
 de.bsvrz.dua.mwelve.tests.DuAMweLveTestBase
 - der Member "_messWertErsetzungLVE" sollte nicht statisch sein, der er bei jedem Test neu initialisiert wird
 
