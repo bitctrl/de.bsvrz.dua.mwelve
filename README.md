@@ -17,6 +17,8 @@ asp.messWertErsetzung publiziert.
 
 ## Versionsgeschichte
 
+### Version 2.0.4
+
 ### Version 2.0.3
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
