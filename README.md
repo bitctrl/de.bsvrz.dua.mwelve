@@ -20,6 +20,7 @@ asp.messWertErsetzung publiziert.
 ### Version 2.0.3
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
+- mögliche NullPointerException beim Kopieren von Mess- und Gütewerten korrigiert.
 
 ### Version 2.0.2
 
@@ -103,7 +104,7 @@ Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
 ### Version 1.1.4
 
 - Senden von reinen Betriebsmeldungen in DUA um die Umsetzung von Objekt-PID/ID nach
-  Betriebsmeldungs-ID erweitert.  
+  Betriebsmeldungs-ID erweitert.
 
 ### Version 1.1.3
 
@@ -119,8 +120,8 @@ Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
 - Logging veraendert:
   Ausgabe "Systemobjekt kann nicht identifiziert werden?" entfernt.
   Dieser Zustand kann/darf im Prinzip nicht auftreten. Sollte dies dennoch geschehen,
-  so wird jetzt eine Laufzeit-Exception geworfen. 
-  
+  so wird jetzt eine Laufzeit-Exception geworfen.
+
 ### Version 1.0.0
 
 - Erste Auslieferung
@@ -133,13 +134,13 @@ de.bsvrz.dua.mwelve.VerwaltungMessWertErsetzungLVE mit folgenden Parametern gest
 	-KonfigurationsBereichsPid=pid(,pid)
 
 Der Datenfluss durch diese Applikation ist wie folgt:
-externe Erfassung 
-	--> formale Prüfung (Publikation asp.plPrüfungFormal) 
+externe Erfassung
+	--> formale Prüfung (Publikation asp.plPrüfungFormal)
 		-->	logische Prüfung (Publikation unter asp.plPrüfungLogisch)
-			--> Messwertersetzung 
-				--> formale Prüfung 
+			--> Messwertersetzung
+				--> formale Prüfung
 					-->	logische Prüfung (Publikation unter asp.messwertErsetzung)
-	
+
 ## Kontakt
 
 BitCtrl Systems GmbH

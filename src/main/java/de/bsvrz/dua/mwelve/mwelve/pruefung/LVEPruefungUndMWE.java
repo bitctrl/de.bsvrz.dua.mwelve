@@ -1,20 +1,20 @@
 /*
  * Segment Datenübernahme und Aufbereitung (DUA), SWE Messwertersetzung LVE
- * Copyright (C) 2007 BitCtrl Systems GmbH 
+ * Copyright (C) 2007 BitCtrl Systems GmbH
  * Copyright 2016 by Kappich Systemberatung Aachen
- * 
+ *
  * This file is part of de.bsvrz.dua.mwelve.
- * 
+ *
  * de.bsvrz.dua.mwelve is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * de.bsvrz.dua.mwelve is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.dua.mwelve.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -22,7 +22,7 @@
  * Kappich Systemberatung
  * Martin-Luther-Straße 14
  * 52062 Aachen, Germany
- * phone: +49 241 4090 436 
+ * phone: +49 241 4090 436
  * mail: <info@kappich.de>
  */
 
@@ -52,7 +52,7 @@ import static de.bsvrz.dua.guete.GueteVerfahren.produkt;
  * zwei Intervalle zwischengespeichert und messwertersetzt, sobald alle Daten
  * zur Messwertersetzung vorliegen (spätestens aber zum Beginn des nächsten
  * Intervalls)
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
@@ -86,8 +86,6 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 */
 	private Map<FahrStreifen, Collection<FahrStreifen>> triggerListe = new HashMap<FahrStreifen, Collection<FahrStreifen>>();
 
-	private static final Debug _debug = LOGGER;
-	
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -146,7 +144,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 			// Nachbar ist
 			// */
 			// FahrStreifen nachbar = fs.getNachbarFahrStreifen();
-			//			
+			//
 			// Collection<FahrStreifen> triggerFuerNachbar =
 			// this.triggerListe.get(nachbar);
 			// if(triggerFuerNachbar == null){
@@ -267,7 +265,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	 * Datenpuffer enthaltenen Daten statt. Diese Methode muss gewährleisten,
 	 * dass die eintreffenden Daten entweder sofort oder innerhalb des nächsten
 	 * Intervalls wieder freigegeben werden.
-	 * 
+	 *
 	 * @param fahrStreifenPuffer
 	 *            ein Fahrstreifenpuffer
 	 * @return ein messwertersetztes Datum
@@ -345,7 +343,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * Führt eine MWE durch für den Fall, dass der Ersatzfahrstreifen nicht
 	 * defekt ist.
-	 * 
+	 *
 	 * @param fahrStreifenPuffer
 	 *            Datenpuffer des Fahrstreifens, der plausibibilisiert werden
 	 *            soll
@@ -363,7 +361,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 		final GanzZahl sweGueteWert = GanzZahl.getGueteIndex();
 		sweGueteWert.setSkaliertenWert(0.95);
 		final GWert sweGuete = new GWert(sweGueteWert, STANDARD, false);
-		
+
 		if (zielDatum != null) {
 			KZDatum ersatzZielDatum = null;
 			if(ersatzPuffer != null && zielDatum.getDatum() != null) {
@@ -375,10 +373,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 				 * Es sind alle Daten zur Berechnung des Zielintervalls da!
 				 */
 				ergebnisDatum = new KZDatum(zielDatum.getDatum());
-				
+
 				if(ersatzZielDatum.isVollstaendigPlausibelUndNichtInterpoliert()
 						&& ersatzZielDatum.getT() == ergebnisDatum.getT()) {
-					
+
 					for(MweAttribut attribut : MweAttribut.getInstanzen()) {
 						MweAttributWert attributWert = ersatzZielDatum.getAttributWert(attribut);
 						if(!ersatzZielDatum.istBereitsGueteReduziert()) {
@@ -386,7 +384,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 								attributWert.setGuete(produkt(attributWert.getGuete(), sweGuete));
 							}
 							catch(GueteException e) {
-								_debug.warning("Kann Güte nicht reduzieren", e);
+								LOGGER.warning("Kann Güte nicht reduzieren", e);
 							}
 						}
 						attributWert.setInterpoliert(true);
@@ -403,7 +401,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
 	 * Attribut innerhalb eines KZ-Datensatzes durch (Stand: 05.03.2008)
-	 * 
+	 *
 	 * @param attribut
 	 *            das Attribut, für das die MWE durchgeführt werden soll
 	 * @param ergebnisDatum
@@ -486,7 +484,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	}
 
 	// Implementierung von veralteten Anforderungen
-	//	
+	//
 	// /**
 	// * Führt eine Messwertersetzung nach Vorschrift Nr. 1 für ein bestimmtes
 	// * Attribut innerhalb eines KZ-Datensatzes durch
@@ -516,7 +514,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// MweAttributWert attributWert = ergebnisDatum.getAttributWert(attribut);
 	// MweAttributWert attributWertErsetzung =
 	// ersetzungsDatum.getAttributWert(attribut);
-	//		
+	//
 	// if(attributWert.isImplausibel() &&
 	// !attributWertErsetzung.isImplausibel()&&
 	// !attributWertErsetzung.isFormalMax() &&
@@ -524,10 +522,10 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// !attributWertErsetzung.isLogischMax() &&
 	// !attributWertErsetzung.isLogischMin() &&
 	// attributWertErsetzung.getWert() >= 0){
-	//			
+	//
 	// double wertErsetzung = (double)attributWertErsetzung.getWert();
 	// GWert gueteErsetzung = attributWertErsetzung.getGuete();
-	//			
+	//
 	// double alterWertErsetzung = 1.0;
 	// KZDatum altesDatumErsetzung =
 	// ersetzungsPuffer.getVorgaengerVon(ersetzungsDatum);
@@ -538,7 +536,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// !altesDatumErsetzung.isDefekt() &&
 	// !altesDatumErsetzung.getAttributWert(attribut).isImplausibel() &&
 	// altesDatumErsetzung.getAttributWert(attribut).getWert() >= 0){
-	//				
+	//
 	// alterWertErsetzung =
 	// altesDatumErsetzung.getAttributWert(attribut).getWert();
 	// alteGueteErsetzung =
@@ -548,7 +546,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// double alterWert = 1.0;
 	// KZDatum altesDatum = fahrStreifenPuffer.getVorgaengerVon(ergebnisDatum);
 	// GWert alteGuete = GWert.getMaxGueteWert(GueteVerfahren.STANDARD);
-	//			
+	//
 	// if(altesDatum != null &&
 	// !altesDatum.isDefekt() &&
 	// !altesDatum.getAttributWert(attribut).isImplausibel() &&
@@ -556,7 +554,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// alterWert = altesDatum.getAttributWert(attribut).getWert();
 	// alteGuete = altesDatum.getAttributWert(attribut).getGuete();
 	// }
-	//			
+	//
 	// /**
 	// * ggf. Intervallanpassung
 	// */
@@ -575,12 +573,12 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// }
 	// wertErsetzung = wertErsetzung * faktor;
 	// }
-	//			
+	//
 	// /**
 	// * Wertberechnung
 	// */
 	// double neuerWert = (alterWert * wertErsetzung) / alterWertErsetzung;
-	//			
+	//
 	// /**
 	// * Güteberechnung des Wertes
 	// */
@@ -596,7 +594,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// e); //$NON-NLS-1$ //$NON-NLS-2$
 	// e.printStackTrace();
 	// }
-	//			
+	//
 	// /**
 	// * Wert verändern
 	// */
@@ -605,7 +603,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// ergebnisDatum.getAttributWert(attribut).setInterpoliert(true);
 	// ergebnisDatum.getAttributWert(attribut).setImplausibel(false);
 	// }
-	//		
+	//
 	// return ergebnisDatum;
 	// }
 
@@ -627,14 +625,14 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// FSDatenPuffer ersatzPuffer){
 	// KZDatum ergebnisDatum = null;
 	// KZDatum zielDatum = fahrStreifenPuffer.getDatumAktuell();
-	//		
+	//
 	// if(zielDatum != null &&
 	// !zielDatum.isBereitsWiederFreigegeben()){
 	// /**
 	// * Das heißt, das Zieldatum ist nicht vollständig plausibel und
 	// * noch nicht interpoliert
 	// */
-	//			
+	//
 	// KZDatum ersatzZielDatum =
 	// ersatzPuffer.getDatumMitZeitStempel(zielDatum.getDatum().getDataTime());
 	// if(ersatzZielDatum != null){
@@ -657,7 +655,7 @@ public class LVEPruefungUndMWE extends AbstraktBearbeitungsKnotenAdapter {
 	// }
 	// }
 	// }
-	//		
+	//
 	// return ergebnisDatum;
 	// }
 
