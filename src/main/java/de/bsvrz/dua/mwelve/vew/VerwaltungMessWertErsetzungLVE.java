@@ -28,6 +28,7 @@
 
 package de.bsvrz.dua.mwelve.vew;
 
+import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
@@ -48,6 +49,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.lve.DuaVerkehrsNetz;
 import de.bsvrz.sys.funclib.debug.Debug;
+import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 
 import java.util.Collection;
 
@@ -92,6 +94,12 @@ public class VerwaltungMessWertErsetzungLVE extends
 
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_MESSWERTERSETZUNG_LVE;
+	}
+	
+	@Override
+	public void initialize(ClientDavInterface dieVerbindung) throws Exception {
+		MessageSender.getInstance().setApplicationLabel("Messwertersetzung LVE");
+		super.initialize(dieVerbindung);
 	}
 
 	@Override

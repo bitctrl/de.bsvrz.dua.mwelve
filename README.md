@@ -17,7 +17,12 @@ asp.messWertErsetzung publiziert.
 
 ## Versionsgeschichte
 
-### 2.0.2
+### Version 2.0.3
+
+- Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
+- mögliche NullPointerException beim Kopieren von Mess- und Gütewerten korrigiert.
+
+### Version 2.0.2
 
 Release-Datum: 28.07.2016
 
@@ -32,13 +37,13 @@ de.bsvrz.dua.mwelve.tests.DuAMweLveTestBase
  - Obsolete SVN-Tags aus Kommentaren entfernt
 - Obsolete inheritDoc-Kommentare entfernt
 
-### 2.0.1
+### Version 2.0.1
 
 Release-Datum: 22.07.2016
 
 - Umpacketierung gemäß NERZ-Konvention
 
-### 2.0.0
+### Version 2.0.0
 
 Release-Datum: 31.05.2016
 
@@ -74,50 +79,50 @@ Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
 
 - Mögliche NullPointerException beim Kopieren von Mess- und Gütewerten korrigiert.
 
-### 1.5.0
+### Version 1.5.0
 
 - Umstellung auf Java 8 und UTF-8
 
-### 1.4.1
+### Version 1.4.1
 
 - Kompatibilität zu DuA-2.0 hergestellt
 
-### 1.4.0
+### Version 1.4.0
 
 - Umstellung auf Funclib-Bitctrl-Dua
 
-### 1.3.0
+### Version 1.3.0
 
 - Umstellung auf Maven-Build
 
-### 1.2.0
+### Version 1.2.0
 
 - Neues Kommandozeilenargument -ignoriereLangzeitdaten. Der Defaultwert
   "false" behält das aktuelle Verhalten bei, bei dem die Langzeitdaten von der
   SW-Einheit verarbeitet werden
 
-### 1.1.4
+### Version 1.1.4
 
 - Senden von reinen Betriebsmeldungen in DUA um die Umsetzung von Objekt-PID/ID nach
-  Betriebsmeldungs-ID erweitert.  
+  Betriebsmeldungs-ID erweitert.
 
-### 1.1.3
+### Version 1.1.3
 
 - FIX: Null-Ueberpruefung vorm Zugriff auf den lokalen Puffer.
 
-### 1.1.2
+### Version 1.1.2
 
 - FIX: Sämtliche Konstruktoren DataDescription(atg, asp, sim) ersetzt durch
        DataDescription(atg, asp)
 
-### 1.1.0
+### Version 1.1.0
 
 - Logging veraendert:
   Ausgabe "Systemobjekt kann nicht identifiziert werden?" entfernt.
   Dieser Zustand kann/darf im Prinzip nicht auftreten. Sollte dies dennoch geschehen,
-  so wird jetzt eine Laufzeit-Exception geworfen. 
-  
-### 1.0.0
+  so wird jetzt eine Laufzeit-Exception geworfen.
+
+### Version 1.0.0
 
 - Erste Auslieferung
 
@@ -129,13 +134,13 @@ de.bsvrz.dua.mwelve.VerwaltungMessWertErsetzungLVE mit folgenden Parametern gest
 	-KonfigurationsBereichsPid=pid(,pid)
 
 Der Datenfluss durch diese Applikation ist wie folgt:
-externe Erfassung 
-	--> formale Prüfung (Publikation asp.plPrüfungFormal) 
+externe Erfassung
+	--> formale Prüfung (Publikation asp.plPrüfungFormal)
 		-->	logische Prüfung (Publikation unter asp.plPrüfungLogisch)
-			--> Messwertersetzung 
-				--> formale Prüfung 
+			--> Messwertersetzung
+				--> formale Prüfung
 					-->	logische Prüfung (Publikation unter asp.messwertErsetzung)
-	
+
 ## Kontakt
 
 BitCtrl Systems GmbH

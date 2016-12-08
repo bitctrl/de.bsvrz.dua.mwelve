@@ -5,10 +5,10 @@
 
 	<groupId>de.bsvrz.dua</groupId>
 	<artifactId>de.bsvrz.dua.mwelve</artifactId>
-	<version>2.0.2</version>
+	<version>2.0.3</version>
 
 	<name>Messwertersetzung LVE (SWE 4.5)</name>
-	
+
 	<organization>
 		<name>BitCtrl Systems GmbH</name>
 		<url>http://www.bitctrl.de</url>
@@ -129,6 +129,9 @@
 					<url>http://dl.bintray.com/datenverteiler/maven</url>
 				</pluginRepository>
 			</pluginRepositories>
+		</profile>
+		<profile>
+			<id>bintray-deploy</id>
 			<distributionManagement>
 				<repository>
 					<id>bintray-bitctrl-maven</id>

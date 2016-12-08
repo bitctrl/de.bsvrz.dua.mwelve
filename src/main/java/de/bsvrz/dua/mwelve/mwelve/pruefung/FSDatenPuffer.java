@@ -97,6 +97,8 @@ public class FSDatenPuffer {
 		if(kzDatum.isVollstaendigPlausibel()){
 			return;
 		}
+		
+		// Güte-Faktor 0.9 zum reduzieren der Güte
 		final GanzZahl sweGueteWert = GanzZahl.getGueteIndex();
 		sweGueteWert.setSkaliertenWert(0.9);
 		final GWert sweGuete = new GWert(sweGueteWert, STANDARD, false);
@@ -107,7 +109,13 @@ public class FSDatenPuffer {
 			return;
 		}
 		for (MweAttribut attribut : MweAttribut.getInstanzen()) {
-			MweAttributWert attributWert = new MweAttributWert(vorgaenger.getAttributWert(attribut));
+			MweAttributWert vorgaengerAttributWert = vorgaenger.getAttributWert(attribut);
+			if(vorgaengerAttributWert == null){
+				// Vorgänger-Datensatz ist ein leerer Datensatz, z. B. "Keine Daten"
+				// Fortschreiben also nicht möglich.
+				return;
+			}
+			MweAttributWert attributWert = new MweAttributWert(vorgaengerAttributWert);
 			if(!vorgaenger.istBereitsGueteReduziert()) {
 
 				try {
